@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
+        id="cordova-plugin-blackboard-camera"
+        version="1.0.0">
+
+  <name>Blackboard Camera</name>
+
+  <engines>
+    <engine name="cordova" version=">=7.1.0"/>
+    <!-- <engine name="cordova-android" version=">=7.0.0"/>
+    <engine name="cordova-ios" version=">=7.0.0"/> -->
+  </engines>
+
+  <asset src="www/blackboard_camera.js" target="js/blackboard_camera.js"/>
+
+  <js-module src="www/blackboard_camera.js" name="blackboard_camera">
+    <clobbers target="blackboard.camera" />
+  </js-module>
+
+  <!-- Add iOS(Swift) support -->
+  <platform name="ios">
+    <config-file target="config.xml" parent="/*">
+        <feature name="BlackboardCamera">
+            <param name="ios-package" value="BlackboardCamera" />
+            <param name="onload" value="true" />
+        </feature>
+    </config-file>
+    <source-file src="src/ios/BlackboardCamera.swift" />
+    <source-file src="src/ios/CameraViewController.swift" />
+    <resource-file src="src/ios/Main.storyboard" />
+
+    // Image Files
+    <resource-file src="src/ios/img/btn_camera@2x.png" target-dir="Resources" />
+    <resource-file src="src/ios/img/btn_camera@3x.png" target-dir="Resources" />
+    <resource-file src="src/ios/img/icn_done@2x.png" target-dir="Resources" />
+    <resource-file src="src/ios/img/icn_done@3x.png" target-dir="Resources" />
+    <resource-file src="src/ios/img/icn_flash_auto@2x.png" target-dir="Resources" />
+    <resource-file src="src/ios/img/icn_flash_auto@3x.png" target-dir="Resources" />
+    <resource-file src="src/ios/img/icn_flash_off@2x.png" target-dir="Resources" />
+    <resource-file src="src/ios/img/icn_flash_off@3x.png" target-dir="Resources" />
+    <resource-file src="src/ios/img/icn_flash_on@2x.png" target-dir="Resources" />
+    <resource-file src="src/ios/img/icn_flash_on@3x.png" target-dir="Resources" />
+    <resource-file src="src/ios/img/icn_blackboard_edit@2x.png" target-dir="Resources" />
+    <resource-file src="src/ios/img/icn_blackboard_edit@3x.png" target-dir="Resources" />
+    <resource-file src="src/ios/img/icn_blackboard@2x.png" target-dir="Resources" />
+    <resource-file src="src/ios/img/icn_blackboard@3x.png" target-dir="Resources" />
+
+    <framework src="AVFoundation.framework" />
+
+    <dependency id="cordova-plugin-add-swift-support" version="1.7.2"/>
+  </platform>
+
+  <platform name="android"
+            kotlin="1.3.0">
+    <!-- Add Kotlin support -->
+    <hook type="after_plugin_add" src="hooks/support-kotlin.js" />
+    <hook type="after_platform_add" src="hooks/support-kotlin.js" />
+    <framework src="org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.2.31" />
+    <framework src="com.android.support:appcompat-v7:27.1.1" />
+    <apply-plugin>kotlin-android-extensions</apply-plugin>
+    <apply-plugin>kotlin-kapt</apply-plugin>
+
+    <!-- Cleanup Kotlin source on uninstall -->
+    <hook type="before_plugin_rm" src="hooks/on-uninstall.js" />
+    <hook type="before_plugin_uninstall" src="hooks/on-uninstall.js" />
+
+    <config-file target="config.xml" parent="/*">
+      <feature name="BlackboardCamera">
+        <param name="android-package" value="jp.co.taisei.construction.fieldmanagement.plugin.BlackboardCamera"/>
+      </feature>
+    </config-file>
+
+    <config-file target="AndroidManifest.xml" parent="/*">
+      <uses-permission android:name="android.permission.CAMERA" />
+      <uses-permission android:name="android.hardware.camera.autofocus" />
+      <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+      <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    </config-file>
+    <config-file target="AndroidManifest.xml" parent="/manifest/application">
+        <!-- <meta-data android:name="theme" android:value="@style/Theme.AppCompat.NoActionBar" /> -->
+        <!-- <meta-data android:name="largeHeap" android:value="true" /> -->
+        <activity android:label="Camera Activity" android:name="jp.co.taisei.construction.fieldmanagement.plugin.CameraActivity"></activity>
+    </config-file>
+    <config-file target="res/values/strings.xml" parent="/resources">
+      <string name="camera">カメラ起動</string>
+      <string name="request_permission">このアプリはカメラ機能への許可が必要です</string>
+      <string name="request_write_storage_permission">このアプリはストレージへの書き込みの許可が必要です</string>
+      <string name="camera_error">This device doesn\'t support Camera2 API.</string>
+    </config-file>
+    <edit-config file="AndroidManifest.xml" target="/manifest/application" mode="merge">
+        <application android:largeHeap="true"></application>
+    </edit-config>
+    <!-- <edit-config file="AndroidManifest.xml" target="/manifest/application" mode="overwrite">
+        <application android:theme="@style/Theme.AppCompat.NoActionBar"></application>
+    </edit-config> -->
+
+    <framework src="com.android.support:exifinterface:27.1.1" />
+
+    <source-file src="src/android/BlackboardCamera.kt" target-dir="app/src/main/java/jp/co/taisei/construction/fieldmanagement/plugin"/>
+    <source-file src="src/android/CameraActivity.kt" target-dir="app/src/main/java/jp/co/taisei/construction/fieldmanagement/plugin"/>
+    <source-file src="src/android/AutoFitTextureView.kt" target-dir="app/src/main/java/jp/co/taisei/construction/fieldmanagement/plugin"/>
+    <source-file src="src/android/Camera2Fragment.kt" target-dir="app/src/main/java/jp/co/taisei/construction/fieldmanagement/plugin"/>
+    <source-file src="src/android/SensorOrientation.kt" target-dir="app/src/main/java/jp/co/taisei/construction/fieldmanagement/plugin"/>
+
+    <source-file src="src/android/layout/activity_main.xml" target-dir="app/src/main/res/layout"/>
+    <source-file src="src/android/layout-land/fragment_camera2.xml" target-dir="app/src/main/res/layout-land"/>
+    <source-file src="src/android/layout-port/fragment_camera2.xml" target-dir="app/src/main/res/layout-port"/>
+    <source-file src="src/android/drawable/ic_camera.xml" target-dir="app/src/main/res/drawable"/>
+    <source-file src="src/android/drawable/ic_circle.xml" target-dir="app/src/main/res/drawable"/>
+
+    <source-file src="src/android/drawable-xxhdpi/btn_camera_off.png" target-dir="app/src/main/res/drawable-xxhdpi"/>
+    <source-file src="src/android/drawable-xxhdpi/btn_camera_on.png" target-dir="app/src/main/res/drawable-xxhdpi"/>
+    <source-file src="src/android/drawable-xxhdpi/icn_done.png" target-dir="app/src/main/res/drawable-xxhdpi"/>
+    <source-file src="src/android/drawable-xxhdpi/icn_flash_auto.png" target-dir="app/src/main/res/drawable-xxhdpi"/>
+    <source-file src="src/android/drawable-xxhdpi/icn_flash_off.png" target-dir="app/src/main/res/drawable-xxhdpi"/>
+    <source-file src="src/android/drawable-xxhdpi/icn_flash_on.png" target-dir="app/src/main/res/drawable-xxhdpi"/>
+    <source-file src="src/android/drawable-xxhdpi/icn_blackboard_edit.png" target-dir="app/src/main/res/drawable-xxhdpi"/>
+    <source-file src="src/android/drawable-xxhdpi/icn_blackboard.png" target-dir="app/src/main/res/drawable-xxhdpi"/>
+
+  </platform>
+</plugin>

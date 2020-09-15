@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">大成カメラ</string>
+    <string name="launcher_name">カメラ起動</string>
+    <string name="activity_name">T-Pile Recorder</string>
+    <string name="camera">カメラ起動</string>
+    <string name="request_permission">このアプリはカメラ機能への許可が必要です</string>
+    <string name="request_write_storage_permission">このアプリはストレージへの書き込みの許可が必要です</string>
+    <string name="camera_error">This device doesn\'t support Camera2 API.</string>
+</resources>

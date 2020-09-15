@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="V1K-9x-KL0">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16086"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--CameraVIewController-->
+        <scene sceneID="zq6-ap-zaG">
+            <objects>
+                <viewController title="CameraVIewController" id="V1K-9x-KL0" customClass="CameraViewController" customModule="T_Pile_Recorder" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="izs-Fl-QUi">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nn4-bL-0ya" userLabel="CameraView">
+                                <rect key="frame" x="0.0" y="83.5" width="375" height="500"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="nn4-bL-0ya" secondAttribute="height" multiplier="4:3" id="V1I-sV-lyT"/>
+                                    <constraint firstAttribute="width" secondItem="nn4-bL-0ya" secondAttribute="height" multiplier="3:4" id="jrn-yG-9cA"/>
+                                </constraints>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="V1I-sV-lyT"/>
+                                    </mask>
+                                </variation>
+                            </view>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icn_done.png" translatesAutoresizingMaskIntoConstraints="NO" id="8Yq-av-SOr">
+                                <rect key="frame" x="16" y="28" width="24" height="24"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="24" id="5oF-4T-eGF"/>
+                                    <constraint firstAttribute="height" constant="24" id="UrV-B9-62q"/>
+                                </constraints>
+                            </imageView>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="YgZ-2n-K3j" userLabel="boardImageView">
+                                <rect key="frame" x="67" y="269" width="240" height="128"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2jd-77-bet">
+                                <rect key="frame" x="22" y="25" width="65" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="65" id="l8h-9F-Kx6"/>
+                                    <constraint firstAttribute="height" constant="30" id="rSV-KD-rgK"/>
+                                </constraints>
+                                <state key="normal" title="戻る">
+                                    <color key="titleColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                                </state>
+                                <connections>
+                                    <action selector="backButton_TouchUpInside:" destination="V1K-9x-KL0" eventType="touchUpInside" id="JIk-0p-lZP"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dx8-0t-5dN">
+                                <rect key="frame" x="157.5" y="557" width="60" height="60"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="60" id="TYX-as-OZ7"/>
+                                    <constraint firstAttribute="height" constant="60" id="mvt-rD-QjS"/>
+                                </constraints>
+                                <state key="normal" image="btn_camera.png"/>
+                                <connections>
+                                    <action selector="cameraButton_TouchUpInside:" destination="V1K-9x-KL0" eventType="touchUpInside" id="Q5L-aS-ZyX"/>
+                                </connections>
+                            </button>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icn_flash_auto.png" translatesAutoresizingMaskIntoConstraints="NO" id="Q6d-w4-Kpp">
+                                <rect key="frame" x="280" y="25" width="24" height="24"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="24" id="H3n-No-mZl"/>
+                                    <constraint firstAttribute="height" constant="24" id="N6m-P0-By1"/>
+                                </constraints>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="trailing" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vr6-WO-kdO">
+                                <rect key="frame" x="272" y="22" width="67" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="fs8-nG-KV9"/>
+                                    <constraint firstAttribute="width" constant="67" id="mEu-qh-jxN"/>
+                                </constraints>
+                                <state key="normal" title="自動">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <connections>
+                                    <action selector="flashButton_TouchUpInside:" destination="V1K-9x-KL0" eventType="touchUpInside" id="elv-ZI-kvg"/>
+                                </connections>
+                            </button>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="JxH-LP-GZx" userLabel="黒板モード">
+                                <rect key="frame" x="278.5" y="560.5" width="66.5" height="56.5"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IoJ-s9-iex">
+                                        <rect key="frame" x="0.0" y="0.0" width="66.5" height="36"/>
+                                        <state key="normal" image="icn_blackboard.png"/>
+                                        <connections>
+                                            <action selector="blackBoardMode_TouchUpInside:" destination="V1K-9x-KL0" eventType="touchUpInside" id="Rmh-PD-eFV"/>
+                                        </connections>
+                                    </button>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="黒板OFF" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aGS-FR-eki" userLabel="黒板OFF">
+                                        <rect key="frame" x="0.0" y="36" width="66.5" height="20.5"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="66.5" id="Tjd-8m-ORG"/>
+                                </constraints>
+                            </stackView>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="6ce-lD-jzk" userLabel="黒板編集">
+                                <rect key="frame" x="30" y="560.5" width="69.5" height="56.5"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SWZ-9Y-UJu">
+                                        <rect key="frame" x="0.0" y="0.0" width="69.5" height="36"/>
+                                        <state key="normal" image="icn_blackboard_edit.png"/>
+                                        <connections>
+                                            <action selector="blackBoardEdit_TouchUpInside:" destination="V1K-9x-KL0" eventType="touchUpInside" id="fts-gF-hpg"/>
+                                        </connections>
+                                    </button>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="黒板編集" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ceE-vb-dyg">
+                                        <rect key="frame" x="0.0" y="36" width="69.5" height="20.5"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                            </stackView>
+                        </subviews>
+                        <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <constraints>
+                            <constraint firstItem="mZg-EL-t9l" firstAttribute="trailing" secondItem="vr6-WO-kdO" secondAttribute="trailing" constant="36" id="11D-RE-GD4"/>
+                            <constraint firstItem="8Yq-av-SOr" firstAttribute="top" secondItem="mZg-EL-t9l" secondAttribute="top" constant="28" id="2ks-f3-oIR"/>
+                            <constraint firstItem="Q6d-w4-Kpp" firstAttribute="leading" secondItem="mZg-EL-t9l" secondAttribute="leading" constant="36" id="3UZ-sE-RXo"/>
+                            <constraint firstItem="2jd-77-bet" firstAttribute="leading" secondItem="mZg-EL-t9l" secondAttribute="leading" constant="22" id="5WV-q2-q7Q"/>
+                            <constraint firstItem="nn4-bL-0ya" firstAttribute="top" secondItem="mZg-EL-t9l" secondAttribute="top" id="7Iq-rv-vgD"/>
+                            <constraint firstItem="nn4-bL-0ya" firstAttribute="centerY" secondItem="izs-Fl-QUi" secondAttribute="centerY" id="9Sh-1h-H3E"/>
+                            <constraint firstItem="mZg-EL-t9l" firstAttribute="bottom" secondItem="6ce-lD-jzk" secondAttribute="bottom" constant="50" id="9ox-NY-5zK" userLabel="VSafe Area.bottom = 黒板編集.bottom + 50"/>
+                            <constraint firstItem="mZg-EL-t9l" firstAttribute="bottom" secondItem="6ce-lD-jzk" secondAttribute="bottom" constant="30" id="AG3-18-340" userLabel="HSafe Area.bottom = 黒板編集.bottom + 30"/>
+                            <constraint firstItem="mZg-EL-t9l" firstAttribute="bottom" secondItem="JxH-LP-GZx" secondAttribute="bottom" constant="50" id="CVL-x1-91s" userLabel="VSafe Area.bottom = 黒板モード.bottom + 50"/>
+                            <constraint firstItem="mZg-EL-t9l" firstAttribute="trailing" secondItem="JxH-LP-GZx" secondAttribute="trailing" constant="50" id="D3G-y4-Hz2" userLabel="HSafe Area.trailing = 黒板モード.trailing + 50"/>
+                            <constraint firstItem="mZg-EL-t9l" firstAttribute="trailing" secondItem="Q6d-w4-Kpp" secondAttribute="trailing" constant="71" id="Hca-9J-hMh"/>
+                            <constraint firstItem="dx8-0t-5dN" firstAttribute="centerY" secondItem="izs-Fl-QUi" secondAttribute="centerY" id="Lv0-gf-rpQ"/>
+                            <constraint firstItem="mZg-EL-t9l" firstAttribute="trailing" secondItem="nn4-bL-0ya" secondAttribute="trailing" id="NAf-sZ-RUM"/>
+                            <constraint firstItem="mZg-EL-t9l" firstAttribute="bottom" secondItem="2jd-77-bet" secondAttribute="bottom" constant="25" id="NgG-RW-uTR"/>
+                            <constraint firstItem="vr6-WO-kdO" firstAttribute="top" secondItem="mZg-EL-t9l" secondAttribute="top" constant="22" id="PMi-NA-qjJ"/>
+                            <constraint firstItem="8Yq-av-SOr" firstAttribute="leading" secondItem="mZg-EL-t9l" secondAttribute="leading" constant="16" id="Tnt-Vy-3bv"/>
+                            <constraint firstItem="nn4-bL-0ya" firstAttribute="leading" secondItem="mZg-EL-t9l" secondAttribute="leading" id="YIg-bv-3i8"/>
+                            <constraint firstItem="dx8-0t-5dN" firstAttribute="centerX" secondItem="izs-Fl-QUi" secondAttribute="centerX" id="cfc-TJ-KeU"/>
+                            <constraint firstItem="Q6d-w4-Kpp" firstAttribute="top" secondItem="mZg-EL-t9l" secondAttribute="top" constant="25" id="e3E-IY-n6o"/>
+                            <constraint firstItem="vr6-WO-kdO" firstAttribute="leading" secondItem="mZg-EL-t9l" secondAttribute="leading" constant="36" id="eF3-nv-DyI"/>
+                            <constraint firstItem="2jd-77-bet" firstAttribute="top" secondItem="mZg-EL-t9l" secondAttribute="top" constant="25" id="edL-fb-u7D"/>
+                            <constraint firstItem="mZg-EL-t9l" firstAttribute="bottom" secondItem="dx8-0t-5dN" secondAttribute="bottom" constant="50" id="fbl-4X-ILa"/>
+                            <constraint firstItem="mZg-EL-t9l" firstAttribute="trailing" secondItem="dx8-0t-5dN" secondAttribute="trailing" constant="50" id="fe4-ka-mju"/>
+                            <constraint firstItem="mZg-EL-t9l" firstAttribute="bottom" secondItem="nn4-bL-0ya" secondAttribute="bottom" id="gTM-ZB-Z2p"/>
+                            <constraint firstItem="mZg-EL-t9l" firstAttribute="bottom" secondItem="8Yq-av-SOr" secondAttribute="bottom" constant="28" id="kZQ-oL-VV5"/>
+                            <constraint firstItem="mZg-EL-t9l" firstAttribute="trailing" secondItem="JxH-LP-GZx" secondAttribute="trailing" constant="30" id="oxT-RA-u3R" userLabel="VSafe Area.trailing = 黒板モード.trailing + 30"/>
+                            <constraint firstItem="nn4-bL-0ya" firstAttribute="centerX" secondItem="izs-Fl-QUi" secondAttribute="centerX" id="rQr-fE-FP4"/>
+                            <constraint firstItem="mZg-EL-t9l" firstAttribute="trailing" secondItem="6ce-lD-jzk" secondAttribute="trailing" constant="50" id="rcn-JN-uh4" userLabel="HSafe Area.trailing = 黒板編集.trailing + 50"/>
+                            <constraint firstItem="JxH-LP-GZx" firstAttribute="top" secondItem="mZg-EL-t9l" secondAttribute="top" constant="30" id="uLo-8U-OGZ" userLabel="H黒板モード.top = Safe Area.top + 30"/>
+                            <constraint firstItem="6ce-lD-jzk" firstAttribute="leading" secondItem="mZg-EL-t9l" secondAttribute="leading" constant="30" id="v6g-1F-yNc" userLabel="V黒板編集.leading = Safe Area.leading + 30"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="mZg-EL-t9l"/>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="AG3-18-340"/>
+                                <exclude reference="D3G-y4-Hz2"/>
+                                <exclude reference="NgG-RW-uTR"/>
+                                <exclude reference="fe4-ka-mju"/>
+                                <exclude reference="gTM-ZB-Z2p"/>
+                                <exclude reference="kZQ-oL-VV5"/>
+                                <exclude reference="rcn-JN-uh4"/>
+                                <exclude reference="eF3-nv-DyI"/>
+                                <exclude reference="3UZ-sE-RXo"/>
+                                <exclude reference="7Iq-rv-vgD"/>
+                                <exclude reference="uLo-8U-OGZ"/>
+                                <exclude reference="Lv0-gf-rpQ"/>
+                            </mask>
+                        </variation>
+                    </view>
+                    <connections>
+                        <outlet property="blackBoardModeText" destination="aGS-FR-eki" id="pqV-06-E0n"/>
+                        <outlet property="boardImageView" destination="YgZ-2n-K3j" id="Xew-Ss-FYN"/>
+                        <outlet property="cameraButton" destination="dx8-0t-5dN" id="sNj-7Y-mlT"/>
+                        <outlet property="cameraView" destination="nn4-bL-0ya" id="46D-Aj-lQY"/>
+                        <outlet property="flashButton" destination="vr6-WO-kdO" id="WWA-c9-y1n"/>
+                        <outlet property="flashImage" destination="Q6d-w4-Kpp" id="7dg-mK-6Vv"/>
+                        <outlet property="hBackButtonConstraint" destination="NgG-RW-uTR" id="Huc-bp-vg3"/>
+                        <outlet property="hBlackBoardEdit01Constraint" destination="AG3-18-340" id="4Ky-5F-phG"/>
+                        <outlet property="hBlackBoardEdit02Constraint" destination="rcn-JN-uh4" id="oEp-GO-m7v"/>
+                        <outlet property="hBlackBoardMode01Constraint" destination="D3G-y4-Hz2" id="wOF-av-BML"/>
+                        <outlet property="hBlackBoardMode02Constraint" destination="uLo-8U-OGZ" id="5ju-PS-eRw"/>
+                        <outlet property="hCameraButtonCenterConstraint" destination="fe4-ka-mju" id="iJH-0J-vHl"/>
+                        <outlet property="hCameraButtonConstraint" destination="Lv0-gf-rpQ" id="5yk-hP-L4H"/>
+                        <outlet property="hCameraViewAspectConstraint" destination="V1I-sV-lyT" id="r1b-1j-pWh"/>
+                        <outlet property="hCameraViewBottomConstraint" destination="gTM-ZB-Z2p" id="qyh-Eg-XE6"/>
+                        <outlet property="hCameraViewTopConstraint" destination="7Iq-rv-vgD" id="pZl-3J-2Xq"/>
+                        <outlet property="hFlashButtonConstraint" destination="eF3-nv-DyI" id="kjq-BN-soe"/>
+                        <outlet property="hFlashImageConstraint" destination="3UZ-sE-RXo" id="4xI-Zo-kV6"/>
+                        <outlet property="hIconDoneConstraint" destination="kZQ-oL-VV5" id="wWc-94-cth"/>
+                        <outlet property="vBackButtonConstraint" destination="edL-fb-u7D" id="XeX-RQ-3SN"/>
+                        <outlet property="vBlackBoardEdit01Constraint" destination="9ox-NY-5zK" id="htW-44-LDB"/>
+                        <outlet property="vBlackBoardEdit02Constraint" destination="v6g-1F-yNc" id="nD0-Xt-VkE"/>
+                        <outlet property="vBlackBoardMode01Constraint" destination="CVL-x1-91s" id="B2L-Sg-ybl"/>
+                        <outlet property="vBlackBoardMode02Constraint" destination="oxT-RA-u3R" id="jvV-H0-wKU"/>
+                        <outlet property="vCameraButtonCenterConstraint" destination="cfc-TJ-KeU" id="PLf-5C-3qX"/>
+                        <outlet property="vCameraButtonConstraint" destination="fbl-4X-ILa" id="m0d-WI-5zE"/>
+                        <outlet property="vCameraViewAspectConstraint" destination="jrn-yG-9cA" id="Nqe-IJ-OiB"/>
+                        <outlet property="vCameraViewLeftConstraint" destination="YIg-bv-3i8" id="oS5-zo-NZB"/>
+                        <outlet property="vCameraViewRightConstraint" destination="NAf-sZ-RUM" id="a4F-Ws-AqB"/>
+                        <outlet property="vFlashButtonConstraint" destination="11D-RE-GD4" id="Afh-UY-gb3"/>
+                        <outlet property="vFlashImageConstraint" destination="Hca-9J-hMh" id="M5P-IQ-Rgj"/>
+                        <outlet property="vIconDoneConstraint" destination="2ks-f3-oIR" id="gMK-6a-7SS"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="MVQ-FC-Tfg" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="344.80000000000001" y="-134.48275862068965"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="btn_camera.png" width="62" height="62"/>
+        <image name="icn_blackboard.png" width="36" height="36"/>
+        <image name="icn_blackboard_edit.png" width="36" height="36"/>
+        <image name="icn_done.png" width="36" height="36"/>
+        <image name="icn_flash_auto.png" width="36" height="36"/>
+    </resources>
+</document>

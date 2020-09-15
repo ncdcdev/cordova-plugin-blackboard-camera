@@ -1,0 +1,22 @@
+{
+    "version": "1.0.0",
+    "name": "cordova-plugin-blackboard-camera",
+    "cordova_name": "Blackboard Camera",
+    "description": "",
+    "cordova": {
+        "id": "cordova-plugin-blackboard-camera",
+        "platforms": [
+            "android",
+            "ios"
+        ]
+    },
+    "keywords": [
+        "ecosystem:cordova",
+        "cordova",
+        "android",
+        "kotlin"
+    ],
+    "dependencies": {
+        "xml2js": "^0.4.19"
+    }
+}
