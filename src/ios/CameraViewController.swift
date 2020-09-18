@@ -103,6 +103,7 @@ class CameraViewController: UIViewController {
     var flashModeIndex: Int = 0
     var boardInitPoint: CGPoint = CGPoint.zero
     var boardInitSize: CGSize = CGSize.zero
+    var boardSizeMargin: CGFloat = 0
     
     var locationInit: CGPoint!
     var cameraViewMargin: CGPoint = CGPoint.zero
@@ -114,6 +115,7 @@ class CameraViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        boardSizeMargin = kBoardMarkSize / 2
         setupCaptureSession()
         setupDevice()
         setupInputOutput()
@@ -236,14 +238,15 @@ class CameraViewController: UIViewController {
              return
          }
          if isLandscape {
-             print("Landscape")
-             NSLayoutConstraint.deactivate(vViewConstraints)
-             NSLayoutConstraint.activate(hViewConstraints)
+            print("Landscape")
+            NSLayoutConstraint.deactivate(vViewConstraints)
+            NSLayoutConstraint.activate(hViewConstraints)
         } else {
-             print("Portrait")
-             NSLayoutConstraint.deactivate(hViewConstraints)
-             NSLayoutConstraint.activate(vViewConstraints)
-         }
+            print("Portrait")
+            NSLayoutConstraint.deactivate(hViewConstraints)
+            NSLayoutConstraint.activate(vViewConstraints)
+        }
+        self.boardImageView.frame = resetBoardFrame(board: self.boardImageView.frame)
     }
 
     // シャッターボタンが押された時のアクション
@@ -369,27 +372,43 @@ class CameraViewController: UIViewController {
     func resetBoardFrame(board: CGRect) -> CGRect {
         let cameraSize = self.cameraView.frame.size
         let offset = self.cameraView.frame.origin
-        let boardSize = board.size
+        var boardSize = board.size
         var boardPoint = board.origin
 
         // board left
-        if (boardPoint.x < offset.x) {
-            boardPoint.x = offset.x
-        }
+        if (boardPoint.x < offset.x + boardSizeMargin) {
+            boardPoint.x = offset.x + boardSizeMargin
         // board right
-        if (boardPoint.x + boardSize.width > cameraSize.width + offset.x) {
-            boardPoint.x = cameraSize.width - boardSize.width + offset.x
+        } else if (boardPoint.x + boardSize.width > cameraSize.width + offset.x - boardSizeMargin) {
+            boardPoint.x = cameraSize.width - boardSize.width + offset.x - boardSizeMargin
         }
         // board top
-        if (boardPoint.y < offset.y) {
-            boardPoint.y = offset.y
-        }
+        if (boardPoint.y < offset.y + boardSizeMargin) {
+            boardPoint.y = offset.y + boardSizeMargin
         // board bottom
-        if (boardPoint.y + boardSize.height > cameraSize.height + offset.y) {
-            boardPoint.y = cameraSize.height - boardSize.height + offset.y
+        } else if (boardPoint.y + boardSize.height > cameraSize.height + offset.y - boardSizeMargin) {
+            boardPoint.y = cameraSize.height - boardSize.height + offset.y - boardSizeMargin
         }
+        
+        // 横向きの場合、黒板の高さはマージンを適用したサイズより小さく設定
+        var checkSize: CGFloat = 0
+        if UIDevice.current.orientation.isLandscape {
+            checkSize = cameraSize.height - boardSizeMargin * 2
+            if (boardSize.height > checkSize) {
+                boardSize = CGSize(width: cameraSize.width / cameraSize.height * checkSize, height: checkSize)
+            }
+        } else {
+            checkSize = cameraSize
+                .width - boardSizeMargin * 2
+            if (boardSize.width > checkSize) {
+                boardSize = CGSize(width: checkSize, height: cameraSize.width / cameraSize.height * checkSize)
+            }
+        }
+        
+
         var newBoard = board
         newBoard.origin = boardPoint
+        newBoard.size = boardSize
 
         self.ltCircle?.center = newBoard.origin
         self.rtCircle?.center = CGPoint(x: newBoard.maxX, y: newBoard.origin.y)
