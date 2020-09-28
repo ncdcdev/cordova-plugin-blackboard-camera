@@ -376,35 +376,40 @@ class CameraViewController: UIViewController {
         var boardPoint = board.origin
 
         // board left
-        if (boardPoint.x < offset.x + boardSizeMargin) {
-            boardPoint.x = offset.x + boardSizeMargin
+        if (boardPoint.x < offset.x) {
+            boardPoint.x = offset.x
         // board right
-        } else if (boardPoint.x + boardSize.width > cameraSize.width + offset.x - boardSizeMargin) {
-            boardPoint.x = cameraSize.width - boardSize.width + offset.x - boardSizeMargin
+        } else if (boardPoint.x + boardSize.width > cameraSize.width + offset.x) {
+            boardPoint.x = offset.x + cameraSize.width - boardSize.width
         }
         // board top
-        if (boardPoint.y < offset.y + boardSizeMargin) {
-            boardPoint.y = offset.y + boardSizeMargin
+        if (boardPoint.y < offset.y) {
+            boardPoint.y = offset.y
         // board bottom
-        } else if (boardPoint.y + boardSize.height > cameraSize.height + offset.y - boardSizeMargin) {
-            boardPoint.y = cameraSize.height - boardSize.height + offset.y - boardSizeMargin
+        } else if (boardPoint.y + boardSize.height > cameraSize.height + offset.y) {
+            boardPoint.y =  offset.y + cameraSize.height - boardSize.height
         }
         
         // 横向きの場合、黒板の高さはマージンを適用したサイズより小さく設定
         var checkSize: CGFloat = 0
         if UIDevice.current.orientation.isLandscape {
-            checkSize = cameraSize.height - boardSizeMargin * 2
+            checkSize = cameraSize.height * 0.9
             if (boardSize.height > checkSize) {
-                boardSize = CGSize(width: cameraSize.width / cameraSize.height * checkSize, height: checkSize)
+                let aspect: CGFloat = boardSize.height / boardSize.width
+                print("isLandscape:cameraSize=\(cameraSize), aspect=\(aspect)、 boardSize1=\(boardSize)")
+                boardSize = CGSize(width: checkSize / aspect, height: checkSize)
             }
         } else {
-            checkSize = cameraSize
-                .width - boardSizeMargin * 2
+            
+            checkSize = cameraSize.width * 0.9
             if (boardSize.width > checkSize) {
-                boardSize = CGSize(width: checkSize, height: cameraSize.width / cameraSize.height * checkSize)
+                let aspect: CGFloat = boardSize.width / boardSize.height
+                print("isPortrait:cameraSize=\(cameraSize), aspect=\(aspect)、 boardSize1=\(boardSize)")
+                boardSize = CGSize(width: checkSize, height: checkSize / aspect)
             }
         }
         
+        print("boardPoint=\(boardPoint), boardSize2=\(boardSize)")
 
         var newBoard = board
         newBoard.origin = boardPoint
