@@ -96,7 +96,7 @@ class CameraViewController: UIViewController {
     private let kBoardMode = "boardMode"
     
     private let kBoardMinScale: CGFloat = 0.4
-    private let kBoardBaseScale: CGFloat = 0.5
+    private let kBoardBaseScale: CGFloat = 0.6
     private let kBoardMarkSize: CGFloat = 30
 
     // FlashモードIndex 0(Auto) 1(Off) 2(On)
