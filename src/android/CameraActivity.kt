@@ -9,6 +9,7 @@ import android.hardware.SensorManager
 import android.os.Bundle
 import android.view.KeyEvent
 //import jp.co.taisei.construction.fieldmanagement.R
+//import jp.co.taisei.construction.fieldmanagement.prod2.R
 import jp.co.taisei.construction.fieldmanagement.develop.R
 import kotlinx.android.synthetic.main.fragment_camera2.*
 import org.apache.cordova.CordovaActivity
