@@ -325,13 +325,17 @@ class Camera2Fragment : Fragment(), View.OnClickListener, View.OnTouchListener, 
         var bitmap = BitmapFactory.decodeFile(filePath)
         mBoardImage?.setImageBitmap(bitmap)
 
+        initBoardSize(bitmap)
+
         preferences = activity.getSharedPreferences("Camera", Context.MODE_PRIVATE)
+//        preferences.edit().clear().commit() // Testコード
+
         mFlashModeIndex = preferences.getInt("flashMode", 0)
         var isVisible = preferences.getBoolean("boardMode", true)
-        var proprity = (activity as CameraActivity).blackboardViewPriority
+        var priority = (activity as CameraActivity).blackboardViewPriority
         var isNeedBlackBoard = (activity as CameraActivity).isNeedBlackBoard
         // 黒板表示優先モードが「Web」で、Webから取得した「isNeedBlackBoard」がfalaeの場合、黒板は非表示とする
-        if (proprity == "Web") {
+        if (priority == "Web") {
             if (!isNeedBlackBoard) {
                 isVisible = false
             }
@@ -387,6 +391,19 @@ class Camera2Fragment : Fragment(), View.OnClickListener, View.OnTouchListener, 
 //            requestPermissions(arrayOf(Manifest.permission.CAMERA), REQUEST_CAMERA_PERMISSION)
 //        }
 //    }
+
+    private fun initBoardSize(bitmap: Bitmap) {
+        val w1 = bitmap.width
+        val h1 = bitmap.height
+        val displaySize = Point()
+        activity.windowManager.defaultDisplay.getSize(displaySize)
+        val w2: Float = min(displaySize.x, displaySize.y) * BOARD_INIT_SCALE
+        val h2 = h1.toFloat() / w1.toFloat() * w2
+
+        mBoardImage!!.layoutParams.width = w2.toInt()
+        mBoardImage!!.layoutParams.height = h2.toInt()
+        mBoardImage!!.requestLayout()
+    }
 
     /**
      * Sets up member variables related to camera.
@@ -858,29 +875,33 @@ class Camera2Fragment : Fragment(), View.OnClickListener, View.OnTouchListener, 
         when (id) {
             R.id.lt -> {
                 rect.offset(dx.toInt(), dy.toInt())// left-top移動、(right・bottomは不変)
-                val width = checkMinWidth(currentBoardRect.right - rect.left)
-                val height = currentBoardRect.height() / currentBoardRect.width() * width
+                val size = checkSize(currentBoardRect.right - rect.left)
+                val width = size.width
+                val height = size.height
                 rect = Rect(currentBoardRect.right - width, currentBoardRect.bottom - height, currentBoardRect.right, currentBoardRect.bottom)
 //                Log.d(TAG, "moveBoard:lt:offset:$rect")
             }
             R.id.rt -> {
                 rect.offset(dx.toInt(), dy.toInt())// right-top移動、(left・bottomは不変)
-                val width = checkMinWidth(rect.right - currentBoardRect.left)
-                val height = currentBoardRect.height() / currentBoardRect.width() * width
+                val size = checkSize(rect.right - currentBoardRect.left)
+                val width = size.width
+                val height = size.height
                 rect = Rect(currentBoardRect.left, currentBoardRect.bottom - height, currentBoardRect.left + width, currentBoardRect.bottom)
 //                Log.d(TAG, "moveBoard:rt:offset:$rect")
             }
             R.id.lb -> {
                 rect.offset(dx.toInt(), dy.toInt())// left-bottom移動、(right・topは不変)
-                val width = checkMinWidth(currentBoardRect.right - rect.left)
-                val height = currentBoardRect.height() / currentBoardRect.width() * width
+                val size = checkSize(currentBoardRect.right - rect.left)
+                val width = size.width
+                val height = size.height
                 rect = Rect(currentBoardRect.right - width, currentBoardRect.top, currentBoardRect.right, currentBoardRect.top + height)
 //                Log.d(TAG, "moveBoard:lb:offset:$rect")
             }
             R.id.rb -> {
                 rect.offset(dx.toInt(), dy.toInt())// right-bottom移動、(left・topは不変)
-                val width = checkMinWidth(rect.right - currentBoardRect.left)
-                val height = currentBoardRect.height() / currentBoardRect.width() * width
+                val size = checkSize(rect.right - currentBoardRect.left)
+                val width = size.width
+                val height = size.height
                 rect = Rect(currentBoardRect.left, currentBoardRect.top, currentBoardRect.left + width, currentBoardRect.top + height)
 //                Log.d(TAG, "moveBoard:rb:offset:$rect")
             }
@@ -916,9 +937,23 @@ class Camera2Fragment : Fragment(), View.OnClickListener, View.OnTouchListener, 
         }
     }
 
-    private fun checkMinWidth(width: Int): Int {
+    private fun checkSize(widthSize: Int): Size {
+        val wScale = currentBoardRect.height().toFloat() / currentBoardRect.width().toFloat()
+        val hScale = currentBoardRect.width().toFloat() / currentBoardRect.height().toFloat()
         val minSize = min(mTextureView!!.width, mTextureView!!.height)
-        return max(width, (minSize.toFloat() * BOARD_MIN_SCALE).toInt())
+        // 最小のサイズチェック
+        var width = max(widthSize, (minSize.toFloat() * BOARD_MIN_SCALE).toInt())
+        var height = (wScale * widthSize.toFloat()).toInt()
+        // 最大サイズチェック
+        if (mTextureView!!.width > mTextureView!!.height) {
+            // Landscape : 黒板の縦幅は画面の縦幅の9割までとする
+            height = min(height, (minSize * BOARD_MAX_SCALE).toInt())
+            width = (hScale * height.toFloat()).toInt()
+        } else {
+            width = min(width, (minSize * BOARD_MAX_SCALE).toInt())
+        }
+        return Size(width, height)
+
     }
 
     private fun findTargetView(x:Int, y:Int): Int {
@@ -1311,6 +1346,8 @@ class Camera2Fragment : Fragment(), View.OnClickListener, View.OnTouchListener, 
         private const val MAX_PREVIEW_HEIGHT = 1080
 
         private const val BOARD_MIN_SCALE = 0.4F
+        private const val BOARD_INIT_SCALE = 0.6F
+        private const val BOARD_MAX_SCALE = 0.9F
 
         private var mOrientation: Int = 0
 
