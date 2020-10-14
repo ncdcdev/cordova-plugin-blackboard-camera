@@ -26,6 +26,7 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.Toast
 //import jp.co.taisei.construction.fieldmanagement.R
+// import jp.co.taisei.construction.fieldmanagement.prod2.R
 import jp.co.taisei.construction.fieldmanagement.develop.R
 import java.io.ByteArrayInputStream
 import java.io.File
