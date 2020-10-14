@@ -706,7 +706,7 @@ class Camera2Fragment : Fragment(), View.OnClickListener, View.OnTouchListener, 
     /**
      * Initiate a still image capture.
      */
-    private fun takePicture() {
+    fun takePicture() {
 
         lockFocus()
 

@@ -90,6 +90,13 @@ class CameraActivity : CordovaActivity(), SensorEventListener {
             intent.putExtra("mode", blackboardViewPriority)
             setResult(0, intent)
             finish()
+        } else if (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN || keyCode == KeyEvent.KEYCODE_CAMERA) {
+            val fragment = fragmentManager.findFragmentById(R.id.container)
+            if (fragment != null && fragment is Camera2Fragment) {
+                fragment.takePicture()
+                return false
+            }
+
         }
         return super.onKeyDown(keyCode, event)
     }
