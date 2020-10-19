@@ -531,7 +531,8 @@ extension CameraViewController: AVCapturePhotoCaptureDelegate {
         }
         var newImage: UIImage?
         if UIDevice.current.orientation.isLandscape {
-            newImage = UIImage(cgImage: image.cgImage!, scale: 1.0, orientation: .up)
+            let imageOrientation = UIDevice.current.orientation == UIDeviceOrientation.landscapeLeft ? UIImage.Orientation.up : UIImage.Orientation.down
+            newImage = UIImage(cgImage: image.cgImage!, scale: 1.0, orientation: imageOrientation)
         } else {
             newImage = image.fixedOrientation()
         }
