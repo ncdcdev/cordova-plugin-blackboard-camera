@@ -3,6 +3,7 @@ package jp.co.taisei.construction.fieldmanagement.plugin
 import android.annotation.SuppressLint
 import android.annotation.TargetApi
 import android.app.Fragment
+import android.content.ContentValues
 import android.content.Context
 import android.content.Context.CAMERA_SERVICE
 import android.content.Intent
@@ -15,8 +16,8 @@ import android.media.Image
 import android.media.ImageReader
 import android.media.MediaActionSound
 import android.os.*
+import android.provider.MediaStore
 import android.support.media.ExifInterface
-import android.support.v4.app.ActivityCompat
 import android.util.Log
 import android.util.Size
 import android.util.SparseIntArray
@@ -40,7 +41,7 @@ import kotlin.math.max
 import kotlin.math.min
 
 @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-class Camera2Fragment : Fragment(), View.OnClickListener, View.OnTouchListener, ActivityCompat.OnRequestPermissionsResultCallback {
+class Camera2Fragment : Fragment(), View.OnClickListener, View.OnTouchListener {
 
     /**
      * [TextureView.SurfaceTextureListener] handles several lifecycle events on a
@@ -348,8 +349,10 @@ class Camera2Fragment : Fragment(), View.OnClickListener, View.OnTouchListener, 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         val fileName = "${UUID.randomUUID()}.jpeg"
-        val fullPath = "${activity.applicationContext.filesDir}/$fileName"
-        Log.d(TAG, "[onActivityCreated] $fullPath")
+//        val fullPath = "${activity.applicationContext.filesDir}/$fileName"
+        val fullPath = "${activity.getExternalFilesDir(null)}/$fileName"
+        Log.d(TAG, "[onActivityCreated] fullPath=${fullPath}")
+//        mFile = File(activity.getExternalFilesDir(null), fileName)
         mFile = File(fullPath)
         Log.d(TAG, "[onActivityCreated] ${mFile.absolutePath}")
     }
@@ -915,7 +918,7 @@ class Camera2Fragment : Fragment(), View.OnClickListener, View.OnTouchListener, 
             }
         }
         correctBoardRect(rect)
-        Log.d(TAG, "moveBoard:after:offset:$rect")
+//        Log.d(TAG, "moveBoard:after:offset:$rect")
         board.layout(rect.left, rect.top, rect.right, rect.bottom)
         return true
 
@@ -1222,6 +1225,7 @@ class Camera2Fragment : Fragment(), View.OnClickListener, View.OnTouchListener, 
 //                        Toast.makeText(activity, "exifOrientation=$exifOrientation, rotation=$rotation", Toast.LENGTH_LONG).show()
 //                    }
 
+                    addImageToGallery(file.absolutePath)
                     val intent = Intent()
                     intent.putExtra("filePath", file.absolutePath)
                     intent.putExtra("mode", activity.blackboardViewPriority)
@@ -1242,6 +1246,20 @@ class Camera2Fragment : Fragment(), View.OnClickListener, View.OnTouchListener, 
                     }
 
                 }
+            }
+        }
+
+        private fun addImageToGallery(filePath: String) {
+            try {
+                val values = ContentValues().apply {
+                    put(MediaStore.Images.Media.DATE_TAKEN, System.currentTimeMillis())
+                    put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg")
+                    put(MediaStore.Images.Media.DATA, filePath)
+                }
+                activity!!.contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
+                Log.i(TAG, "addImageToGallery:success:$filePath")
+            } catch (e: Exception) {
+                Log.e(TAG, e.localizedMessage)
             }
         }
 
