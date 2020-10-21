@@ -720,14 +720,17 @@ class Camera2Fragment : Fragment(), View.OnClickListener, View.OnTouchListener {
      */
     private fun lockFocus() {
         try {
-            Log.d(TAG, "test:lockFocus")
+            Log.d(TAG, "test:lockFocus:start")
+            val previewRequestBuilder = mPreviewRequestBuilder ?: return
+            val captureSession = mCaptureSession ?: return
             // This is how to tell the camera to lock focus.
-            mPreviewRequestBuilder!!.set(CaptureRequest.CONTROL_AF_TRIGGER,
+            previewRequestBuilder.set(CaptureRequest.CONTROL_AF_TRIGGER,
                     CameraMetadata.CONTROL_AF_TRIGGER_START)
             // Tell #mCaptureCallback to wait for the lock.
             mState = STATE_WAITING_LOCK
-            mCaptureSession!!.capture(mPreviewRequestBuilder!!.build(), mCaptureCallback,
+            captureSession.capture(previewRequestBuilder.build(), mCaptureCallback,
                     mBackgroundHandler)
+            Log.d(TAG, "test:lockFocus:end")
         } catch (e: CameraAccessException) {
             e.printStackTrace()
         }
