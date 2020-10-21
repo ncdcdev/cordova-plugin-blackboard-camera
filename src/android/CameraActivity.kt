@@ -1,12 +1,18 @@
 package jp.co.taisei.construction.fieldmanagement.plugin
 
+import android.Manifest
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
+import android.os.Build
 import android.os.Bundle
+import android.os.Environment
+import android.support.v4.app.ActivityCompat
+import android.support.v4.content.ContextCompat
 import android.view.KeyEvent
 //import jp.co.taisei.construction.fieldmanagement.R
 //import jp.co.taisei.construction.fieldmanagement.prod2.R
@@ -14,13 +20,14 @@ import jp.co.taisei.construction.fieldmanagement.develop.R
 import kotlinx.android.synthetic.main.fragment_camera2.*
 import org.apache.cordova.CordovaActivity
 
-class CameraActivity : CordovaActivity(), SensorEventListener {
+class CameraActivity : CordovaActivity(), SensorEventListener, ActivityCompat.OnRequestPermissionsResultCallback {
     //センサ用定数
     private val THRESHOLD_DEGREE = 60                                   //回転したと判定する際の閾値角度
     private val VERTICAL_TO_HORIZONTAL_DEGREE = THRESHOLD_DEGREE        //縦から横に変化したと判定する際の角度
     private val HORIZONTAL_TO_VERTICAL_DEGREE = 90 - THRESHOLD_DEGREE   //横から縦にに変化したと判定する際の角度
     private val ORIENTATION_VERTICAL = 0     //縦向きを表す定数
     private val ORIENTATION_HORIZONTAL = 1   //横向きを表す定
+    private val PERMISSIONS_REQUEST_CODE = 100
 
     val RAD2DEG = 180 / Math.PI  //ラジアンを度に変換する際の定数
     val MATRIX_SIZE = 16         //回転行列の要素数
@@ -59,7 +66,7 @@ class CameraActivity : CordovaActivity(), SensorEventListener {
         this.isNeedBlackBoard = intent.extras["isNeedBlackBoard"] as Boolean
         this.blackboardViewPriority = intent.extras["blackboardViewPriority"] as String
 
-        initSensor()
+        checkPermission()
     }
 
 
@@ -67,6 +74,18 @@ class CameraActivity : CordovaActivity(), SensorEventListener {
     private fun initSensor(){
         sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
         if( sensorManager == null ) return
+    }
+
+    private fun checkPermission() {
+        if (Build.VERSION.SDK_INT >= 23) {
+            if (ContextCompat.checkSelfPermission(this!!, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), PERMISSIONS_REQUEST_CODE)
+            } else {
+                initSensor()
+            }
+        } else {
+            initSensor()
+        }
     }
 
     override fun onResume() {
@@ -159,6 +178,23 @@ class CameraActivity : CordovaActivity(), SensorEventListener {
             }
         }
 
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+        when (requestCode) {
+            PERMISSIONS_REQUEST_CODE -> {
+                if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                    // 継続
+                    initSensor()
+                } else {
+                    val intent = Intent()
+                    intent.putExtra("mode", blackboardViewPriority)
+                    setResult(0, intent)
+                    finish()
+                }
+                return
+            }
+        }
     }
 
     private fun setFragmentOrientation(orientation: Int) {
