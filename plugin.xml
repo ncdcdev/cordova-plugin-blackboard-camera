@@ -116,6 +116,7 @@
     <source-file src="src/android/drawable-xxhdpi/icn_flash_on.png" target-dir="app/src/main/res/drawable-xxhdpi"/>
     <source-file src="src/android/drawable-xxhdpi/icn_blackboard_edit.png" target-dir="app/src/main/res/drawable-xxhdpi"/>
     <source-file src="src/android/drawable-xxhdpi/icn_blackboard.png" target-dir="app/src/main/res/drawable-xxhdpi"/>
+    <framework src="src/android/build-extras.gradle" custom="true" type="gradleReference" />
 
   </platform>
 </plugin>
