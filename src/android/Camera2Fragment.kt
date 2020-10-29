@@ -976,13 +976,16 @@ class Camera2Fragment : Fragment(), View.OnClickListener, View.OnTouchListener {
             return mRbCircle!!.id
         }
         if (mBoardImage!!.toRect().contains(x, y)) {
+//            Log.d(TAG, "findTargetView:In-BoardImage:${mBoardImage!!.toRect()}, x=$x, y=$y")
             return mBoardImage!!.id
         }
+//        Log.d(TAG, "findTargetView:Out-BoardImage:${mBoardImage!!.toRect()}, x=$x, y=$y")
         return 0
 
     }
 
     override fun onTouch(v: View?, event: MotionEvent?): Boolean {
+        // カメラPreviewの部分をタップした場合
         val ev = event ?: return false
         val board = mBoardImage ?: return false
         val x = ev.x + v!!.left
@@ -1006,14 +1009,12 @@ class Camera2Fragment : Fragment(), View.OnClickListener, View.OnTouchListener {
             }
             MotionEvent.ACTION_UP -> {
                 Log.d(TAG, "ACTION_UP:${x}, ${y}, board.left=${board.left}, top=${board.top}")
-                if (id > 0) {
-                    val edit = preferences.edit()
-                    edit.putInt("board.left", board.left)
-                    edit.putInt("board.top", board.top)
-                    edit.putInt("board.right", board.right)
-                    edit.putInt("board.bottom", board.bottom)
-                    edit.apply()
-                }
+                val edit = preferences.edit()
+                edit.putInt("board.left", board.left)
+                edit.putInt("board.top", board.top)
+                edit.putInt("board.right", board.right)
+                edit.putInt("board.bottom", board.bottom)
+                edit.apply()
             }
         }
         return true
