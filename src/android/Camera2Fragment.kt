@@ -946,17 +946,22 @@ class Camera2Fragment : Fragment(), View.OnClickListener, View.OnTouchListener {
     private fun checkSize(widthSize: Int): Size {
         val wScale = currentBoardRect.height().toFloat() / currentBoardRect.width().toFloat()
         val hScale = currentBoardRect.width().toFloat() / currentBoardRect.height().toFloat()
-        val minSize = min(mTextureView!!.width, mTextureView!!.height)
-        // 最小のサイズチェック
-        var width = max(widthSize, (minSize.toFloat() * BOARD_MIN_SCALE).toInt())
+        val baseSize = min(mTextureView!!.width, mTextureView!!.height)
+        val minimumSize = (baseSize.toFloat() * BOARD_MIN_SCALE).toInt()
         var height = (wScale * widthSize.toFloat()).toInt()
+        // 最小のサイズチェック
+        if (widthSize < minimumSize) {
+            height = (wScale * minimumSize.toFloat()).toInt()
+            return Size(minimumSize, height)
+        }
         // 最大サイズチェック
+        var width:Int = widthSize
         if (mTextureView!!.width > mTextureView!!.height) {
             // Landscape : 黒板の縦幅は画面の縦幅の9割までとする
-            height = min(height, (minSize * BOARD_MAX_SCALE).toInt())
+            height = min(height, (baseSize * BOARD_MAX_SCALE).toInt())
             width = (hScale * height.toFloat()).toInt()
         } else {
-            width = min(width, (minSize * BOARD_MAX_SCALE).toInt())
+            width = min(width, (baseSize * BOARD_MAX_SCALE).toInt())
         }
         return Size(width, height)
 
