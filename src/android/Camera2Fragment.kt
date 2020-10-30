@@ -400,7 +400,7 @@ class Camera2Fragment : Fragment(), View.OnClickListener, View.OnTouchListener {
         val h1 = bitmap.height
         val displaySize = Point()
         activity.windowManager.defaultDisplay.getSize(displaySize)
-        val w2: Float = min(displaySize.x, displaySize.y) * BOARD_INIT_SCALE
+        val w2: Float = min(displaySize.x, displaySize.y) * BOARD_MIN_SCALE
         val h2 = h1.toFloat() / w1.toFloat() * w2
 
         mBoardImage!!.layoutParams.width = w2.toInt()
@@ -1367,8 +1367,8 @@ class Camera2Fragment : Fragment(), View.OnClickListener, View.OnTouchListener {
          */
         private const val MAX_PREVIEW_HEIGHT = 1080
 
-        private const val BOARD_MIN_SCALE = 0.4F
-        private const val BOARD_INIT_SCALE = 0.66F
+        private const val BOARD_MIN_SCALE = 0.44F
+        // private const val BOARD_INIT_SCALE = 0.66F
         private const val BOARD_MAX_SCALE = 0.9F
 
         private var mOrientation: Int = 0
