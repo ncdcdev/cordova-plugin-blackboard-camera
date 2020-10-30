@@ -95,8 +95,8 @@ class CameraViewController: UIViewController {
     private let kBoardInitWidth = "boardInitWidth"
     private let kBoardMode = "boardMode"
     
-    private let kBoardMinScale: CGFloat = 0.4
-    private let kBoardBaseScale: CGFloat = 0.66
+    private let kBoardMinScale: CGFloat = 0.44
+    // private let kBoardBaseScale: CGFloat = 0.66
     private let kBoardMarkSize: CGFloat = 30
 
     // FlashモードIndex 0(Auto) 1(Off) 2(On)
@@ -655,7 +655,7 @@ extension CameraViewController{
             if (boardWidth == 0) {
                 let size = self.view.frame.size
                 let minSize = min(size.width, size.height)
-                boardWidth = Float(minSize * kBoardBaseScale)
+                boardWidth = Float(minSize * kBoardMinScale)
             }
             scale = Float(board.size.width) / boardWidth
             self.boardInitPoint = CGPoint(x: boardX.f, y: boardY.f)
