@@ -549,7 +549,7 @@ extension CameraViewController: AVCapturePhotoCaptureDelegate {
         // 写真ライブラリに画像を保存 Debug用
         UIImageWriteToSavedPhotosAlbum(resizedImage!, nil,nil,nil)
 
-        let data = compositeImage!.jpegData(compressionQuality: 1.0)
+        let data = resizedImage!.jpegData(compressionQuality: 1.0)
         if let jpegData = data {
 //            let base64String = jpegData.base64EncodedString(options: .lineLength64Characters)
             let timestamp = NSDate().timeIntervalSince1970
