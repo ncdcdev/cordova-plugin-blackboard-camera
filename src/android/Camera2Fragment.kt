@@ -50,11 +50,12 @@ class Camera2Fragment : Fragment(), View.OnClickListener, View.OnTouchListener {
     private val mSurfaceTextureListener = object : TextureView.SurfaceTextureListener {
 
         override fun onSurfaceTextureAvailable(texture: SurfaceTexture, width: Int, height: Int) {
+            Log.d(TAG, "test:SurfaceTextureListener:onSurfaceTextureAvailable:w=${width}, h=${height}")
             openCamera(width, height)
         }
 
         override fun onSurfaceTextureSizeChanged(texture: SurfaceTexture, width: Int, height: Int) {
-            Log.d(TAG, "test:SurfaceTextureListener:call configureTransform:w=${width}, h=${height}")
+            Log.d(TAG, "test:SurfaceTextureListener:onSurfaceTextureSizeChanged:w=${width}, h=${height}")
             configureTransform(width, height)
         }
 
@@ -433,8 +434,9 @@ class Camera2Fragment : Fragment(), View.OnClickListener, View.OnTouchListener {
                 // For still image captures, we use the largest available size.
                 val sizeList = listOf(*map.getOutputSizes(ImageFormat.JPEG)).sortedByDescending { it.width }
                 val largest = sizeList[sizeList.indexOfFirst { it.width <= 1280 }]
-                Log.d(TAG, "test:${largest.width} x ${largest.height}")
-                mImageReader = ImageReader.newInstance(largest.width, largest.height,
+                Log.d(TAG, "test:setUpCameraOutputs:width=${largest.width} x height=${largest.height}")
+                val aspectSize = Size((largest.height.toFloat() * VIEW_ASPECT).toInt(), largest.height)
+                mImageReader = ImageReader.newInstance(aspectSize.width, aspectSize.height,
                         ImageFormat.JPEG, 2)
                 mImageReader!!.setOnImageAvailableListener(
                         mOnImageAvailableListener, mBackgroundHandler)
@@ -472,18 +474,17 @@ class Camera2Fragment : Fragment(), View.OnClickListener, View.OnTouchListener {
                 // Danger, W.R.! Attempting to use too large a preview size could  exceed the camera
                 // bus' bandwidth limitation, resulting in gorgeous previews but the storage of
                 // garbage capture data.
-                mPreviewSize = chooseOptimalSize(map.getOutputSizes(SurfaceTexture::class.java),
+                val previewSize = chooseOptimalSize(map.getOutputSizes(SurfaceTexture::class.java),
                         rotatedPreviewWidth, rotatedPreviewHeight, maxPreviewWidth,
-                        maxPreviewHeight, largest)
+                        maxPreviewHeight, aspectSize)
 
+                mPreviewSize = Size((previewSize!!.height.toFloat() * VIEW_ASPECT).toInt(), previewSize!!.height)
 
                 // We fit the aspect ratio of TextureView to the size of preview we picked.
                 if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-                    mTextureView!!.setAspectRatio(
-                            mPreviewSize!!.width, mPreviewSize!!.height)
+                    mTextureView!!.setAspectRatio(4, 3)
                 } else {
-                    mTextureView!!.setAspectRatio(
-                            mPreviewSize!!.height, mPreviewSize!!.width)
+                    mTextureView!!.setAspectRatio(3, 4)
                 }
 
                 // Check if the flash is supported.
@@ -633,7 +634,7 @@ class Camera2Fragment : Fragment(), View.OnClickListener, View.OnTouchListener {
             mPreviewRequestBuilder!!.addTarget(surface)
 
             // Here, we create a CameraCaptureSession for camera preview.
-            mCameraDevice!!.createCaptureSession(listOf(surface, mImageReader!!.surface),
+            mCameraDevice!!.createCaptureSession(listOf(mImageReader!!.surface, surface),
                     object : CameraCaptureSession.StateCallback() {
 
                         override fun onConfigured(cameraCaptureSession: CameraCaptureSession) {
@@ -1276,7 +1277,7 @@ class Camera2Fragment : Fragment(), View.OnClickListener, View.OnTouchListener {
         private fun cropRectByAspect(width: Int, height: Int): Rect {
             val minSize = min(width, height)
             val maxSize = max(width, height)
-            val aspectSize = (minSize * (4.0F/3.0F)).toInt()
+            val aspectSize = (minSize * VIEW_ASPECT).toInt()
             val distance = (maxSize - aspectSize) / 2
             var rect: Rect
             rect = if (width > height) {
@@ -1375,6 +1376,7 @@ class Camera2Fragment : Fragment(), View.OnClickListener, View.OnTouchListener {
         private const val BOARD_MIN_SCALE = 0.44F
         // private const val BOARD_INIT_SCALE = 0.66F
         private const val BOARD_MAX_SCALE = 0.9F
+        private const val VIEW_ASPECT = 1.33333F
 
         private var mOrientation: Int = 0
 
