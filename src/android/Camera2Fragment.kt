@@ -846,6 +846,10 @@ class Camera2Fragment : Fragment(), View.OnClickListener, View.OnTouchListener {
             mPreviewRequestBuilder!!.set(CaptureRequest.CONTROL_AF_TRIGGER,
                     CameraMetadata.CONTROL_AF_TRIGGER_CANCEL)
             setAutoFlash(mPreviewRequestBuilder!!)
+            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.N) {
+                mCaptureSession!!.stopRepeating()
+                mCaptureSession!!.abortCaptures()
+            }
             mCaptureSession!!.capture(mPreviewRequestBuilder!!.build(), mCaptureCallback,
                     mBackgroundHandler)
             // After this, the camera will go back to the normal state of preview.
