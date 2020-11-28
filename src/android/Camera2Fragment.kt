@@ -1377,7 +1377,7 @@ class Camera2Fragment : Fragment(), View.OnClickListener, View.OnTouchListener {
          */
         private const val MAX_PREVIEW_HEIGHT = 1080
 
-        private const val BOARD_MIN_SCALE = 0.44F
+        private const val BOARD_MIN_SCALE = 0.48F
         // private const val BOARD_INIT_SCALE = 0.66F
         private const val BOARD_MAX_SCALE = 0.9F
         private const val VIEW_ASPECT = 1.33333F
