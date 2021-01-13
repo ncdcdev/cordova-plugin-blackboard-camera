@@ -124,11 +124,11 @@ class CameraViewController: UIViewController {
         setFromSavedData()
         
         // 縦向き用の制限の配列
-        vViewConstraints = [vFlashButtonConstraint, vFlashImageConstraint, vCameraButtonConstraint, vBackButtonConstraint, vIconDoneConstraint,
+        vViewConstraints = [vFlashButtonConstraint, vFlashImageConstraint, vCameraButtonConstraint, vBackButtonConstraint,
         vCameraButtonCenterConstraint, vCameraViewAspectConstraint, vCameraViewRightConstraint, vCameraViewLeftConstraint,
         vBlackBoardEdit01Constraint, vBlackBoardEdit02Constraint, vBlackBoardMode01Constraint, vBlackBoardMode02Constraint]
         // 横向け用の制限の配列
-        hViewConstraints = [hFlashButtonConstraint, hFlashImageConstraint, hCameraButtonConstraint, hBackButtonConstraint, hIconDoneConstraint,
+        hViewConstraints = [hFlashButtonConstraint, hFlashImageConstraint, hCameraButtonConstraint, hBackButtonConstraint,
         hCameraButtonCenterConstraint, hCameraViewAspectConstraint, hCameraViewBottomConstraint, hCameraViewTopConstraint,
         hBlackBoardEdit01Constraint, hBlackBoardEdit02Constraint, hBlackBoardMode01Constraint, hBlackBoardMode02Constraint]
         // 回転イベントを通知

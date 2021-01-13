@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="V1K-9x-KL0">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097.3" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="V1K-9x-KL0">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16086"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -11,7 +11,7 @@
         <!--CameraVIewController-->
         <scene sceneID="zq6-ap-zaG">
             <objects>
-                <viewController title="CameraVIewController" id="V1K-9x-KL0" customClass="CameraViewController" customModule="T_Pile_Recorder" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="CameraVIewController" id="V1K-9x-KL0" customClass="CameraViewController" customModule="TPR2" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="izs-Fl-QUi">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -29,26 +29,25 @@
                                     </mask>
                                 </variation>
                             </view>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icn_done.png" translatesAutoresizingMaskIntoConstraints="NO" id="8Yq-av-SOr">
-                                <rect key="frame" x="16" y="28" width="24" height="24"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="24" id="5oF-4T-eGF"/>
-                                    <constraint firstAttribute="height" constant="24" id="UrV-B9-62q"/>
-                                </constraints>
-                            </imageView>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="YgZ-2n-K3j" userLabel="boardImageView">
                                 <rect key="frame" x="67" y="269" width="240" height="128"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2jd-77-bet">
                                 <rect key="frame" x="22" y="25" width="65" height="30"/>
+                                <color key="backgroundColor" red="0.92156862745098034" green="0.95294117647058818" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="65" id="l8h-9F-Kx6"/>
                                     <constraint firstAttribute="height" constant="30" id="rSV-KD-rgK"/>
                                 </constraints>
                                 <state key="normal" title="戻る">
-                                    <color key="titleColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                                    <color key="titleColor" red="0.0" green="0.18823529411764706" blue="0.48627450980392156" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="10"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="backButton_TouchUpInside:" destination="V1K-9x-KL0" eventType="touchUpInside" id="JIk-0p-lZP"/>
                                 </connections>
@@ -85,17 +84,17 @@
                                 </connections>
                             </button>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="JxH-LP-GZx" userLabel="黒板モード">
-                                <rect key="frame" x="278.5" y="560.5" width="66.5" height="56.5"/>
+                                <rect key="frame" x="278.5" y="524.5" width="66.5" height="92.5"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IoJ-s9-iex">
-                                        <rect key="frame" x="0.0" y="0.0" width="66.5" height="36"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="66.5" height="72"/>
                                         <state key="normal" image="icn_blackboard.png"/>
                                         <connections>
                                             <action selector="blackBoardMode_TouchUpInside:" destination="V1K-9x-KL0" eventType="touchUpInside" id="Rmh-PD-eFV"/>
                                         </connections>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="黒板OFF" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aGS-FR-eki" userLabel="黒板OFF">
-                                        <rect key="frame" x="0.0" y="36" width="66.5" height="20.5"/>
+                                        <rect key="frame" x="0.0" y="72" width="66.5" height="20.5"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
@@ -106,17 +105,17 @@
                                 </constraints>
                             </stackView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="6ce-lD-jzk" userLabel="黒板編集">
-                                <rect key="frame" x="30" y="560.5" width="69.5" height="56.5"/>
+                                <rect key="frame" x="30" y="524.5" width="72" height="92.5"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SWZ-9Y-UJu">
-                                        <rect key="frame" x="0.0" y="0.0" width="69.5" height="36"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="72" height="72"/>
                                         <state key="normal" image="icn_blackboard_edit.png"/>
                                         <connections>
                                             <action selector="blackBoardEdit_TouchUpInside:" destination="V1K-9x-KL0" eventType="touchUpInside" id="fts-gF-hpg"/>
                                         </connections>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="黒板編集" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ceE-vb-dyg">
-                                        <rect key="frame" x="0.0" y="36" width="69.5" height="20.5"/>
+                                        <rect key="frame" x="0.0" y="72" width="72" height="20.5"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
@@ -127,7 +126,6 @@
                         <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
                         <constraints>
                             <constraint firstItem="mZg-EL-t9l" firstAttribute="trailing" secondItem="vr6-WO-kdO" secondAttribute="trailing" constant="36" id="11D-RE-GD4"/>
-                            <constraint firstItem="8Yq-av-SOr" firstAttribute="top" secondItem="mZg-EL-t9l" secondAttribute="top" constant="28" id="2ks-f3-oIR"/>
                             <constraint firstItem="Q6d-w4-Kpp" firstAttribute="leading" secondItem="mZg-EL-t9l" secondAttribute="leading" constant="36" id="3UZ-sE-RXo"/>
                             <constraint firstItem="2jd-77-bet" firstAttribute="leading" secondItem="mZg-EL-t9l" secondAttribute="leading" constant="22" id="5WV-q2-q7Q"/>
                             <constraint firstItem="nn4-bL-0ya" firstAttribute="top" secondItem="mZg-EL-t9l" secondAttribute="top" id="7Iq-rv-vgD"/>
@@ -141,7 +139,6 @@
                             <constraint firstItem="mZg-EL-t9l" firstAttribute="trailing" secondItem="nn4-bL-0ya" secondAttribute="trailing" id="NAf-sZ-RUM"/>
                             <constraint firstItem="mZg-EL-t9l" firstAttribute="bottom" secondItem="2jd-77-bet" secondAttribute="bottom" constant="25" id="NgG-RW-uTR"/>
                             <constraint firstItem="vr6-WO-kdO" firstAttribute="top" secondItem="mZg-EL-t9l" secondAttribute="top" constant="22" id="PMi-NA-qjJ"/>
-                            <constraint firstItem="8Yq-av-SOr" firstAttribute="leading" secondItem="mZg-EL-t9l" secondAttribute="leading" constant="16" id="Tnt-Vy-3bv"/>
                             <constraint firstItem="nn4-bL-0ya" firstAttribute="leading" secondItem="mZg-EL-t9l" secondAttribute="leading" id="YIg-bv-3i8"/>
                             <constraint firstItem="dx8-0t-5dN" firstAttribute="centerX" secondItem="izs-Fl-QUi" secondAttribute="centerX" id="cfc-TJ-KeU"/>
                             <constraint firstItem="Q6d-w4-Kpp" firstAttribute="top" secondItem="mZg-EL-t9l" secondAttribute="top" constant="25" id="e3E-IY-n6o"/>
@@ -150,7 +147,6 @@
                             <constraint firstItem="mZg-EL-t9l" firstAttribute="bottom" secondItem="dx8-0t-5dN" secondAttribute="bottom" constant="50" id="fbl-4X-ILa"/>
                             <constraint firstItem="mZg-EL-t9l" firstAttribute="trailing" secondItem="dx8-0t-5dN" secondAttribute="trailing" constant="50" id="fe4-ka-mju"/>
                             <constraint firstItem="mZg-EL-t9l" firstAttribute="bottom" secondItem="nn4-bL-0ya" secondAttribute="bottom" id="gTM-ZB-Z2p"/>
-                            <constraint firstItem="mZg-EL-t9l" firstAttribute="bottom" secondItem="8Yq-av-SOr" secondAttribute="bottom" constant="28" id="kZQ-oL-VV5"/>
                             <constraint firstItem="mZg-EL-t9l" firstAttribute="trailing" secondItem="JxH-LP-GZx" secondAttribute="trailing" constant="30" id="oxT-RA-u3R" userLabel="VSafe Area.trailing = 黒板モード.trailing + 30"/>
                             <constraint firstItem="nn4-bL-0ya" firstAttribute="centerX" secondItem="izs-Fl-QUi" secondAttribute="centerX" id="rQr-fE-FP4"/>
                             <constraint firstItem="mZg-EL-t9l" firstAttribute="trailing" secondItem="6ce-lD-jzk" secondAttribute="trailing" constant="50" id="rcn-JN-uh4" userLabel="HSafe Area.trailing = 黒板編集.trailing + 50"/>
@@ -165,13 +161,12 @@
                                 <exclude reference="NgG-RW-uTR"/>
                                 <exclude reference="fe4-ka-mju"/>
                                 <exclude reference="gTM-ZB-Z2p"/>
-                                <exclude reference="kZQ-oL-VV5"/>
                                 <exclude reference="rcn-JN-uh4"/>
+                                <exclude reference="7Iq-rv-vgD"/>
                                 <exclude reference="eF3-nv-DyI"/>
                                 <exclude reference="3UZ-sE-RXo"/>
-                                <exclude reference="7Iq-rv-vgD"/>
-                                <exclude reference="uLo-8U-OGZ"/>
                                 <exclude reference="Lv0-gf-rpQ"/>
+                                <exclude reference="uLo-8U-OGZ"/>
                             </mask>
                         </variation>
                     </view>
@@ -194,7 +189,6 @@
                         <outlet property="hCameraViewTopConstraint" destination="7Iq-rv-vgD" id="pZl-3J-2Xq"/>
                         <outlet property="hFlashButtonConstraint" destination="eF3-nv-DyI" id="kjq-BN-soe"/>
                         <outlet property="hFlashImageConstraint" destination="3UZ-sE-RXo" id="4xI-Zo-kV6"/>
-                        <outlet property="hIconDoneConstraint" destination="kZQ-oL-VV5" id="wWc-94-cth"/>
                         <outlet property="vBackButtonConstraint" destination="edL-fb-u7D" id="XeX-RQ-3SN"/>
                         <outlet property="vBlackBoardEdit01Constraint" destination="9ox-NY-5zK" id="htW-44-LDB"/>
                         <outlet property="vBlackBoardEdit02Constraint" destination="v6g-1F-yNc" id="nD0-Xt-VkE"/>
@@ -207,7 +201,6 @@
                         <outlet property="vCameraViewRightConstraint" destination="NAf-sZ-RUM" id="a4F-Ws-AqB"/>
                         <outlet property="vFlashButtonConstraint" destination="11D-RE-GD4" id="Afh-UY-gb3"/>
                         <outlet property="vFlashImageConstraint" destination="Hca-9J-hMh" id="M5P-IQ-Rgj"/>
-                        <outlet property="vIconDoneConstraint" destination="2ks-f3-oIR" id="gMK-6a-7SS"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="MVQ-FC-Tfg" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -217,9 +210,8 @@
     </scenes>
     <resources>
         <image name="btn_camera.png" width="62" height="62"/>
-        <image name="icn_blackboard.png" width="36" height="36"/>
-        <image name="icn_blackboard_edit.png" width="36" height="36"/>
-        <image name="icn_done.png" width="36" height="36"/>
+        <image name="icn_blackboard.png" width="72" height="72"/>
+        <image name="icn_blackboard_edit.png" width="72" height="72"/>
         <image name="icn_flash_auto.png" width="36" height="36"/>
     </resources>
 </document>
