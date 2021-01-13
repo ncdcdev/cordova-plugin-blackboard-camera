@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="V1K-9x-KL0">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097.3" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="V1K-9x-KL0">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16086"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -11,7 +11,7 @@
         <!--CameraVIewController-->
         <scene sceneID="zq6-ap-zaG">
             <objects>
-                <viewController title="CameraVIewController" id="V1K-9x-KL0" customClass="CameraViewController" customModule="T_Pile_Recorder" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="CameraVIewController" id="V1K-9x-KL0" customClass="CameraViewController" customModule="TPR2" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="izs-Fl-QUi">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -85,17 +85,17 @@
                                 </connections>
                             </button>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="JxH-LP-GZx" userLabel="黒板モード">
-                                <rect key="frame" x="278.5" y="560.5" width="66.5" height="56.5"/>
+                                <rect key="frame" x="278.5" y="524.5" width="66.5" height="92.5"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IoJ-s9-iex">
-                                        <rect key="frame" x="0.0" y="0.0" width="66.5" height="36"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="66.5" height="72"/>
                                         <state key="normal" image="icn_blackboard.png"/>
                                         <connections>
                                             <action selector="blackBoardMode_TouchUpInside:" destination="V1K-9x-KL0" eventType="touchUpInside" id="Rmh-PD-eFV"/>
                                         </connections>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="黒板OFF" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aGS-FR-eki" userLabel="黒板OFF">
-                                        <rect key="frame" x="0.0" y="36" width="66.5" height="20.5"/>
+                                        <rect key="frame" x="0.0" y="72" width="66.5" height="20.5"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
@@ -106,17 +106,17 @@
                                 </constraints>
                             </stackView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="6ce-lD-jzk" userLabel="黒板編集">
-                                <rect key="frame" x="30" y="560.5" width="69.5" height="56.5"/>
+                                <rect key="frame" x="30" y="524.5" width="72" height="92.5"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SWZ-9Y-UJu">
-                                        <rect key="frame" x="0.0" y="0.0" width="69.5" height="36"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="72" height="72"/>
                                         <state key="normal" image="icn_blackboard_edit.png"/>
                                         <connections>
                                             <action selector="blackBoardEdit_TouchUpInside:" destination="V1K-9x-KL0" eventType="touchUpInside" id="fts-gF-hpg"/>
                                         </connections>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="黒板編集" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ceE-vb-dyg">
-                                        <rect key="frame" x="0.0" y="36" width="69.5" height="20.5"/>
+                                        <rect key="frame" x="0.0" y="72" width="72" height="20.5"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
@@ -131,7 +131,7 @@
                             <constraint firstItem="Q6d-w4-Kpp" firstAttribute="leading" secondItem="mZg-EL-t9l" secondAttribute="leading" constant="36" id="3UZ-sE-RXo"/>
                             <constraint firstItem="2jd-77-bet" firstAttribute="leading" secondItem="mZg-EL-t9l" secondAttribute="leading" constant="22" id="5WV-q2-q7Q"/>
                             <constraint firstItem="nn4-bL-0ya" firstAttribute="top" secondItem="mZg-EL-t9l" secondAttribute="top" id="7Iq-rv-vgD"/>
-                            <constraint firstItem="nn4-bL-0ya" firstAttribute="centerY" secondItem="izs-Fl-QUi" secondAttribute="centerY" id="9Sh-1h-H3E"/>
+                            <constraint firstItem="nn4-bL-0ya" firstAttribute="centerY" secondItem="mZg-EL-t9l" secondAttribute="centerY" id="9Sh-1h-H3E"/>
                             <constraint firstItem="mZg-EL-t9l" firstAttribute="bottom" secondItem="6ce-lD-jzk" secondAttribute="bottom" constant="50" id="9ox-NY-5zK" userLabel="VSafe Area.bottom = 黒板編集.bottom + 50"/>
                             <constraint firstItem="mZg-EL-t9l" firstAttribute="bottom" secondItem="6ce-lD-jzk" secondAttribute="bottom" constant="30" id="AG3-18-340" userLabel="HSafe Area.bottom = 黒板編集.bottom + 30"/>
                             <constraint firstItem="mZg-EL-t9l" firstAttribute="bottom" secondItem="JxH-LP-GZx" secondAttribute="bottom" constant="50" id="CVL-x1-91s" userLabel="VSafe Area.bottom = 黒板モード.bottom + 50"/>
@@ -152,7 +152,7 @@
                             <constraint firstItem="mZg-EL-t9l" firstAttribute="bottom" secondItem="nn4-bL-0ya" secondAttribute="bottom" id="gTM-ZB-Z2p"/>
                             <constraint firstItem="mZg-EL-t9l" firstAttribute="bottom" secondItem="8Yq-av-SOr" secondAttribute="bottom" constant="28" id="kZQ-oL-VV5"/>
                             <constraint firstItem="mZg-EL-t9l" firstAttribute="trailing" secondItem="JxH-LP-GZx" secondAttribute="trailing" constant="30" id="oxT-RA-u3R" userLabel="VSafe Area.trailing = 黒板モード.trailing + 30"/>
-                            <constraint firstItem="nn4-bL-0ya" firstAttribute="centerX" secondItem="izs-Fl-QUi" secondAttribute="centerX" id="rQr-fE-FP4"/>
+                            <constraint firstItem="nn4-bL-0ya" firstAttribute="centerX" secondItem="mZg-EL-t9l" secondAttribute="centerX" id="rQr-fE-FP4"/>
                             <constraint firstItem="mZg-EL-t9l" firstAttribute="trailing" secondItem="6ce-lD-jzk" secondAttribute="trailing" constant="50" id="rcn-JN-uh4" userLabel="HSafe Area.trailing = 黒板編集.trailing + 50"/>
                             <constraint firstItem="JxH-LP-GZx" firstAttribute="top" secondItem="mZg-EL-t9l" secondAttribute="top" constant="30" id="uLo-8U-OGZ" userLabel="H黒板モード.top = Safe Area.top + 30"/>
                             <constraint firstItem="6ce-lD-jzk" firstAttribute="leading" secondItem="mZg-EL-t9l" secondAttribute="leading" constant="30" id="v6g-1F-yNc" userLabel="V黒板編集.leading = Safe Area.leading + 30"/>
@@ -167,11 +167,11 @@
                                 <exclude reference="gTM-ZB-Z2p"/>
                                 <exclude reference="kZQ-oL-VV5"/>
                                 <exclude reference="rcn-JN-uh4"/>
+                                <exclude reference="7Iq-rv-vgD"/>
                                 <exclude reference="eF3-nv-DyI"/>
                                 <exclude reference="3UZ-sE-RXo"/>
-                                <exclude reference="7Iq-rv-vgD"/>
-                                <exclude reference="uLo-8U-OGZ"/>
                                 <exclude reference="Lv0-gf-rpQ"/>
+                                <exclude reference="uLo-8U-OGZ"/>
                             </mask>
                         </variation>
                     </view>
@@ -217,8 +217,8 @@
     </scenes>
     <resources>
         <image name="btn_camera.png" width="62" height="62"/>
-        <image name="icn_blackboard.png" width="36" height="36"/>
-        <image name="icn_blackboard_edit.png" width="36" height="36"/>
+        <image name="icn_blackboard.png" width="72" height="72"/>
+        <image name="icn_blackboard_edit.png" width="72" height="72"/>
         <image name="icn_done.png" width="36" height="36"/>
         <image name="icn_flash_auto.png" width="36" height="36"/>
     </resources>
