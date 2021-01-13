@@ -107,6 +107,7 @@
     <source-file src="src/android/layout-port/fragment_camera2.xml" target-dir="app/src/main/res/layout-port"/>
     <source-file src="src/android/drawable/ic_camera.xml" target-dir="app/src/main/res/drawable"/>
     <source-file src="src/android/drawable/ic_circle.xml" target-dir="app/src/main/res/drawable"/>
+    <source-file src="src/android/drawable/round_button.xml" target-dir="app/src/main/res/drawable"/>
 
     <source-file src="src/android/drawable-xxhdpi/btn_camera_off.png" target-dir="app/src/main/res/drawable-xxhdpi"/>
     <source-file src="src/android/drawable-xxhdpi/btn_camera_on.png" target-dir="app/src/main/res/drawable-xxhdpi"/>
