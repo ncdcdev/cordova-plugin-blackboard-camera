@@ -98,6 +98,8 @@ class CameraViewController: UIViewController {
     private let kBoardMinScale: CGFloat = 0.44
     // private let kBoardBaseScale: CGFloat = 0.66
     private let kBoardMarkSize: CGFloat = 30
+    // 回転イベントはviewDidAppear後に呼ばせるため
+    private var isViewDidAppear: Bool = false
 
     // FlashモードIndex 0(Auto) 1(Off) 2(On)
     var flashModeIndex: Int = 0
@@ -180,6 +182,7 @@ class CameraViewController: UIViewController {
         
         // 監視を開始
         audioSession.addObserver(self, forKeyPath: "outputVolume", options: [ .new ], context: nil)
+        self.isViewDidAppear = true
         
     }
     
@@ -213,36 +216,46 @@ class CameraViewController: UIViewController {
 
     @objc
     func onOrientationDidChange(notification: NSNotification) {
+        // viewDidAppear完了後に呼ばれたか確認
+        if (self.isViewDidAppear == false) {
+            print("onOrientationDidChange() delay")
+            self.perform(#selector(CameraViewController.onOrientationDidChange(notification:)), with: nil, afterDelay: 0.5)
+            return
+        }
         rotationCamera()
     }
 
     func rotationCamera() {
         // ここに回転時の処理
-         var isLandscape = false
-         let orientation = UIDevice.current.orientation
-         if orientation == UIDeviceOrientation.landscapeLeft {
-             isLandscape = true
-             // なぜかLeft・Rightは逆の値を指定
-             self.cameraPreviewLayer?.connection?.videoOrientation = AVCaptureVideoOrientation.landscapeRight
-         } else if orientation == UIDeviceOrientation.landscapeRight {
-             isLandscape = true
-             self.cameraPreviewLayer?.connection?.videoOrientation = AVCaptureVideoOrientation.landscapeLeft
-         } else if orientation == UIDeviceOrientation.portrait {
-             isLandscape = false
-             self.cameraPreviewLayer?.connection?.videoOrientation = AVCaptureVideoOrientation.portrait
-         } else if orientation == UIDeviceOrientation.portraitUpsideDown {
-             isLandscape = false
-             self.cameraPreviewLayer?.connection?.videoOrientation = AVCaptureVideoOrientation.portraitUpsideDown
-         } else {
-             // UIDeviceOrientation.faceUp or UIDeviceOrientation.faceDown
-             return
-         }
-         if isLandscape {
-            print("Landscape")
-            NSLayoutConstraint.deactivate(vViewConstraints)
-            NSLayoutConstraint.activate(hViewConstraints)
+        var isLandscape = false
+        let orientation = UIDevice.current.orientation
+        print("rotationCamera:orientation=\(orientation.rawValue)")
+        if orientation == UIDeviceOrientation.landscapeLeft {
+            isLandscape = true
+            // なぜかLeft・Rightは逆の値を指定
+            self.cameraPreviewLayer?.connection?.videoOrientation = AVCaptureVideoOrientation.landscapeRight
+        } else if orientation == UIDeviceOrientation.landscapeRight {
+            isLandscape = true
+            self.cameraPreviewLayer?.connection?.videoOrientation = AVCaptureVideoOrientation.landscapeLeft
+        } else if orientation == UIDeviceOrientation.portrait {
+            isLandscape = false
+            self.cameraPreviewLayer?.connection?.videoOrientation = AVCaptureVideoOrientation.portrait
+        } else if orientation == UIDeviceOrientation.portraitUpsideDown {
+            isLandscape = false
+            self.cameraPreviewLayer?.connection?.videoOrientation = AVCaptureVideoOrientation.portraitUpsideDown
         } else {
-            print("Portrait")
+            print("rotationCamera:orientation=faceUp or faceDown")
+            // UIDeviceOrientation.faceUp or UIDeviceOrientation.faceDown
+            let statusBarOrientation = UIApplication.shared.statusBarOrientation
+            isLandscape = statusBarOrientation == .landscapeRight || statusBarOrientation == .landscapeLeft
+        }
+        print("rotationCamera:cameraSize=\(self.cameraView.frame.size)")
+        if isLandscape {
+            print("rotationCamera:Landscape")
+            NSLayoutConstraint.deactivate(vViewConstraints)
+            NSLayoutConstraint.activate(hViewConstraints)            
+        } else {
+            print("rotationCamera:Portrait")
             NSLayoutConstraint.deactivate(hViewConstraints)
             NSLayoutConstraint.activate(vViewConstraints)
         }

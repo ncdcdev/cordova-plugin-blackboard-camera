@@ -129,7 +129,7 @@
                             <constraint firstItem="Q6d-w4-Kpp" firstAttribute="leading" secondItem="mZg-EL-t9l" secondAttribute="leading" constant="36" id="3UZ-sE-RXo"/>
                             <constraint firstItem="2jd-77-bet" firstAttribute="leading" secondItem="mZg-EL-t9l" secondAttribute="leading" constant="22" id="5WV-q2-q7Q"/>
                             <constraint firstItem="nn4-bL-0ya" firstAttribute="top" secondItem="mZg-EL-t9l" secondAttribute="top" id="7Iq-rv-vgD"/>
-                            <constraint firstItem="nn4-bL-0ya" firstAttribute="centerY" secondItem="izs-Fl-QUi" secondAttribute="centerY" id="9Sh-1h-H3E"/>
+                            <constraint firstItem="nn4-bL-0ya" firstAttribute="centerY" secondItem="mZg-EL-t9l" secondAttribute="centerY" id="9Sh-1h-H3E"/>
                             <constraint firstItem="mZg-EL-t9l" firstAttribute="bottom" secondItem="6ce-lD-jzk" secondAttribute="bottom" constant="50" id="9ox-NY-5zK" userLabel="VSafe Area.bottom = 黒板編集.bottom + 50"/>
                             <constraint firstItem="mZg-EL-t9l" firstAttribute="bottom" secondItem="6ce-lD-jzk" secondAttribute="bottom" constant="30" id="AG3-18-340" userLabel="HSafe Area.bottom = 黒板編集.bottom + 30"/>
                             <constraint firstItem="mZg-EL-t9l" firstAttribute="bottom" secondItem="JxH-LP-GZx" secondAttribute="bottom" constant="50" id="CVL-x1-91s" userLabel="VSafe Area.bottom = 黒板モード.bottom + 50"/>
@@ -148,7 +148,7 @@
                             <constraint firstItem="mZg-EL-t9l" firstAttribute="trailing" secondItem="dx8-0t-5dN" secondAttribute="trailing" constant="50" id="fe4-ka-mju"/>
                             <constraint firstItem="mZg-EL-t9l" firstAttribute="bottom" secondItem="nn4-bL-0ya" secondAttribute="bottom" id="gTM-ZB-Z2p"/>
                             <constraint firstItem="mZg-EL-t9l" firstAttribute="trailing" secondItem="JxH-LP-GZx" secondAttribute="trailing" constant="30" id="oxT-RA-u3R" userLabel="VSafe Area.trailing = 黒板モード.trailing + 30"/>
-                            <constraint firstItem="nn4-bL-0ya" firstAttribute="centerX" secondItem="izs-Fl-QUi" secondAttribute="centerX" id="rQr-fE-FP4"/>
+                            <constraint firstItem="nn4-bL-0ya" firstAttribute="centerX" secondItem="mZg-EL-t9l" secondAttribute="centerX" id="rQr-fE-FP4"/>
                             <constraint firstItem="mZg-EL-t9l" firstAttribute="trailing" secondItem="6ce-lD-jzk" secondAttribute="trailing" constant="50" id="rcn-JN-uh4" userLabel="HSafe Area.trailing = 黒板編集.trailing + 50"/>
                             <constraint firstItem="JxH-LP-GZx" firstAttribute="top" secondItem="mZg-EL-t9l" secondAttribute="top" constant="30" id="uLo-8U-OGZ" userLabel="H黒板モード.top = Safe Area.top + 30"/>
                             <constraint firstItem="6ce-lD-jzk" firstAttribute="leading" secondItem="mZg-EL-t9l" secondAttribute="leading" constant="30" id="v6g-1F-yNc" userLabel="V黒板編集.leading = Safe Area.leading + 30"/>
