@@ -584,13 +584,26 @@ extension CameraViewController: AVCapturePhotoCaptureDelegate {
             compositeImage = composite(image: newImage!)
         }
 
-        let resizedImage = compositeImage!.resize()
-        // 写真ライブラリに画像を保存 Debug用
-        UIImageWriteToSavedPhotosAlbum(resizedImage!, nil,nil,nil)
+        guard let resizedImage = compositeImage!.resize() else {
+            return
+        }
+        
+        let imagePreview = UIImageView(frame: self.view.bounds)
+        imagePreview.image = UIImage(cgImage: resizedImage.cgImage!)
+        imagePreview.contentMode = .scaleAspectFit
+        imagePreview.backgroundColor = UIColor.black
+        self.view.addSubview(imagePreview)
+        // 写真ライブラリに画像を保存
+        UIImageWriteToSavedPhotosAlbum(resizedImage, nil,nil,nil)
 
-        let data = resizedImage!.jpegData(compressionQuality: 1.0)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+            // プレビューを隠す（削除）
+            imagePreview.removeFromSuperview()
+        }
+
+        let data = resizedImage.jpegData(compressionQuality: 1.0)
         if let jpegData = data {
-            print("photoOutput:++:uploadingCount=\(uploadingCount)")
+//            print("photoOutput:++:uploadingCount=\(uploadingCount)")
             let timestamp = NSDate().timeIntervalSince1970
             let filename = getDocumentsDirectory().appendingPathComponent("_\(timestamp).jpeg")
             try? jpegData.write(to: filename)
@@ -604,7 +617,7 @@ extension CameraViewController: AVCapturePhotoCaptureDelegate {
                         data.fileName = res.fileName
                         data.save(block: {  (savedData, error) in
                             self.uploadingCount-=1
-                            print("photoOutput:--:uploadingCount=\(self.uploadingCount)")
+//                            print("photoOutput:--:uploadingCount=\(self.uploadingCount)")
                             if let savedData = savedData {
                                 print ("Succeed to save : \(savedData)")
                                 self.showToastShort(message: "写真をアップロードしました")
