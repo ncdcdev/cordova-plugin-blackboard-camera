@@ -7,6 +7,7 @@
 
 import UIKit
 import AVFoundation
+import AppPotSDKforSwift
 
 enum Marker: Int {
     case Inside = 0
@@ -25,6 +26,8 @@ class CameraViewController: UIViewController {
     var boardImage: UIImage?
     var isNeedBlackBoard: Bool?
     var blackboardViewPriority: String?
+    var pictureData: Dictionary<String, Any>?
+    var uploadingCount: Int = 0
 
     var ltCircle: UIView? // leftTop
     var rtCircle: UIView? // rightTop
@@ -288,13 +291,36 @@ class CameraViewController: UIViewController {
         // 撮影された画像をdelegateメソッドで処理
         self.photoOutput?.capturePhoto(with: settings, delegate: self as AVCapturePhotoCaptureDelegate)
     }
-
-    @IBAction func backButton_TouchUpInside(_ sender: Any) {
+    
+    func close() {
         let back = BlackboardCamera();
         back.invoke(callbackId: self.callbackId, commandDelegate: self.commandDelegate, data: "Close", mode: self.blackboardViewPriority!)
         self.dismiss(animated: true, completion: nil)
         // ボリューム通知を解除
         audioSession.removeObserver(self, forKeyPath: "outputVolume")
+    }
+    
+    @objc func showMessage(_ alert: UIAlertController) {
+        print("call showMessage:uploadingCount=\(self.uploadingCount)")
+        if (self.uploadingCount > 0) {
+            alert.message = "\(self.uploadingCount)件、アップロード待機中"
+            self.perform(#selector(CameraViewController.showMessage(_:)), with: alert, afterDelay: 0.5)
+        } else {
+            alert.dismiss(animated: false) {
+                self.close()
+            }
+        }
+    }
+
+    @IBAction func backButton_TouchUpInside(_ sender: Any) {
+        if (uploadingCount > 0) {
+            let alert: UIAlertController = UIAlertController(title: "アップロード中です", message:  "\(uploadingCount)件、アップロード待機中", preferredStyle:  UIAlertController.Style.alert)
+            present(alert, animated: true, completion: nil)
+            showMessage(alert)
+        } else {
+            close()
+        }
+        
     }
 
     @IBAction func flashButton_TouchUpInside(_ sender: Any) {
@@ -564,16 +590,43 @@ extension CameraViewController: AVCapturePhotoCaptureDelegate {
 
         let data = resizedImage!.jpegData(compressionQuality: 1.0)
         if let jpegData = data {
-//            let base64String = jpegData.base64EncodedString(options: .lineLength64Characters)
+            print("photoOutput:++:uploadingCount=\(uploadingCount)")
             let timestamp = NSDate().timeIntervalSince1970
             let filename = getDocumentsDirectory().appendingPathComponent("_\(timestamp).jpeg")
             try? jpegData.write(to: filename)
-            let back = BlackboardCamera();
-            back.invoke(callbackId: self.callbackId, commandDelegate: self.commandDelegate, data: filename.absoluteString, mode: self.blackboardViewPriority!)
-            print("filename:::::::\(filename.absoluteString)")
-            self.dismiss(animated: true, completion: nil)
-            // ボリューム通知を解除
-            audioSession.removeObserver(self, forKeyPath: "outputVolume")
+            do {
+                uploadingCount+=1
+                try AppPot().uploadFile(locatedAt: filename.path) { (res) in
+                    print(res.description)
+//                    Thread.sleep(forTimeInterval: 1.0)
+                    if let pictureData = self.pictureData {
+                        let data = PictureData(data: pictureData)
+                        data.fileName = res.fileName
+                        data.save(block: {  (savedData, error) in
+                            self.uploadingCount-=1
+                            print("photoOutput:--:uploadingCount=\(self.uploadingCount)")
+                            if let savedData = savedData {
+                                print ("Succeed to save : \(savedData)")
+                                self.showToastShort(message: "写真をアップロードしました")
+                            }
+                            if let error = error {
+                                print ("error to save : \(error)")
+                                self.showToastLong(message: "写真のアップロードに失敗しました[1]")
+                            }
+                        })
+                    }
+                    
+                } doOnError: { (error) in
+                    print(error)
+                    self.uploadingCount-=1
+                    self.showToastLong(message: "写真のアップロードに失敗しました[2]:\(error)")
+                }
+            } catch let error {
+                print(error)
+                self.uploadingCount-=1
+                self.showToastLong(message: "写真のアップロードに失敗しました[3]:\(error)")
+            }
+            print("send:filename:::::::\(filename.absoluteString)")
         }
 
     }
@@ -676,14 +729,42 @@ extension CameraViewController{
         }
     }
     
+    func showToastShort(message : String) {
+        showToast(message: message, time: 1)
+    }
+    
+    func showToastLong(message : String) {
+        showToast(message: message, time: 3)
+    }
+    
+    func showToast(message : String, time: TimeInterval) {
 
-//    // ボタンのスタイルを設定
-//    func styleCaptureButton() {
-//        cameraButton.layer.borderColor = UIColor.white.cgColor
-//        cameraButton.layer.borderWidth = 5
-//        cameraButton.clipsToBounds = true
-//        cameraButton.layer.cornerRadius = min(cameraButton.frame.width, cameraButton.frame.height) / 2
-//    }
+        let font:UIFont = .systemFont(ofSize: 12.0)
+        let fontAttributes = [NSAttributedString.Key.font: font]
+        let size = (message as NSString).size(withAttributes: fontAttributes)
+        var width: CGFloat = size.width
+        var height: CGFloat = 35
+        if (width > self.view.frame.size.width - 20) {
+            height = height * ceil(width / (self.view.frame.size.width - 20))
+            width = self.view.frame.size.width - 20
+        }
+        let toastLabel = UILabel(frame: CGRect(x: (self.view.frame.size.width / 2) - (width / 2), y: self.view.frame.size.height * 0.7, width: width * 1.1, height: height))
+        toastLabel.lineBreakMode = .byCharWrapping
+        toastLabel.backgroundColor = UIColor.black.withAlphaComponent(0.6)
+        toastLabel.textColor = UIColor.white
+        toastLabel.font = font
+        toastLabel.textAlignment = .center;
+        toastLabel.text = message
+        toastLabel.alpha = 1.0
+        toastLabel.layer.cornerRadius = 10;
+        toastLabel.clipsToBounds  =  true
+        self.view.addSubview(toastLabel)
+        UIView.animate(withDuration: 0.5, delay: time, options: .curveEaseOut, animations: {
+             toastLabel.alpha = 0.0
+        }, completion: {(isCompleted) in
+            toastLabel.removeFromSuperview()
+        })
+    }
 }
 
 extension UIImage {
