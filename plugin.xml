@@ -46,6 +46,7 @@
     <resource-file src="src/ios/img/icn_blackboard@3x.png" target-dir="Resources" />
 
     <framework src="AVFoundation.framework" />
+    <framework src="src/ios/AppPotSDKforSwift.framework" custom="true"/>
 
     <dependency id="cordova-plugin-add-swift-support" version="1.7.2"/>
   </platform>

@@ -1,0 +1,11 @@
+framework module AppPotSDKforSwift {
+  umbrella header "AppPotSDKforSwift.h"
+
+  export *
+  module * { export * }
+}
+
+module AppPotSDKforSwift.Swift {
+    header "AppPotSDKforSwift-Swift.h"
+    requires objc
+}
