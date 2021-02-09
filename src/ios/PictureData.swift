@@ -29,9 +29,17 @@ open class PictureData: APObject {
         // 自動同期するデータの範囲をユーザーが属するグループのデータに指定する。
         // 暗号化対象のプロパティーはないと指定する
         // 暗号化対象のプロパティーがないので、nilを渡す。
-        super.setDefaultPropertiesWithScope(SCOPE_TYPE.APScopeGroup, persistentType: PERSISTENT_TYPE.APPersistentServerOnly, useLockForUpdate: true, isAutoRefresh: true, autoRefreshInterval: 300, lifeSpan: 86400, scopeForAutoRefresh: SCOPE_TYPE.APScopeGroup, hasEncryptedProperties: false , encryptedProperties: nil)
+        super.setDefaultPropertiesWithScope(SCOPE_TYPE.APScopeGroup,
+         persistentType: PERSISTENT_TYPE.APPersistentServerOnly,
+         useLockForUpdate: true,
+         isAutoRefresh: false,
+         autoRefreshInterval: 300,
+         lifeSpan: 86400,
+         scopeForAutoRefresh: SCOPE_TYPE.APScopeGroup,
+         hasEncryptedProperties: false ,
+         encryptedProperties: nil)
     }
-    
+
     override init() {
         self.siteId = ""
         self.kuiId = ""
