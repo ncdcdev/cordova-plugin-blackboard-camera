@@ -1,115 +1,125 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 tools:ignore="MissingDefaultResource">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <!-- カメラビュー -->
+        <jp.co.taisei.construction.fieldmanagement.plugin.AutoFitTextureView
+            android:id="@+id/texture"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"/>
 
-    <jp.co.taisei.construction.fieldmanagement.plugin.AutoFitTextureView
-        android:id="@+id/texture"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"/>
+        <!-- 黒板 -->
+        <ImageView
+            android:id="@+id/board"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleType="fitXY"
+            android:layout_centerInParent="true"/>
+        <ImageView
+            android:id="@+id/lt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_circle"/>
+        <ImageView
+            android:id="@+id/lb"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_circle"/>
+        <ImageView
+            android:id="@+id/rt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_circle"/>
+        <ImageView
+            android:id="@+id/rb"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_circle"/>
 
-    <!-- 黒板 -->
-    <ImageView
-        android:id="@+id/board"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:scaleType="fitXY"
-        android:layout_centerInParent="true"/>
-    <ImageView
-        android:id="@+id/lt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_circle"/>
-    <ImageView
-        android:id="@+id/lb"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_circle"/>
-    <ImageView
-        android:id="@+id/rt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_circle"/>
-    <ImageView
-        android:id="@+id/rb"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_circle"/>
-
-    <!-- 各種ボタン -->
-    <FrameLayout
-        android:id="@+id/control"
-        android:layout_width="80dp"
-        android:layout_height="match_parent"
-        android:layout_alignParentRight="true"
-        android:background="@null"
-        android:visibility="visible">
-
-        <ImageButton
-            android:id="@+id/picture"
+        <!-- 各種ボタン -->
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:src="@drawable/ic_camera"
+            android:layout_height="80dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true"
             android:background="@null"
-            />
-        <Button
-            android:id="@+id/edit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center|bottom"
-            android:layout_marginBottom="16dp"
-            android:drawableTop="@drawable/icn_blackboard_edit"
-            android:text="黒板編集"
-            android:textColor="@android:color/white"
-            android:background="@null"
-            />
+            android:visibility="visible">
+
+            <ImageButton
+                android:id="@+id/picture"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_camera"
+                android:background="@null"
+                />
+
+            <Button
+                android:id="@+id/edit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|left"
+                android:layout_marginLeft="16dp"
+                android:drawableTop="@drawable/icn_blackboard_edit"
+                android:text="黒板編集"
+                android:textColor="@android:color/white"
+                android:background="@null"
+                />
+
+            <Button
+                android:id="@+id/toggle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|right"
+                android:layout_marginRight="16dp"
+                android:drawableTop="@drawable/icn_blackboard"
+                android:text="黒板OFF"
+                android:textColor="@android:color/white"
+                android:background="@null"
+                />
+
+        </FrameLayout>
 
         <Button
-            android:id="@+id/toggle"
+            android:id="@+id/done"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center|top"
+            android:layout_marginLeft="16dp"
             android:layout_marginTop="16dp"
-            android:drawableTop="@drawable/icn_blackboard"
-            android:text="黒板OFF"
+            android:minHeight="0dp"
+            android:minWidth="0dp"
+            android:paddingHorizontal="15dp"
+            android:paddingVertical="5dp"
+            android:text="戻る"
+            android:textColor="#00307c"
+            android:background="@drawable/round_button"
+            />
+
+        <Button
+            android:id="@+id/flash"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:drawableLeft="@drawable/icn_flash_auto"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="16dp"
+            android:text="自動"
             android:textColor="@android:color/white"
             android:background="@null"
             />
-
-    </FrameLayout>
-
-    <Button
-        android:id="@+id/done"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:minHeight="0dp"
-        android:minWidth="0dp"
-        android:paddingHorizontal="15dp"
-        android:paddingVertical="5dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginBottom="16dp"
-        android:background="@drawable/round_button"
-        android:text="戻る"
-        android:textColor="#00307c"
-        />
-
-    <Button
-        android:id="@+id/flash"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:drawableLeft="@drawable/icn_flash_auto"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="16dp"
-        android:text="自動"
-        android:textColor="@android:color/white"
-        android:background="@null"
-        />
-
-</RelativeLayout>
+    </RelativeLayout>
+    <ImageView
+        android:id="@+id/preview_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/black"
+        android:scaleType="fitCenter"
+        android:visibility="gone"/>
+</FrameLayout>

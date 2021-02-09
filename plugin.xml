@@ -58,6 +58,7 @@
     <hook type="after_platform_add" src="hooks/support-kotlin.js" />
     <framework src="org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.2.31" />
     <framework src="com.android.support:appcompat-v7:27.1.1" />
+    <lib-file src="src/android/AppPotSDK3.2.6.jar" />
     <apply-plugin>kotlin-android-extensions</apply-plugin>
     <apply-plugin>kotlin-kapt</apply-plugin>
 
@@ -102,6 +103,7 @@
     <source-file src="src/android/AutoFitTextureView.kt" target-dir="app/src/main/java/jp/co/taisei/construction/fieldmanagement/plugin"/>
     <source-file src="src/android/Camera2Fragment.kt" target-dir="app/src/main/java/jp/co/taisei/construction/fieldmanagement/plugin"/>
     <source-file src="src/android/SensorOrientation.kt" target-dir="app/src/main/java/jp/co/taisei/construction/fieldmanagement/plugin"/>
+    <source-file src="src/android/PictureData.kt" target-dir="app/src/main/java/jp/co/taisei/construction/fieldmanagement/plugin"/>
 
     <source-file src="src/android/layout/activity_main.xml" target-dir="app/src/main/res/layout"/>
     <source-file src="src/android/layout-land/fragment_camera2.xml" target-dir="app/src/main/res/layout-land"/>

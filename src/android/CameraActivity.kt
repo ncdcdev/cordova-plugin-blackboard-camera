@@ -10,15 +10,17 @@ import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.os.Build
 import android.os.Bundle
-import android.os.Environment
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
+import android.util.Log
 import android.view.KeyEvent
+import jp.co.ncdc.apppot.stew.utils.JsonUtils
 //import jp.co.taisei.construction.fieldmanagement.R
 //import jp.co.taisei.construction.fieldmanagement.prod2.R
 import jp.co.taisei.construction.fieldmanagement.develop.R
 import kotlinx.android.synthetic.main.fragment_camera2.*
 import org.apache.cordova.CordovaActivity
+import org.json.JSONObject
 
 class CameraActivity : CordovaActivity(), SensorEventListener, ActivityCompat.OnRequestPermissionsResultCallback {
     //センサ用定数
@@ -43,6 +45,7 @@ class CameraActivity : CordovaActivity(), SensorEventListener, ActivityCompat.On
     var boardPath: String? = null
     var isNeedBlackBoard: Boolean = false
     lateinit var blackboardViewPriority: String
+    lateinit var pictureJson: JSONObject
 
     private var mPreOrientation = -1
 
@@ -56,8 +59,8 @@ class CameraActivity : CordovaActivity(), SensorEventListener, ActivityCompat.On
         setContentView(R.layout.activity_main)
 
         //カメラフラグメント設定
-        val instance = Camera2Fragment.newInstance()
         if (null == savedInstanceState) {
+            val instance = Camera2Fragment.newInstance()
             fragmentManager.beginTransaction()
                     .replace(R.id.container, instance)
                     .commit()
@@ -65,7 +68,9 @@ class CameraActivity : CordovaActivity(), SensorEventListener, ActivityCompat.On
         this.boardPath = intent.extras["boardPath"] as String?
         this.isNeedBlackBoard = intent.extras["isNeedBlackBoard"] as Boolean
         this.blackboardViewPriority = intent.extras["blackboardViewPriority"] as String
-
+        val jsonString = intent.extras["pictureJson"] as String?
+        this.pictureJson = JsonUtils.convertToJSONObject(jsonString) ?: JSONObject()
+        Log.d(TAG, "pictureJson=${pictureJson}")
         checkPermission()
     }
 

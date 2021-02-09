@@ -3,12 +3,16 @@ package jp.co.taisei.construction.fieldmanagement.plugin
 import android.content.Intent
 import android.util.Base64
 import android.util.Log
+import android.widget.Toast
 import org.apache.cordova.CallbackContext
 import org.apache.cordova.CordovaPlugin
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
 import java.io.File
+import jp.co.ncdc.apppot.stew.APService
+import jp.co.ncdc.apppot.stew.APUserInfo
+import jp.co.ncdc.apppot.stew.utils.JsonUtils
 
 class BlackboardCamera : CordovaPlugin() {
     lateinit var context: CallbackContext
@@ -24,28 +28,42 @@ class BlackboardCamera : CordovaPlugin() {
 
                 var applicationContext = cordova.activity.applicationContext
                 val intent = Intent(applicationContext, CameraActivity::class.java)
+                // 黒板イメージ
                 val base64: String = data[0] as String
-                Log.d("TAG", "data[1]=" + data[1])
+                val filePath = "${cordova.activity.applicationContext.filesDir}/board.png"
+                decoder(base64, filePath)
+                if (File(filePath).exists()) {
+                    intent.putExtra("boardPath", filePath)
+                }
+
+                // 黒板を表示/非表示フラグ
                 val isNeedBlackBoard: Boolean = try {
                     (data[1] as Boolean)
                 } catch (e: ClassCastException) {
                     (data[1] as Int) == 1
                 }
+                intent.putExtra("isNeedBlackBoard", isNeedBlackBoard)
+
+                // 黒板表示する場合、WebとAppのどちらの設定値を優先するか(Web or App)
                 val blackboardViewPriority: String = data[2]  as String
-                val filePath = "${cordova.activity.applicationContext.filesDir}/board.png"
-                decoder(base64, filePath)
-                if (File(filePath).exists()) {
-                    intent.putExtra("boardPath", filePath)
-                    intent.putExtra("isNeedBlackBoard", isNeedBlackBoard)
-                    intent.putExtra("blackboardViewPriority", blackboardViewPriority)
-                }
+                intent.putExtra("blackboardViewPriority", blackboardViewPriority)
+
+                val authInfo = data[3] as String
+                initAppPotSdk(authInfo)
+                val jsonString = data[4] as String
+                intent.putExtra("pictureJson", jsonString)
+
+                Log.d(TAG, "jsonString=${jsonString}")
                 cordova.startActivityForResult(this, intent, 1)
             } else {
                 handleError("Invalid action")
+                Toast.makeText(cordova.context, "[Error] Invalid action", Toast.LENGTH_LONG).show()
                 result = false
             }
         } catch (e: Exception) {
             handleException(e)
+            Log.e(TAG, e.message)
+            Toast.makeText(cordova.context, "[Error] ${e.message}", Toast.LENGTH_LONG).show()
             result = false
         }
 
@@ -74,6 +92,45 @@ class BlackboardCamera : CordovaPlugin() {
 
         }
         return
+    }
+
+    private fun initAppPotSdk(authInfo: String) {
+        val service = APService.getInstance()
+        service.setServiceInfo(
+                cordova.activity.applicationContext,
+                63,
+                "taisei_kui_develop",
+                "b40b0497304642008a9fe808a7bbd9a3",
+                "1.0",
+                "trial.apppot.net",
+                "apppot",
+                80,
+                true,
+                false
+        )
+        val authInfoJson = JsonUtils.convertToJSONObject(authInfo)
+        val userInfoJson = authInfoJson["userInfo"] as JSONObject
+        val userInfo = APUserInfo()
+        userInfo.account = userInfoJson["account"] as String
+        userInfo.firstName = try {
+            userInfoJson["firstName"] as String
+        } catch (e: JSONException) {
+            ""
+        }
+        userInfo.lastName = try {
+            userInfoJson["lastName"] as String
+        } catch (e: JSONException) {
+            ""
+        }
+        val userId = try {
+            authInfoJson["userId"] as Long
+        } catch (e: java.lang.ClassCastException) {
+            (authInfoJson["userId"] as Int).toLong()
+        }
+        userInfo.userId = userId
+        userInfo.userTokens = authInfoJson["userTokens"] as String
+        service.userInfo = userInfo
+        Log.d(TAG, "BlackboardCamera:initAppPotSdk=success")
     }
 
     private fun decoder(base64Str: String, filePath: String) {

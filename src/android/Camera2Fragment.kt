@@ -26,6 +26,8 @@ import android.widget.Button
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.Toast
+import jp.co.ncdc.apppot.stew.dto.APObject
+import jp.co.ncdc.apppot.stew.utils.JsonUtils
 //import jp.co.taisei.construction.fieldmanagement.R
 // import jp.co.taisei.construction.fieldmanagement.prod2.R
 import jp.co.taisei.construction.fieldmanagement.develop.R
@@ -826,13 +828,13 @@ class Camera2Fragment : Fragment(), View.OnClickListener, View.OnTouchListener {
     private fun getJpegOrientation(deviceOrientation: Int): Int {
         var cameraManager = activity.getSystemService(CAMERA_SERVICE) as CameraManager
 
-        val characteristics = cameraManager.getCameraCharacteristics(mCameraId)
+        val characteristics = cameraManager.getCameraCharacteristics(mCameraId!!)
         val sensorOrientation = characteristics.get(CameraCharacteristics.SENSOR_ORIENTATION)
 
         // Round device orientation to a multiple of 90
         val newDeviceOrientation = (deviceOrientation + 45) / 90 * 90
 
-        return (sensorOrientation + newDeviceOrientation + 360) % 360
+        return (sensorOrientation!! + newDeviceOrientation + 360) % 360
 
     }
 
@@ -856,6 +858,7 @@ class Camera2Fragment : Fragment(), View.OnClickListener, View.OnTouchListener {
             mState = STATE_PREVIEW
             mCaptureSession!!.setRepeatingRequest(mPreviewRequest!!, mCaptureCallback,
                     mBackgroundHandler)
+            mCameraStartFlag = false
         } catch (e: CameraAccessException) {
             e.printStackTrace()
         } catch (e: java.lang.NullPointerException) {
@@ -1239,12 +1242,59 @@ class Camera2Fragment : Fragment(), View.OnClickListener, View.OnTouchListener {
 //                        Toast.makeText(activity, "exifOrientation=$exifOrientation, rotation=$rotation", Toast.LENGTH_LONG).show()
 //                    }
 
+                    // アルバムへ保存
                     addImageToGallery(file.absolutePath)
-                    val intent = Intent()
-                    intent.putExtra("filePath", file.absolutePath)
-                    intent.putExtra("mode", activity.blackboardViewPriority)
-                    activity.setResult(1, intent)
-                    activity.finish()
+
+                    // Previewの表示
+                    val preview = activity.findViewById<ImageView>(R.id.preview_view)
+                    activity.runOnUiThread {
+                        preview.setImageBitmap(scaled)
+                        preview.visibility = View.VISIBLE
+                    }
+                    Handler().postDelayed({
+                        activity.runOnUiThread {
+                            preview.visibility = View.GONE
+                        }
+                    }, 1500)
+
+                    APFile.uploadFile(file.absolutePath, object : APResponseHandler() {
+                        // AppPotへ登録
+                        override fun onSuccess(res: APResponse?) {
+                            Log.d(TAG, "saveObject: APFile")
+                            // PictureDataの登録
+                            val pictureData = PictureData(activity.pictureJson)
+                            pictureData.fileName = file.name
+                            if (pictureData != null) {
+                                APEntityManager.getInstance().saveObject(pictureData, object : APResponseHandler() {
+                                    override fun onSuccess(res: APResponse?) {
+                                        Log.d(TAG, "saveObject: PictureData")
+                                        activity.runOnUiThread{
+                                            Toast.makeText(activity, "写真をアップロードしました", Toast.LENGTH_LONG).show()
+                                        }
+                                    }
+
+                                    override fun onFailure(res: APResponse?) {
+                                        activity.runOnUiThread {
+                                            Toast.makeText(activity, "写真のアップロードに失敗しました[1]", Toast.LENGTH_LONG).show()
+                                        }
+                                        Log.w(TAG, res.toString())
+                                    }
+
+                                })
+                            } else {
+                                activity.runOnUiThread {
+                                    Toast.makeText(activity, "写真のアップロードに失敗しました[2]", Toast.LENGTH_LONG).show()
+                                }
+                            }
+                        }
+                        override fun onFailure(res: APResponse?) {
+                            activity.runOnUiThread {
+                                Toast.makeText(activity, "写真のアップロードに失敗しました[3]", Toast.LENGTH_LONG).show()
+                            }
+                            Log.w(TAG, res.toString())
+                        }
+                    })
+
                 }
             } catch (e: IOException) {
                 e.printStackTrace()
