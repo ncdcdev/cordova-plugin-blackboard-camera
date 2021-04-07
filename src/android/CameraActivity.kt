@@ -162,16 +162,13 @@ class CameraActivity : CordovaActivity(), SensorEventListener, ActivityCompat.On
 
             // 表示の更新
             if( mPreOrientation == ORIENTATION_VERTICAL ){
-                picture.rotation = 0f
                 mSensorOrientation!!.orientation = 0;
                 setFragmentOrientation(90)
             }else {
                 if( roll > 60 ) {
-                    picture.rotation = -90f
                     mSensorOrientation!!.orientation = 90;
                     setFragmentOrientation(180)
                 }else if ( roll < -60 ){
-                    picture.rotation = 90f
                     mSensorOrientation!!.orientation = 270;
                     setFragmentOrientation(0)
                 }
