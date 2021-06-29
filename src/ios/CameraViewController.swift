@@ -100,6 +100,8 @@ class CameraViewController: UIViewController {
     private let kBoardMarkSize: CGFloat = 30
     // 回転イベントはviewDidAppear後に呼ばせるため
     private var isViewDidAppear: Bool = false
+    // 写真撮影時のインターバルタイム（秒）
+    private let kPhotoShootIntervalTime: Double = 1
 
     // FlashモードIndex 0(Auto) 1(Off) 2(On)
     var flashModeIndex: Int = 0
@@ -114,6 +116,7 @@ class CameraViewController: UIViewController {
     
     var currentVolumn: Float = Float.zero
     let audioSession = AVAudioSession.sharedInstance()
+    var photoPressedTime: TimeInterval = TimeInterval.zero // シャッターボタンーを押した時間
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -179,13 +182,21 @@ class CameraViewController: UIViewController {
             }
         }
         toggleBlackBoardMode(isHidden)
-        
-        // 監視を開始
-        audioSession.addObserver(self, forKeyPath: "outputVolume", options: [ .new ], context: nil)
         self.isViewDidAppear = true
-        
     }
-    
+
+    override func viewWillAppear(_ animated: Bool) {
+        // ボリューム監視を開始
+        print("[viewWillAppear] addObserver:outputVolume")
+        audioSession.addObserver(self, forKeyPath: "outputVolume", options: [ .new ], context: nil)
+    }
+
+    override func viewDidDisappear(_ animated: Bool) {
+        // ボリューム通知を解除
+        print("[viewDidDisappear] removeObserver:outputVolume")
+        audioSession.removeObserver(self, forKeyPath: "outputVolume")
+    }
+
     override func observeValue(forKeyPath keyPath: String?, of object: Any?,
                                change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
         if (currentVolumn > audioSession.outputVolume) {
@@ -264,6 +275,12 @@ class CameraViewController: UIViewController {
 
     // シャッターボタンが押された時のアクション
     @IBAction func cameraButton_TouchUpInside(_ sender: Any) {
+        guard NSDate().timeIntervalSince1970 - photoPressedTime > kPhotoShootIntervalTime else {
+            // 1秒以内にタップしたものはskipする
+            print("cameraButton_TouchUpInside!!Doube Tap")
+            return
+        }
+        photoPressedTime = NSDate().timeIntervalSince1970
         let settings = AVCapturePhotoSettings()
         let device = AVCaptureDevice.default(
             AVCaptureDevice.DeviceType.builtInWideAngleCamera,
@@ -293,8 +310,6 @@ class CameraViewController: UIViewController {
         let back = BlackboardCamera();
         back.invoke(callbackId: self.callbackId, commandDelegate: self.commandDelegate, data: "Close", mode: self.blackboardViewPriority!)
         self.dismiss(animated: true, completion: nil)
-        // ボリューム通知を解除
-        audioSession.removeObserver(self, forKeyPath: "outputVolume")
     }
 
     @IBAction func flashButton_TouchUpInside(_ sender: Any) {
@@ -319,8 +334,6 @@ class CameraViewController: UIViewController {
         let back = BlackboardCamera();
         back.invoke(callbackId: self.callbackId, commandDelegate: self.commandDelegate, data: "Edit", mode: self.blackboardViewPriority!)
         self.dismiss(animated: true, completion: nil)
-        // ボリューム通知を解除
-        audioSession.removeObserver(self, forKeyPath: "outputVolume")
     }
     
     func toggleBlackBoardMode(_ mode: Bool) {
@@ -572,8 +585,6 @@ extension CameraViewController: AVCapturePhotoCaptureDelegate {
             back.invoke(callbackId: self.callbackId, commandDelegate: self.commandDelegate, data: filename.absoluteString, mode: self.blackboardViewPriority!)
             print("filename:::::::\(filename.absoluteString)")
             self.dismiss(animated: true, completion: nil)
-            // ボリューム通知を解除
-            audioSession.removeObserver(self, forKeyPath: "outputVolume")
         }
 
     }
