@@ -101,7 +101,7 @@ class CameraViewController: UIViewController {
     // 回転イベントはviewDidAppear後に呼ばせるため
     private var isViewDidAppear: Bool = false
     // 写真撮影時のインターバルタイム（秒）
-    private let kPhotoShootIntervalTkime: Double = 1
+    private let kPhotoShootIntervalTime: Double = 1
 
     // FlashモードIndex 0(Auto) 1(Off) 2(On)
     var flashModeIndex: Int = 0
@@ -182,13 +182,21 @@ class CameraViewController: UIViewController {
             }
         }
         toggleBlackBoardMode(isHidden)
-        
-        // 監視を開始
-        audioSession.addObserver(self, forKeyPath: "outputVolume", options: [ .new ], context: nil)
         self.isViewDidAppear = true
-        
     }
-    
+
+    override func viewWillAppear(_ animated: Bool) {
+        // ボリューム監視を開始
+        print("[viewWillAppear] addObserver:outputVolume")
+        audioSession.addObserver(self, forKeyPath: "outputVolume", options: [ .new ], context: nil)
+    }
+
+    override func viewDidDisappear(_ animated: Bool) {
+        // ボリューム通知を解除
+        print("[viewDidDisappear] removeObserver:outputVolume")
+        audioSession.removeObserver(self, forKeyPath: "outputVolume")
+    }
+
     override func observeValue(forKeyPath keyPath: String?, of object: Any?,
                                change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
         if (currentVolumn > audioSession.outputVolume) {
@@ -302,8 +310,6 @@ class CameraViewController: UIViewController {
         let back = BlackboardCamera();
         back.invoke(callbackId: self.callbackId, commandDelegate: self.commandDelegate, data: "Close", mode: self.blackboardViewPriority!)
         self.dismiss(animated: true, completion: nil)
-        // ボリューム通知を解除
-        audioSession.removeObserver(self, forKeyPath: "outputVolume")
     }
 
     @IBAction func flashButton_TouchUpInside(_ sender: Any) {
@@ -328,8 +334,6 @@ class CameraViewController: UIViewController {
         let back = BlackboardCamera();
         back.invoke(callbackId: self.callbackId, commandDelegate: self.commandDelegate, data: "Edit", mode: self.blackboardViewPriority!)
         self.dismiss(animated: true, completion: nil)
-        // ボリューム通知を解除
-        audioSession.removeObserver(self, forKeyPath: "outputVolume")
     }
     
     func toggleBlackBoardMode(_ mode: Bool) {
@@ -581,8 +585,6 @@ extension CameraViewController: AVCapturePhotoCaptureDelegate {
             back.invoke(callbackId: self.callbackId, commandDelegate: self.commandDelegate, data: filename.absoluteString, mode: self.blackboardViewPriority!)
             print("filename:::::::\(filename.absoluteString)")
             self.dismiss(animated: true, completion: nil)
-            // ボリューム通知を解除
-            try? audioSession.removeObserver(self, forKeyPath: "outputVolume")
         }
 
     }
