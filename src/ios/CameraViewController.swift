@@ -582,7 +582,7 @@ extension CameraViewController: AVCapturePhotoCaptureDelegate {
             print("filename:::::::\(filename.absoluteString)")
             self.dismiss(animated: true, completion: nil)
             // ボリューム通知を解除
-            audioSession.removeObserver(self, forKeyPath: "outputVolume")
+            try? audioSession.removeObserver(self, forKeyPath: "outputVolume")
         }
 
     }
