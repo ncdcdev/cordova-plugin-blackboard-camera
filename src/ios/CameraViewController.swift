@@ -100,6 +100,8 @@ class CameraViewController: UIViewController {
     private let kBoardMarkSize: CGFloat = 30
     // 回転イベントはviewDidAppear後に呼ばせるため
     private var isViewDidAppear: Bool = false
+    // 写真撮影時のインターバルタイム（秒）
+    private let kPhotoShootIntervalTkime: Double = 1
 
     // FlashモードIndex 0(Auto) 1(Off) 2(On)
     var flashModeIndex: Int = 0
@@ -114,6 +116,7 @@ class CameraViewController: UIViewController {
     
     var currentVolumn: Float = Float.zero
     let audioSession = AVAudioSession.sharedInstance()
+    var photoPressedTime: TimeInterval = TimeInterval.zero // シャッターボタンーを押した時間
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -264,6 +267,12 @@ class CameraViewController: UIViewController {
 
     // シャッターボタンが押された時のアクション
     @IBAction func cameraButton_TouchUpInside(_ sender: Any) {
+        guard NSDate().timeIntervalSince1970 - photoPressedTime > kPhotoShootIntervalTime else {
+            // 1秒以内にタップしたものはskipする
+            print("cameraButton_TouchUpInside!!Doube Tap")
+            return
+        }
+        photoPressedTime = NSDate().timeIntervalSince1970
         let settings = AVCapturePhotoSettings()
         let device = AVCaptureDevice.default(
             AVCaptureDevice.DeviceType.builtInWideAngleCamera,
