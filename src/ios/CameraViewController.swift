@@ -25,6 +25,7 @@ class CameraViewController: UIViewController {
     var boardImage: UIImage?
     var isNeedBlackBoard: Bool?
     var blackboardViewPriority: String?
+    var isLandscape = false
 
     var ltCircle: UIView? // leftTop
     var rtCircle: UIView? // rightTop
@@ -238,7 +239,6 @@ class CameraViewController: UIViewController {
 
     func rotationCamera() {
         // ここに回転時の処理
-        var isLandscape = false
         let orientation = UIDevice.current.orientation
         print("rotationCamera:orientation=\(orientation.rawValue)")
         if orientation == UIDeviceOrientation.landscapeLeft {
@@ -264,7 +264,7 @@ class CameraViewController: UIViewController {
         if isLandscape {
             print("rotationCamera:Landscape")
             NSLayoutConstraint.deactivate(vViewConstraints)
-            NSLayoutConstraint.activate(hViewConstraints)            
+            NSLayoutConstraint.activate(hViewConstraints)
         } else {
             print("rotationCamera:Portrait")
             NSLayoutConstraint.deactivate(hViewConstraints)
@@ -415,10 +415,10 @@ class CameraViewController: UIViewController {
         } else if (boardPoint.y + boardSize.height > cameraSize.height + offset.y) {
             boardPoint.y =  offset.y + cameraSize.height - boardSize.height
         }
-        
+
         // 横向きの場合、黒板の高さはマージンを適用したサイズより小さく設定
         var checkSize: CGFloat = 0
-        if UIDevice.current.orientation.isLandscape {
+        if isLandscape {
             checkSize = cameraSize.height * 0.9
             if (boardSize.height > checkSize) {
                 let aspect: CGFloat = boardSize.height / boardSize.width
@@ -426,7 +426,6 @@ class CameraViewController: UIViewController {
                 boardSize = CGSize(width: checkSize / aspect, height: checkSize)
             }
         } else {
-            
             checkSize = cameraSize.width * 0.9
             if (boardSize.width > checkSize) {
                 let aspect: CGFloat = boardSize.width / boardSize.height
@@ -434,7 +433,6 @@ class CameraViewController: UIViewController {
                 boardSize = CGSize(width: checkSize, height: checkSize / aspect)
             }
         }
-        
         print("boardPoint=\(boardPoint), boardSize2=\(boardSize)")
 
         var newBoard = board
@@ -556,8 +554,9 @@ extension CameraViewController: AVCapturePhotoCaptureDelegate {
             return
         }
         var newImage: UIImage?
-        if UIDevice.current.orientation.isLandscape {
-            let imageOrientation = UIDevice.current.orientation == UIDeviceOrientation.landscapeLeft ? UIImage.Orientation.up : UIImage.Orientation.down
+        if isLandscape {
+            let statusBarOrientation = UIApplication.shared.statusBarOrientation
+            let imageOrientation = statusBarOrientation == .landscapeRight ? UIImage.Orientation.up : UIImage.Orientation.down
             newImage = UIImage(cgImage: image.cgImage!, scale: 1.0, orientation: imageOrientation)
         } else {
             newImage = image.fixedOrientation()
