@@ -138,7 +138,9 @@ class CameraViewController: UIViewController {
         hCameraButtonCenterConstraint, hCameraViewAspectConstraint, hCameraViewBottomConstraint, hCameraViewTopConstraint,
         hBlackBoardEdit01Constraint, hBlackBoardEdit02Constraint, hBlackBoardMode01Constraint, hBlackBoardMode02Constraint]
         // 回転イベントを通知
-        NotificationCenter.default.addObserver(self, selector: #selector(CameraViewController.onOrientationDidChange(notification:)), name: UIDevice.orientationDidChangeNotification, object: nil)
+        if #unavailable(iOS 16.0) {
+            NotificationCenter.default.addObserver(self, selector: #selector(CameraViewController.onOrientationDidChange(notification:)), name: UIDevice.orientationDidChangeNotification, object: nil)
+        }
         // 監視を有効にする
         try! audioSession.setActive(true)
         currentVolumn = audioSession.outputVolume // 初期値を設定
@@ -196,6 +198,14 @@ class CameraViewController: UIViewController {
         // ボリューム通知を解除
         print("[viewDidDisappear] removeObserver:outputVolume")
         audioSession.removeObserver(self, forKeyPath: "outputVolume")
+    }
+
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        coordinator.animate { _ in
+            // 画面回転後のUI更新処理など
+            self.rotationCamera()
+        }
     }
 
     override func observeValue(forKeyPath keyPath: String?, of object: Any?,
