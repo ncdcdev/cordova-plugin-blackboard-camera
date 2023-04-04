@@ -1,14 +1,18 @@
 {
-    "version": "1.0.0",
+    "version": "1.1.0",
     "name": "cordova-plugin-blackboard-camera",
     "cordova_name": "Blackboard Camera",
-    "description": "",
+    "description": "cordova plugin for blackboard camera",
     "cordova": {
         "id": "cordova-plugin-blackboard-camera",
         "platforms": [
             "android",
             "ios"
         ]
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+ssh://git@github.com:ncdcdev/cordova-plugin-blackboard-camera.git"
     },
     "keywords": [
         "ecosystem:cordova",
