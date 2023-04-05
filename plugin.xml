@@ -87,9 +87,9 @@
       <string name="request_write_storage_permission">このアプリはストレージへの書き込みの許可が必要です</string>
       <string name="camera_error">This device doesn\'t support Camera2 API.</string>
     </config-file>
-    <edit-config file="AndroidManifest.xml" target="/manifest/application" mode="merge">
+    <!-- <edit-config file="AndroidManifest.xml" target="/manifest/application" mode="merge">
         <application android:largeHeap="true"></application>
-    </edit-config>
+    </edit-config> -->
     <!-- <edit-config file="AndroidManifest.xml" target="/manifest/application" mode="overwrite">
         <application android:theme="@style/Theme.AppCompat.NoActionBar"></application>
     </edit-config> -->
