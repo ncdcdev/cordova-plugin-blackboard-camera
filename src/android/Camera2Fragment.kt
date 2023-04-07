@@ -17,7 +17,7 @@ import android.media.ImageReader
 import android.media.MediaActionSound
 import android.os.*
 import android.provider.MediaStore
-import android.support.media.ExifInterface
+import androidx.exifinterface.media.ExifInterface
 import android.util.Log
 import android.util.Size
 import android.util.SparseIntArray
@@ -556,7 +556,7 @@ class Camera2Fragment : Fragment(), View.OnClickListener, View.OnTouchListener {
             if (!mCameraOpenCloseLock.tryAcquire(2500, TimeUnit.MILLISECONDS)) {
                 throw RuntimeException("Time out waiting to lock camera opening.")
             }
-            manager.openCamera(mCameraId!!, mStateCallback, mBackgroundHandler)
+            manager.openCamera(mCameraId ?: "Unknown Camera ID", mStateCallback, mBackgroundHandler)
         } catch (e: CameraAccessException) {
             e.printStackTrace()
         } catch (e: InterruptedException) {
@@ -826,13 +826,13 @@ class Camera2Fragment : Fragment(), View.OnClickListener, View.OnTouchListener {
     private fun getJpegOrientation(deviceOrientation: Int): Int {
         var cameraManager = activity.getSystemService(CAMERA_SERVICE) as CameraManager
 
-        val characteristics = cameraManager.getCameraCharacteristics(mCameraId)
+        val characteristics = cameraManager.getCameraCharacteristics(mCameraId ?: "Unknown Camera ID")
         val sensorOrientation = characteristics.get(CameraCharacteristics.SENSOR_ORIENTATION)
 
         // Round device orientation to a multiple of 90
         val newDeviceOrientation = (deviceOrientation + 45) / 90 * 90
 
-        return (sensorOrientation + newDeviceOrientation + 360) % 360
+        return (sensorOrientation!! + newDeviceOrientation + 360) % 360
 
     }
 
