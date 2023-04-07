@@ -54,9 +54,10 @@
     <!-- Add Kotlin support -->
     <hook type="after_plugin_add" src="hooks/support-kotlin.js" />
     <hook type="after_platform_add" src="hooks/support-kotlin.js" />
-    <framework src="org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.2.31" />
+    <plugin name="cordova-plugin-androidx-adapter" />
+    <!-- <framework src="org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.2.31" /> -->
     <!-- <framework src="com.android.support:appcompat-v7:27.1.1" /> -->
-    <apply-plugin>kotlin-android-extensions</apply-plugin>
+    <!-- <apply-plugin>kotlin-android-extensions</apply-plugin> -->
     <apply-plugin>kotlin-kapt</apply-plugin>
 
     <!-- Cleanup Kotlin source on uninstall -->
@@ -79,7 +80,7 @@
     <config-file target="AndroidManifest.xml" parent="/manifest/application">
         <!-- <meta-data android:name="theme" android:value="@style/Theme.AppCompat.NoActionBar" /> -->
         <!-- <meta-data android:name="largeHeap" android:value="true" /> -->
-        <activity android:label="Camera Activity" android:name="jp.co.taisei.construction.fieldmanagement.plugin.CameraActivity"></activity>
+        <activity android:label="Camera Activity" android:name="jp.co.taisei.construction.fieldmanagement.plugin.CameraActivity" android:theme="@style/Theme.AppCompat.NoActionBar"></activity>
     </config-file>
     <config-file target="res/values/strings.xml" parent="/resources">
       <string name="camera">カメラ起動</string>
