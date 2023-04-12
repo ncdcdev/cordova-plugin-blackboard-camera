@@ -47,7 +47,7 @@
 
     <framework src="AVFoundation.framework" />
 
-    <dependency id="cordova-plugin-add-swift-support" version="1.7.2"/>
+    <dependency id="cordova-plugin-add-swift-support" version="2.0.2"/>
   </platform>
 
   <platform name="android" kotlin="1.5.21">
