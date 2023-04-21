@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
+<plugin xmlns="http://www.phonegap.com/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android"
         id="cordova-plugin-blackboard-camera"
-        version="1.0.0">
+        version="1.1.0">
 
   <name>Blackboard Camera</name>
 
   <engines>
-    <engine name="cordova" version=">=7.1.0"/>
+    <engine name="cordova" version=">=11.0.0"/>
     <!-- <engine name="cordova-android" version=">=7.0.0"/>
     <engine name="cordova-ios" version=">=7.0.0"/> -->
   </engines>
@@ -47,17 +47,17 @@
 
     <framework src="AVFoundation.framework" />
 
-    <dependency id="cordova-plugin-add-swift-support" version="1.7.2"/>
+    <dependency id="cordova-plugin-add-swift-support" version="2.0.2"/>
   </platform>
 
-  <platform name="android"
-            kotlin="1.3.0">
+  <platform name="android" kotlin="1.5.21">
     <!-- Add Kotlin support -->
     <hook type="after_plugin_add" src="hooks/support-kotlin.js" />
     <hook type="after_platform_add" src="hooks/support-kotlin.js" />
-    <framework src="org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.2.31" />
-    <framework src="com.android.support:appcompat-v7:27.1.1" />
-    <apply-plugin>kotlin-android-extensions</apply-plugin>
+    <plugin name="cordova-plugin-androidx-adapter" />
+    <!-- <framework src="org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.2.31" /> -->
+    <!-- <framework src="com.android.support:appcompat-v7:27.1.1" /> -->
+    <!-- <apply-plugin>kotlin-android-extensions</apply-plugin> -->
     <apply-plugin>kotlin-kapt</apply-plugin>
 
     <!-- Cleanup Kotlin source on uninstall -->
@@ -67,6 +67,7 @@
     <config-file target="config.xml" parent="/*">
       <feature name="BlackboardCamera">
         <param name="android-package" value="jp.co.taisei.construction.fieldmanagement.plugin.BlackboardCamera"/>
+        <param name="onload" value="true" />
       </feature>
     </config-file>
 
@@ -79,7 +80,7 @@
     <config-file target="AndroidManifest.xml" parent="/manifest/application">
         <!-- <meta-data android:name="theme" android:value="@style/Theme.AppCompat.NoActionBar" /> -->
         <!-- <meta-data android:name="largeHeap" android:value="true" /> -->
-        <activity android:label="Camera Activity" android:name="jp.co.taisei.construction.fieldmanagement.plugin.CameraActivity"></activity>
+        <activity android:label="Camera Activity" android:name="jp.co.taisei.construction.fieldmanagement.plugin.CameraActivity" android:theme="@style/Theme.AppCompat.NoActionBar"></activity>
     </config-file>
     <config-file target="res/values/strings.xml" parent="/resources">
       <string name="camera">カメラ起動</string>
@@ -87,9 +88,9 @@
       <string name="request_write_storage_permission">このアプリはストレージへの書き込みの許可が必要です</string>
       <string name="camera_error">This device doesn\'t support Camera2 API.</string>
     </config-file>
-    <edit-config file="AndroidManifest.xml" target="/manifest/application" mode="merge">
+    <!-- <edit-config file="AndroidManifest.xml" target="/manifest/application" mode="merge">
         <application android:largeHeap="true"></application>
-    </edit-config>
+    </edit-config> -->
     <!-- <edit-config file="AndroidManifest.xml" target="/manifest/application" mode="overwrite">
         <application android:theme="@style/Theme.AppCompat.NoActionBar"></application>
     </edit-config> -->

@@ -11,13 +11,13 @@ import android.hardware.SensorManager
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
-import android.support.v4.app.ActivityCompat
-import android.support.v4.content.ContextCompat
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import android.view.KeyEvent
 //import jp.co.taisei.construction.fieldmanagement.R
-//import jp.co.taisei.construction.fieldmanagement.prod2.R
-import jp.co.taisei.construction.fieldmanagement.develop.R
-import kotlinx.android.synthetic.main.fragment_camera2.*
+import jp.co.taisei.construction.fieldmanagement.prod2.R
+//import jp.co.taisei.construction.fieldmanagement.develop.R
+//import kotlinx.android.synthetic.main.fragment_camera2.*
 import org.apache.cordova.CordovaActivity
 
 class CameraActivity : CordovaActivity(), SensorEventListener, ActivityCompat.OnRequestPermissionsResultCallback {
@@ -62,9 +62,9 @@ class CameraActivity : CordovaActivity(), SensorEventListener, ActivityCompat.On
                     .replace(R.id.container, instance)
                     .commit()
         }
-        this.boardPath = intent.extras["boardPath"] as String?
-        this.isNeedBlackBoard = intent.extras["isNeedBlackBoard"] as Boolean
-        this.blackboardViewPriority = intent.extras["blackboardViewPriority"] as String
+        this.boardPath = intent.extras?.get("boardPath") as String?
+        this.isNeedBlackBoard = intent.extras?.get("isNeedBlackBoard") as Boolean
+        this.blackboardViewPriority = intent.extras!!["blackboardViewPriority"] as String
 
         checkPermission()
     }
