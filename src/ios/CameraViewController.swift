@@ -552,6 +552,18 @@ class CameraViewController: UIViewController {
 
 //MARK: AVCapturePhotoCaptureDelegateデリゲートメソッド
 extension CameraViewController: AVCapturePhotoCaptureDelegate {
+    func model() -> String {
+        if UIDevice.current.userInterfaceIdiom == .phone {
+           // 使用デバイスがiPhoneの場合
+            return "iPhone"
+
+        } else if UIDevice.current.userInterfaceIdiom == .pad {
+           // 使用デバイスがiPadの場合
+            return "iPad"
+
+        }
+        return "other"
+    }
     // 撮影した画像データが生成されたときに呼び出されるデリゲートメソッド
     func photoOutput(_ output: AVCapturePhotoOutput, didFinishProcessingPhoto photo: AVCapturePhoto, error: Error?) {
         guard let imageData = photo.fileDataRepresentation() else {
@@ -589,7 +601,12 @@ extension CameraViewController: AVCapturePhotoCaptureDelegate {
 //            let base64String = jpegData.base64EncodedString(options: .lineLength64Characters)
             let timestamp = NSDate().timeIntervalSince1970
             let filename = getDocumentsDirectory().appendingPathComponent("_\(timestamp).jpeg")
-            try? jpegData.write(to: filename)
+            // XMPデータを追加
+            let photoInfo = PhotoInfo(constructionName: "a", constructor: "b", largeClassification: "c", photoClassification: "d", constructionType: "e", middleClassification: "f", smallClassification: "g", title: "a", classificationRemarks: ["a","b"], shootingSpot: "a", isRepresentative: true, isFrequencyOfSubmission: true, measurements: Measurement(classification: MeasurementClassification.inspectionValue, measurementItems: []), contractorRemarks: "a")
+            guard let imageDataEmbedMetaData = ElectronicBlackBoardManager.createImageEmbeddedMetaData(from: jpegData, photoInfo: photoInfo,imageDescription: "test image",model: model(),software: "TPR2") else {
+                        return
+                    }
+            try? imageDataEmbedMetaData.write(to: filename)
             let back = BlackboardCamera();
             back.invoke(callbackId: self.callbackId, commandDelegate: self.commandDelegate, data: filename.absoluteString, mode: self.blackboardViewPriority!)
             print("filename:::::::\(filename.absoluteString)")
