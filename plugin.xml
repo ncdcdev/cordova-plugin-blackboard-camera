@@ -27,6 +27,8 @@
     </config-file>
     <source-file src="src/ios/BlackboardCamera.swift" />
     <source-file src="src/ios/CameraViewController.swift" />
+    <source-file src="src/ios/PhotoInfo.swift" />
+    <source-file src="src/ios/ElectronicBlackBoardManager.swift" />
     <resource-file src="src/ios/Main.storyboard" />
 
     // Image Files
