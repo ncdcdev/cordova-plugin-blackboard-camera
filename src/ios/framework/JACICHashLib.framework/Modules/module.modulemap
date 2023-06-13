@@ -1,0 +1,6 @@
+framework module JACICHashLib {
+  umbrella header "JACICHashLib.h"
+
+  export *
+  module * { export * }
+}

@@ -48,6 +48,7 @@
     <resource-file src="src/ios/img/icn_blackboard@3x.png" target-dir="Resources" />
 
     <framework src="AVFoundation.framework" />
+    <framework src="src/ios/framework/JACICHashLib.framework" custom="true"/>
 
     <dependency id="cordova-plugin-add-swift-support" version="2.0.2"/>
   </platform>
