@@ -10,7 +10,7 @@ import Foundation
 // PhotoInfo Class
 class PhotoInfo {
     var constructionName: String
-    var constructor: String
+    var contractor: String
     var largeClassification: String
     var photoClassification: String
     var constructionType: String
@@ -24,9 +24,9 @@ class PhotoInfo {
     var measurements: Measurement
     var contractorRemarks: String
     
-    init(constructionName: String, constructor: String, largeClassification: String, photoClassification: String, constructionType: String, middleClassification: String, smallClassification: String, title: String, classificationRemarks: [String], shootingSpot: String, isRepresentative: Bool, isFrequencyOfSubmission: Bool, measurements: Measurement, contractorRemarks: String) {
+    init(constructionName: String, contractor: String, largeClassification: String, photoClassification: String, constructionType: String, middleClassification: String, smallClassification: String, title: String, classificationRemarks: [String], shootingSpot: String, isRepresentative: Bool, isFrequencyOfSubmission: Bool, measurements: Measurement, contractorRemarks: String) {
         self.constructionName = constructionName
-        self.constructor = constructor
+        self.contractor = contractor
         self.largeClassification = largeClassification
         self.photoClassification = photoClassification
         self.constructionType = constructionType
