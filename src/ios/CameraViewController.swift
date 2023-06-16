@@ -25,6 +25,7 @@ class CameraViewController: UIViewController {
     var boardImage: UIImage?
     var isNeedBlackBoard: Bool?
     var blackboardViewPriority: String?
+    var photoInfo: PhotoInfo?
     var isLandscape = false
 
     var ltCircle: UIView? // leftTop
@@ -601,8 +602,9 @@ extension CameraViewController: AVCapturePhotoCaptureDelegate {
 //            let base64String = jpegData.base64EncodedString(options: .lineLength64Characters)
             let timestamp = NSDate().timeIntervalSince1970
             let filename = getDocumentsDirectory().appendingPathComponent("_\(timestamp).jpeg")
+            // guard let photoInfo = photoInfo else { return }
             // XMPデータを追加
-            let photoInfo = PhotoInfo(constructionName: "a", constructor: "b", largeClassification: "c", photoClassification: "d", constructionType: "e", middleClassification: "f", smallClassification: "g", title: "a", classificationRemarks: ["a","b"], shootingSpot: "a", isRepresentative: true, isFrequencyOfSubmission: true, measurements: Measurement(classification: MeasurementClassification.inspectionValue, measurementItems: []), contractorRemarks: "a")
+//            photoInfo = PhotoInfo(constructionName: "a", constructor: "b", largeClassification: "c", photoClassification: "d", constructionType: "e", middleClassification: "f", smallClassification: "g", title: "a", classificationRemarks: ["a","b"], shootingSpot: "a", isRepresentative: true, isFrequencyOfSubmission: true, measurements: Measurement(classification: MeasurementClassification.inspectionValue, measurementItems: []), contractorRemarks: "a")
             guard let imageDataEmbedMetaData = ElectronicBlackBoardManager.createImageEmbeddedMetaData(from: jpegData, photoInfo: photoInfo,imageDescription: "test image",model: model(),software: "TPR2") else {
                         return
                     }
