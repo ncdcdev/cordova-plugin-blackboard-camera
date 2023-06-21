@@ -1,5 +1,5 @@
 //
-//  JACIC.h
+//  JCOMSIA.h
 //  iOSSample
 //
 //  Created by DATT JAPAN Inc. on 2019/07/12.
@@ -10,11 +10,16 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface JACIC : NSObject
+@interface JCOMSIA : NSObject
 
 + (int)writeHashValueFromSourcePath:(NSString *)sourcePath
                   toDestinationPath:(NSString *)destinationPath
 NS_SWIFT_NAME(writeHashValue(from:to:));
+
++ (int)svgCalculateHashValueFromImagePath:(NSString *)imagePath
+                           chalkBoardPath:(NSString *)chalkBoardPath
+                                 hashCode:(NSString * _Nullable __autoreleasing * _Nullable)hashCode
+NS_SWIFT_NAME(svgCalculateHashValue(imagePath:chalkBoardPath:hashCode:));
 
 @end
 

@@ -1,0 +1,6 @@
+framework module JCOMSIAHashLib {
+  umbrella header "JCOMSIAHashLib.h"
+
+  export *
+  module * { export * }
+}
