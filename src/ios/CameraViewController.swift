@@ -7,6 +7,7 @@
 
 import UIKit
 import AVFoundation
+import JCOMSIAHashLib
 
 enum Marker: Int {
     case Inside = 0
@@ -600,18 +601,25 @@ extension CameraViewController: AVCapturePhotoCaptureDelegate {
         let data = resizedImage!.jpegData(compressionQuality: 1.0)
         if let jpegData = data {
 //            let base64String = jpegData.base64EncodedString(options: .lineLength64Characters)
-            let timestamp = NSDate().timeIntervalSince1970
-            let filename = getDocumentsDirectory().appendingPathComponent("_\(timestamp).jpeg")
             guard let photoInfo = photoInfo else { return }
-            // XMPデータを追加
-//            photoInfo = PhotoInfo(constructionName: "a", constructor: "b", largeClassification: "c", photoClassification: "d", constructionType: "e", middleClassification: "f", smallClassification: "g", title: "a", classificationRemarks: ["a","b"], shootingSpot: "a", isRepresentative: true, isFrequencyOfSubmission: true, measurements: Measurement(classification: MeasurementClassification.inspectionValue, measurementItems: []), contractorRemarks: "a")
             guard let imageDataEmbedMetaData = ElectronicBlackBoardManager.createImageEmbeddedMetaData(from: jpegData, photoInfo: photoInfo,imageDescription: "test image",model: model(),software: "TPR2") else {
                         return
                     }
+            let timestamp = NSDate().timeIntervalSince1970
+            let filename = getDocumentsDirectory().appendingPathComponent("_\(timestamp)_before.jpeg")
+            let checkedFilename = getDocumentsDirectory().appendingPathComponent("_\(timestamp).jpeg")
+            // 信ぴょう性チェック情報作成前にファイルを作成
             try? imageDataEmbedMetaData.write(to: filename)
-            let back = BlackboardCamera();
-            back.invoke(callbackId: self.callbackId, commandDelegate: self.commandDelegate, data: filename.absoluteString, mode: self.blackboardViewPriority!)
-            print("filename:::::::\(filename.absoluteString)")
+            let result = JCOMSIA.writeHashValue(from: filename.path, to: checkedFilename.path)
+            if result == 0 {
+                // 信ぴょう性チェック情報作成前のデータは削除する
+                try? FileManager.default.removeItem(atPath: filename.path)
+                print("[success]checkedFilename=\(checkedFilename.absoluteString)")
+            } else {
+                print("[fail★★]checkedFilename=\(checkedFilename.absoluteString), result=\(result)")
+            }
+            let back = BlackboardCamera()
+            back.invoke(callbackId: self.callbackId, commandDelegate: self.commandDelegate, data: checkedFilename.absoluteString, mode: self.blackboardViewPriority!)
             self.dismiss(animated: true, completion: nil)
         }
 
