@@ -602,7 +602,7 @@ extension CameraViewController: AVCapturePhotoCaptureDelegate {
         if let jpegData = data {
 //            let base64String = jpegData.base64EncodedString(options: .lineLength64Characters)
             guard let photoInfo = photoInfo else { return }
-            guard let imageDataEmbedMetaData = ElectronicBlackBoardManager.createImageEmbeddedMetaData(from: jpegData, photoInfo: photoInfo,imageDescription: "test image",model: model(),software: "TPR2") else {
+            guard let imageDataEmbedMetaData = ElectronicBlackBoardManager.createImageEmbeddedMetaData(from: jpegData, photoInfo: photoInfo, imageDescription: "T-Pile Recorder Image", model: model(), software: "T-Pile Recorder") else {
                         return
                     }
             let timestamp = NSDate().timeIntervalSince1970
