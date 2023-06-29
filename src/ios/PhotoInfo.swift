@@ -42,19 +42,19 @@ class PhotoInfo {
     }
 
     init(dic: Dictionary<String, Any>) {
-        self.constructionName = dic["constructionName"] as! String
-        self.contractor = dic["contractor"] as! String
-        self.largeClassification = dic["largeClassification"] as! String
-        self.photoClassification = dic["photoClassification"] as! String
-        self.constructionType = dic["constructionType"] as! String
-        self.middleClassification = dic["middleClassification"] as! String
-        self.smallClassification = dic["smallClassification"] as! String
-        self.title = dic["title"] as! String
-        self.classificationRemarks = dic["classificationRemarks"] as! [String]
-        self.shootingSpot = dic["shootingSpot"] as! String
-        self.isRepresentative = dic["isRepresentative"] as! Bool
-        self.isFrequencyOfSubmission = dic["isFrequencyOfSubmission"] as! Bool
-        self.contractorRemarks = dic["contractorRemarks"] as! String
+        self.constructionName = dic["constructionName"] as? String ?? ""
+        self.contractor = dic["contractor"] as? String ?? ""
+        self.largeClassification = dic["largeClassification"] as? String ?? ""
+        self.photoClassification = dic["photoClassification"] as? String ?? ""
+        self.constructionType = dic["constructionType"] as? String ?? ""
+        self.middleClassification = dic["middleClassification"] as? String ?? ""
+        self.smallClassification = dic["smallClassification"] as? String ?? ""
+        self.title = dic["title"] as? String ?? ""
+        self.classificationRemarks = dic["classificationRemarks"] as? [String]  ?? [""]
+        self.shootingSpot = dic["shootingSpot"] as? String ?? ""
+        self.isRepresentative = dic["isRepresentative"] as? Bool ?? false
+        self.isFrequencyOfSubmission = dic["isFrequencyOfSubmission"] as? Bool ?? false
+        self.contractorRemarks = dic["contractorRemarks"] as? String ?? ""
         self.measurements = Measurement(dic: dic["measurements"] as! Dictionary<String, Any>)
     }
     
