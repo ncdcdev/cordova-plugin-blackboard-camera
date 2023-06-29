@@ -55,7 +55,7 @@ class PhotoInfo {
         self.isRepresentative = dic["isRepresentative"] as? Bool ?? false
         self.isFrequencyOfSubmission = dic["isFrequencyOfSubmission"] as? Bool ?? false
         self.contractorRemarks = dic["contractorRemarks"] as? String ?? ""
-        self.measurements = Measurement(dic: dic["measurements"] as! Dictionary<String, Any>)
+        self.measurements = Measurement(dic: dic["measurements"] as? Dictionary<String, Any> ?? ["": ""])
     }
     
     func toXMP() -> String {
@@ -101,7 +101,7 @@ class Measurement {
         self.measurementItems = measurementItems
     }
     init(dic: Dictionary<String, Any>) {
-        self.classification = MeasurementClassification(rawValue: dic["classification"] as! Int ) ?? MeasurementClassification.constructionManagementValue
+        self.classification = MeasurementClassification(rawValue: dic["classification"] as? Int ??  0) ?? MeasurementClassification.constructionManagementValue
         self.measurementItems = (dic["measurementItems"] as! Array<Dictionary<String, Any>>).map { MeasurementItem(dic: $0 ) }
     }
     
@@ -179,12 +179,12 @@ class MeasurementItem {
         self.remarks = remarks
     }
     init(dic: Dictionary<String, Any>) {
-        self.name = dic["name"] as! String
-        self.mark = dic["mark"] as! String
-        self.designedValue = dic["designedValue"] as! String
-        self.measuredValue = dic["measuredValue"] as! String
-        self.unitName = UnitName(rawValue: dic["unitName"] as! String) ?? UnitName.um // TODO
-        self.remarks = dic["remarks"] as! [String]
+        self.name = dic["name"] as? String ?? ""
+        self.mark = dic["mark"] as? String ?? ""
+        self.designedValue = dic["designedValue"] as? String ?? ""
+        self.measuredValue = dic["measuredValue"] as? String ?? ""
+        self.unitName = UnitName(rawValue: dic["unitName"] as? String ?? "") ?? UnitName.um // TODO
+        self.remarks = dic["remarks"] as? [String] ?? [""]
     }
     
     func toXMP() -> String {
