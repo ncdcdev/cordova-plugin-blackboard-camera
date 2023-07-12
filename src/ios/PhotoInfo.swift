@@ -61,6 +61,9 @@ class PhotoInfo {
     func toXMP() -> String {
         let classificationRemarksXMP = classificationRemarks.enumerated().map { "<rdf:li>\($0)</rdf:li>"}.joined()
         let measurementsXMP = measurements.toXMP()
+
+        let isRepresentative = self.isRepresentative ? "True" : "False"
+        let isFrequencyOfSubmission = self.isFrequencyOfSubmission ? "True" : "False"
         
         return """
         <x:xmpmeta xmlns:x="adobe:ns:meta/">
