@@ -87,7 +87,9 @@ class PhotoInfo {
         <photo:ShootingSpot>\(shootingSpot)</photo:ShootingSpot>
         <photo:IsRepresentative>\(isRepresentative)</photo:IsRepresentative>
         <photo:IsFrequencyOfSubmission>\(isFrequencyOfSubmission)</photo:IsFrequencyOfSubmission>
+        <photo:Measurements>
         \(measurementsXMP)
+        </photo:Measurements>
         <photo:ContractorRemarks>\(contractorRemarks)</photo:ContractorRemarks>
         </rdf:Description>
         </rdf:RDF>
