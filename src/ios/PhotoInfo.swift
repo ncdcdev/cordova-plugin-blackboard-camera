@@ -68,6 +68,8 @@ class PhotoInfo {
         <rdf:Description rdf:about="" xmlns:photo="http://dcpadv.org/schema/3.0/photoinfo"
         xmlns:measurement="http://dcpadv.org/schema/3.0/measurement"
         xmlns:item="http://dcpadv.org/schema/3.0/measurementitem">
+        <photo:ConstructionName>\(constructionName)</photo:ConstructionName>
+        <photo:Contractor>\(contractor)</photo:Contractor>
         <photo:LargeClassification>\(largeClassification)</photo:LargeClassification>
         <photo:PhotoClassification>\(photoClassification)</photo:PhotoClassification>
         <photo:ConstructionType>\(constructionType)</photo:ConstructionType>
