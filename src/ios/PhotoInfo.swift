@@ -205,7 +205,7 @@ class MeasurementItem {
         <item:Mark>\(mark)</item:Mark>
         <item:DesignedValue>\(designedValue)</item:DesignedValue>
         <item:MeasuredValue>\(measuredValue)</item:MeasuredValue>
-        <item:Unit>\(unitName)</item:Unit>
+        <item:UnitName>\(unitName)</item:UnitName>
         <item:Remarks>
         <rdf:Seq>
         \(remarksXMP)
