@@ -174,10 +174,11 @@ class MeasurementItem {
     var mark: String
     var designedValue: String
     var measuredValue: String
-    var unitName: UnitName
+    // var unitName: UnitName
+    var unitName: String
     var remarks: [String]
     
-    init(name: String, mark: String, designedValue: String, measuredValue: String, unitName: UnitName, remarks: [String]) {
+    init(name: String, mark: String, designedValue: String, measuredValue: String, unitName: String, remarks: [String]) {
         self.name = name
         self.mark = mark
         self.designedValue = designedValue
@@ -190,7 +191,8 @@ class MeasurementItem {
         self.mark = dic["mark"] as? String ?? ""
         self.designedValue = dic["designedValue"] as? String ?? ""
         self.measuredValue = dic["measuredValue"] as? String ?? ""
-        self.unitName = UnitName(rawValue: dic["unitName"] as? String ?? "") ?? UnitName.um // TODO
+        // self.unitName = UnitName(rawValue: dic["unitName"] as? String ?? "") ?? UnitName.um // TODO
+        self.unitName = dic["unitName"] as? String ?? ""
         self.remarks = dic["remarks"] as? [String] ?? [""]
     }
     
@@ -203,7 +205,7 @@ class MeasurementItem {
         <item:Mark>\(mark)</item:Mark>
         <item:DesignedValue>\(designedValue)</item:DesignedValue>
         <item:MeasuredValue>\(measuredValue)</item:MeasuredValue>
-        <item:Unit>\(unitName.rawValue)</item:Unit>
+        <item:Unit>\(unitName)</item:Unit>
         <item:Remarks>
         <rdf:Seq>
         \(remarksXMP)
