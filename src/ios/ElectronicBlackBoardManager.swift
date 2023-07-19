@@ -33,6 +33,19 @@ final class ElectronicBlackBoardManager: ElectronicBlackBoardManagerProtocol {
         formatter.dateFormat = "yyyy:MM:dd HH:mm:ss"
         let formattedDate = formatter.string(from: now)
 
+        // ExifVersion	Exifバージョン	0x9000	Undefined	4	◎
+        // ComponentsConfiguration	各コンポーネントの意味	0x9101	Undefined	4	◎
+        // FlashpixVersion	対応フラッシュピックスバージョン	0xA000	Undefined	4	◎
+        // ColorSpace	色空間情報	0xA001	Short	1	◎
+        // PixelXDimension	実効画像幅	0xA002	Short/Long	1	◎
+        // PixelYDimension	実効画像高さ	0xA003	Short/Long	1	◎
+        // SubSecTime	DateTimeのサブセック	0x9290	Ascii	Any	△
+        // SubSecTimeOriginal	DateTimeOriginalのサブセック	0x9291	Ascii	Any	△
+        // SubSecTimeDigitized	DateTimeDigitizedのサブセック	0x9292	Ascii	Any	△
+        // DateTime	ファイル変更日時	0x0132	Ascii	20	○
+        // DateTimeOriginal	原画像データの生成日時	0x9003	Ascii	20	△
+        // DateTimeDigitized	デジタルデータの作成日時	0x9004	Ascii	20	△
+
         let metaData = [
             kCGImagePropertyTIFFDictionary: [
                 kCGImagePropertyTIFFImageDescription: imageDescription,
@@ -41,7 +54,6 @@ final class ElectronicBlackBoardManager: ElectronicBlackBoardManagerProtocol {
             ],
             kCGImagePropertyExifDictionary: [
                 kCGImagePropertyExifDateTimeOriginal: formattedDate,
-//                kCGImagePropertyExifUserComment:"fizzbuzz!"
             ]
         ] as CFDictionary
         let dest: CGImageDestination? = CGImageDestinationCreateWithURL(url as CFURL, kUTTypeJPEG, 1, nil)
