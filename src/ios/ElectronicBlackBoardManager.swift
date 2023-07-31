@@ -31,6 +31,7 @@ final class ElectronicBlackBoardManager: ElectronicBlackBoardManagerProtocol {
         let now = Date()
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy:MM:dd HH:mm:ss"
+        let millisec = Int(now.timeIntervalSince1970 * 1000) % 1000
         let formattedDate = formatter.string(from: now)
 
         // ExifVersion	Exifバージョン	0x9000	Undefined	4	◎
@@ -54,6 +55,8 @@ final class ElectronicBlackBoardManager: ElectronicBlackBoardManagerProtocol {
             ],
             kCGImagePropertyExifDictionary: [
                 kCGImagePropertyExifDateTimeOriginal: formattedDate,
+                kCGImagePropertyExifSubsecTimeOriginal: millisec,
+                kCGImagePropertyExifVersion: "0230",
             ]
         ] as CFDictionary
         let dest: CGImageDestination? = CGImageDestinationCreateWithURL(url as CFURL, kUTTypeJPEG, 1, nil)
