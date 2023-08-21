@@ -63,8 +63,8 @@ final class ElectronicBlackBoardManager: ElectronicBlackBoardManagerProtocol {
         exif[kCGImagePropertyExifDateTimeOriginal as String] = formattedDate
         exif[kCGImagePropertyExifSubsecTimeOriginal as String] = millisec
         exif[kCGImagePropertyExifVersion as String] = [2, 3, 0]
-        exif[kCGImagePropertyExifComponentsConfiguration] = [1, 2, 3, 0]
-        exif[kCGImagePropertyExifFlashPixVersion] = [1, 0, 0]
+        exif[kCGImagePropertyExifComponentsConfiguration as String] = [1, 2, 3, 0]
+        exif[kCGImagePropertyExifFlashPixVersion as String] = [1, 0, 0]
 
         // メタ情報を作成
         let metaData = [
