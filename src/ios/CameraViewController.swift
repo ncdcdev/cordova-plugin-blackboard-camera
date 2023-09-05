@@ -27,6 +27,7 @@ class CameraViewController: UIViewController {
     var isNeedBlackBoard: Bool?
     var blackboardViewPriority: String?
     var photoInfo: PhotoInfo?
+    var version: String?
     var isLandscape = false
 
     var ltCircle: UIView? // leftTop
@@ -602,7 +603,7 @@ extension CameraViewController: AVCapturePhotoCaptureDelegate {
         if let jpegData = data {
 //            let base64String = jpegData.base64EncodedString(options: .lineLength64Characters)
             guard let photoInfo = photoInfo else { return }
-            guard let imageDataEmbedMetaData = ElectronicBlackBoardManager.createImageEmbeddedMetaData(from: jpegData, photoInfo: photoInfo, imageDescription: "DCP PHOTO", model: model(), software: "T-Pile Recorder") else {
+            guard let imageDataEmbedMetaData = ElectronicBlackBoardManager.createImageEmbeddedMetaData(from: jpegData, photoInfo: photoInfo, imageDescription: "DCP PHOTO", model: model(), software: version ?? "TPR2 3.1.1") else {
                         return
                     }
             let timestamp = NSDate().timeIntervalSince1970

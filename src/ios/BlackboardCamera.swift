@@ -16,6 +16,9 @@ import Foundation
             vc.boardImage = String2Image(base64String: base64)
             vc.isNeedBlackBoard = isNeedBlackBoard
             vc.blackboardViewPriority = blackboardViewPriority
+            if let version = command.argument(at: 4) as? String {
+                vc.version = version
+            }
             do {
                 let jsonData = jcomsiaPhoto.data(using: .utf8)!
                 let photoInfo = try JSONSerialization.jsonObject(with: jsonData, options:  .mutableContainers)
