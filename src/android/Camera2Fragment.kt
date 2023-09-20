@@ -161,6 +161,10 @@ class Camera2Fragment : Fragment(), View.OnClickListener, View.OnTouchListener {
      */
     private lateinit var mFile: File
 
+    private lateinit var mPhotoInfo: PhotoInfo
+
+    private lateinit var mVersion: String
+
     /**
      * This a callback object for the [ImageReader]. "onImageAvailable" will be called when a
      * still image is ready to be saved.
@@ -175,7 +179,7 @@ class Camera2Fragment : Fragment(), View.OnClickListener, View.OnTouchListener {
             boardRect.offsetTo(boardRect.left - screenOffset.x, boardRect.top - screenOffset.y)
         }
         // 黒板の座標をカメラビューをベースにした座標に変換
-        mBackgroundHandler!!.post(ImageSaver(reader.acquireNextImage(), mFile, boardBitmapDrawable, boardRect, mTextureView!!.toRect().min().toFloat(), activity as CameraActivity?))
+        mBackgroundHandler!!.post(ImageSaver(reader.acquireNextImage(), mFile, boardBitmapDrawable, boardRect, mTextureView!!.toRect().min().toFloat(), activity as CameraActivity?, mPhotoInfo, mVersion))
     }
 
     /**
@@ -320,8 +324,9 @@ class Camera2Fragment : Fragment(), View.OnClickListener, View.OnTouchListener {
 
         // タッチイベントの登録
         mTextureView!!.setOnTouchListener(this)
+        val cameraActivity = (activity as CameraActivity)
 
-        val boardPath = (activity as CameraActivity).boardPath
+        val boardPath = cameraActivity.boardPath
         Log.w(TAG, "boardPath = $boardPath")
         val filePath = File(boardPath).absolutePath
         var bitmap = BitmapFactory.decodeFile(filePath)
@@ -334,8 +339,11 @@ class Camera2Fragment : Fragment(), View.OnClickListener, View.OnTouchListener {
 
         mFlashModeIndex = preferences.getInt("flashMode", 0)
         var isVisible = preferences.getBoolean("boardMode", true)
-        var priority = (activity as CameraActivity).blackboardViewPriority
-        var isNeedBlackBoard = (activity as CameraActivity).isNeedBlackBoard
+        var priority = cameraActivity.blackboardViewPriority
+        var isNeedBlackBoard = cameraActivity.isNeedBlackBoard
+        mPhotoInfo = cameraActivity.photoInfo
+        mVersion = cameraActivity.version
+
         // 黒板表示優先モードが「Web」で、Webから取得した「isNeedBlackBoard」がfalaeの場合、黒板は非表示とする
         if (priority == "Web") {
             if (!isNeedBlackBoard) {
@@ -1175,14 +1183,17 @@ class Camera2Fragment : Fragment(), View.OnClickListener, View.OnTouchListener {
 
             private val minSize: Float,
 
-            private val activity: CameraActivity?
+            private val activity: CameraActivity?,
+
+            private val photoInfo: PhotoInfo,
+
+            private val version: String?
 
     ) : Runnable {
 
         override fun run() {
-            Log.d(TAG, "test:ImageSaver")
-            var buffer = image.planes[0].buffer
-            var bytes: ByteArray? = ByteArray(buffer.remaining())
+            val buffer = image.planes[0].buffer
+            val bytes = ByteArray(buffer.remaining())
             buffer.get(bytes)
             var output: FileOutputStream? = null
             try {
@@ -1218,14 +1229,14 @@ class Camera2Fragment : Fragment(), View.OnClickListener, View.OnTouchListener {
                         Log.d(TAG, "ExifInterface.ORIENTATION_UNDEFINED")
                     }
                     val rect = cropRectByAspect(original.width, original.height)
-                    var rotated: Bitmap = Bitmap.createBitmap(original, rect.left, rect.top, rect.width(), rect.height(), m, true)
+                    val rotated: Bitmap = Bitmap.createBitmap(original, rect.left, rect.top, rect.width(), rect.height(), m, true)
                     if (board != null) {
                         boardRect.convert(minSize / min(rect.width(), rect.height()))
                         rotated.append(board.bitmap, boardRect)
                     }
                     // 100万画素のサイズに変更
-                    var sWidth: Int
-                    var sHeight: Int
+                    val sWidth: Int
+                    val sHeight: Int
                     if (rotated.width > rotated.height) {
                         sWidth = 1156
                         sHeight = 867
@@ -1235,6 +1246,8 @@ class Camera2Fragment : Fragment(), View.OnClickListener, View.OnTouchListener {
                     }
                     val scaled: Bitmap = Bitmap.createScaledBitmap(rotated, sWidth, sHeight, true)
                     scaled.compress(Bitmap.CompressFormat.JPEG, 100, output)
+
+                    ElectronicBlackBoardManager.createImageEmbeddedMetaData(file.absolutePath, photoInfo, "DCP PHOTO", "Android", version ?: "TPR2 3.1.1")
 
                     Log.i(TAG, "exifOrientation=$exifOrientation, rotation=$rotation")
 //                    activity.runOnUiThread {

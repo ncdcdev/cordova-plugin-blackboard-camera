@@ -32,12 +32,18 @@ class BlackboardCamera : CordovaPlugin() {
                     (data[1] as Int) == 1
                 }
                 val blackboardViewPriority: String = data[2]  as String
+                var jcomsiaPhoto: String = data[3] as String
+                val photoInfoJson = JSONObject(jcomsiaPhoto)
+                val photoInfo = PhotoInfo(photoInfoJson)
+                var version: String = data[4] as String
                 val filePath = "${cordova.activity.applicationContext.filesDir}/board.png"
                 decoder(base64, filePath)
                 if (File(filePath).exists()) {
                     intent.putExtra("boardPath", filePath)
                     intent.putExtra("isNeedBlackBoard", isNeedBlackBoard)
                     intent.putExtra("blackboardViewPriority", blackboardViewPriority)
+                    intent.putExtra("photoInfo", photoInfo)
+                    intent.putExtra("version", version)
                 }
                 cordova.startActivityForResult(this, intent, 1)
             } else {
