@@ -94,13 +94,12 @@
     </config-file>
     <!-- <edit-config file="AndroidManifest.xml" target="/manifest/application" mode="merge">
         <application android:largeHeap="true"></application>
-    </edit-config> -->
+    </edit-config> -->et
     <!-- <edit-config file="AndroidManifest.xml" target="/manifest/application" mode="overwrite">
         <application android:theme="@style/Theme.AppCompat.NoActionBar"></application>
     </edit-config> -->
 
     <framework src="com.android.support:exifinterface:27.1.1" />
-    <framework src="com.google.code.gson:gson:2.8.8" custom="true" />
 
     <source-file src="src/android/BlackboardCamera.kt" target-dir="app/src/main/java/jp/co/taisei/construction/fieldmanagement/plugin"/>
     <source-file src="src/android/CameraActivity.kt" target-dir="app/src/main/java/jp/co/taisei/construction/fieldmanagement/plugin"/>
