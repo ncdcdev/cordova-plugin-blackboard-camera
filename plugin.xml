@@ -62,6 +62,7 @@
     <!-- <framework src="com.android.support:appcompat-v7:27.1.1" /> -->
     <!-- <apply-plugin>kotlin-android-extensions</apply-plugin> -->
     <apply-plugin>kotlin-kapt</apply-plugin>
+    <framework src="org.jetbrains.kotlinx:kotlinx-serialization-runtime:1.0.1" /> <!-- Updated kotlinx.serialization version -->
 
     <!-- Cleanup Kotlin source on uninstall -->
     <hook type="before_plugin_rm" src="hooks/on-uninstall.js" />
@@ -99,12 +100,15 @@
     </edit-config> -->
 
     <framework src="com.android.support:exifinterface:27.1.1" />
+    <framework src="com.google.code.gson:gson:2.8.8" custom="true" />
 
     <source-file src="src/android/BlackboardCamera.kt" target-dir="app/src/main/java/jp/co/taisei/construction/fieldmanagement/plugin"/>
     <source-file src="src/android/CameraActivity.kt" target-dir="app/src/main/java/jp/co/taisei/construction/fieldmanagement/plugin"/>
     <source-file src="src/android/AutoFitTextureView.kt" target-dir="app/src/main/java/jp/co/taisei/construction/fieldmanagement/plugin"/>
     <source-file src="src/android/Camera2Fragment.kt" target-dir="app/src/main/java/jp/co/taisei/construction/fieldmanagement/plugin"/>
     <source-file src="src/android/SensorOrientation.kt" target-dir="app/src/main/java/jp/co/taisei/construction/fieldmanagement/plugin"/>
+    <source-file src="src/android/ElectronicBlackBoardManager.kt" target-dir="app/src/main/java/jp/co/taisei/construction/fieldmanagement/plugin"/>
+    <source-file src="src/android/PhotoInfo.kt" target-dir="app/src/main/java/jp/co/taisei/construction/fieldmanagement/plugin"/>
 
     <source-file src="src/android/layout/activity_main.xml" target-dir="app/src/main/res/layout"/>
     <source-file src="src/android/layout-land/fragment_camera2.xml" target-dir="app/src/main/res/layout-land"/>
