@@ -7,8 +7,8 @@
 
   <engines>
     <engine name="cordova" version=">=11.0.0"/>
-    <!-- <engine name="cordova-android" version=">=7.0.0"/>
-    <engine name="cordova-ios" version=">=7.0.0"/> -->
+    <engine name="cordova-android" version=">=11.0.0"/>
+    <!-- <engine name="cordova-ios" version=">=6.2.0"/> -->
   </engines>
 
   <asset src="www/blackboard_camera.js" target="js/blackboard_camera.js"/>
@@ -55,20 +55,18 @@
 
   <platform name="android" kotlin="1.5.21">
     <!-- Add Kotlin support -->
-    <hook type="after_plugin_add" src="hooks/support-kotlin.js" />
-    <hook type="after_platform_add" src="hooks/support-kotlin.js" />
     <plugin name="cordova-plugin-androidx-adapter" />
     <!-- <framework src="org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.2.31" /> -->
     <!-- <framework src="com.android.support:appcompat-v7:27.1.1" /> -->
     <!-- <apply-plugin>kotlin-android-extensions</apply-plugin> -->
     <apply-plugin>kotlin-kapt</apply-plugin>
-    <framework src="org.jetbrains.kotlinx:kotlinx-serialization-runtime:1.0.1" /> <!-- Updated kotlinx.serialization version -->
 
     <!-- Cleanup Kotlin source on uninstall -->
     <hook type="before_plugin_rm" src="hooks/on-uninstall.js" />
     <hook type="before_plugin_uninstall" src="hooks/on-uninstall.js" />
 
     <config-file target="config.xml" parent="/*">
+      <preference name="GradlePluginKotlinEnabled" value="true" />
       <feature name="BlackboardCamera">
         <param name="android-package" value="jp.co.taisei.construction.fieldmanagement.plugin.BlackboardCamera"/>
         <param name="onload" value="true" />
