@@ -65,6 +65,9 @@
     <hook type="before_plugin_rm" src="hooks/on-uninstall.js" />
     <hook type="before_plugin_uninstall" src="hooks/on-uninstall.js" />
 
+    <hook type="after_platform_add" src="hooks/modify_build.gradle.js" />
+    <hook type="after_platform_add" src="hooks/copy_native_files.js" />
+
     <config-file target="config.xml" parent="/*">
       <preference name="GradlePluginKotlinEnabled" value="true" />
       <feature name="BlackboardCamera">
