@@ -13,18 +13,21 @@ module.exports = function (context) {
   if (fs.existsSync(gradlePath)) {
     var gradleContent = fs.readFileSync(gradlePath, "utf-8");
 
-    if (!gradleContent.match(/externalNativeBuild/g)) {
-      var placeHolder = "android {";
-      var newContent = `
+    // C++とKotlinの連携の設定を追加
+    var settingsToAdd = `
+android {
     externalNativeBuild {
         cmake {
-            path "src/android/cpp/CMakeLists.txt"
+            path "src/main/cpp/CMakeLists.txt"
         }
     }
+}
 `;
+
+    if (!gradleContent.includes("externalNativeBuild")) {
       gradleContent = gradleContent.replace(
-        placeHolder,
-        placeHolder + newContent
+        "android {",
+        "android {" + settingsToAdd
       );
       fs.writeFileSync(gradlePath, gradleContent, "utf-8");
     }
