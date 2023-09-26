@@ -12,20 +12,21 @@ import Foundation
             let base64 = command.argument(at: 0) as! String
             let isNeedBlackBoard = command.argument(at: 1) as! Bool
             let blackboardViewPriority = command.argument(at: 2) as! String
-            let jcomsiaPhoto = command.argument(at: 3) as! String
+            let jcomsiaPhoto = command.argument(at: 3) as? String
             vc.boardImage = String2Image(base64String: base64)
             vc.isNeedBlackBoard = isNeedBlackBoard
             vc.blackboardViewPriority = blackboardViewPriority
             if let version = command.argument(at: 4) as? String {
                 vc.version = version
             }
-            do {
-                let jsonData = jcomsiaPhoto.data(using: .utf8)!
-                let photoInfo = try JSONSerialization.jsonObject(with: jsonData, options:  .mutableContainers)
-                vc.photoInfo = PhotoInfo(dic: photoInfo as! Dictionary<String, Any>)
-            } catch {
-                // TODO
-                print(error.localizedDescription)
+            if let _jcomsiaPhoto = jcomsiaPhoto {
+                do {
+                    let jsonData = _jcomsiaPhoto.data(using: .utf8)!
+                    let photoInfo = try JSONSerialization.jsonObject(with: jsonData, options:  .mutableContainers)
+                    vc.photoInfo = PhotoInfo(dic: photoInfo as! Dictionary<String, Any>)
+                } catch {
+                    print(error.localizedDescription)
+                }
             }
             self.viewController.present(vc, animated: true, completion: nil)
         }

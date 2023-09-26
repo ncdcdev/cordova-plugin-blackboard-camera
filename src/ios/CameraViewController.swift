@@ -602,15 +602,19 @@ extension CameraViewController: AVCapturePhotoCaptureDelegate {
         let data = resizedImage!.jpegData(compressionQuality: 1.0)
         if let jpegData = data {
 //            let base64String = jpegData.base64EncodedString(options: .lineLength64Characters)
-            guard let photoInfo = photoInfo else { return }
-            guard let imageDataEmbedMetaData = ElectronicBlackBoardManager.createImageEmbeddedMetaData(from: jpegData, photoInfo: photoInfo, imageDescription: "DCP PHOTO", model: model(), software: version ?? "TPR2 3.1.1") else {
-                        return
-                    }
             let timestamp = NSDate().timeIntervalSince1970
-            let filename = getDocumentsDirectory().appendingPathComponent("_\(timestamp)_before.jpeg")
             let checkedFilename = getDocumentsDirectory().appendingPathComponent("_\(timestamp).jpeg")
-            // 信ぴょう性チェック情報作成前にファイルを作成
-            try? imageDataEmbedMetaData.write(to: filename)
+            let filename = getDocumentsDirectory().appendingPathComponent("_\(timestamp)_before.jpeg")
+            if let photoInfo = photoInfo {
+                guard let imageDataEmbedMetaData = ElectronicBlackBoardManager.createImageEmbeddedMetaData(from: jpegData, photoInfo: photoInfo, imageDescription: "DCP PHOTO", model: model(), software: version ?? "TPR2 3.1.1") else {
+                    return
+                }
+                // XMP情報追加のファイル作成
+                try? imageDataEmbedMetaData.write(to: filename)
+            } else {
+                try? jpegData.write(to: filename)
+            }
+            // 信ぴょう性対応
             let result = JCOMSIA.writeHashValue(from: filename.path, to: checkedFilename.path)
             if result == 0 {
                 // 信ぴょう性チェック情報作成前のデータは削除する
