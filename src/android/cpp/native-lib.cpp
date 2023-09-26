@@ -13,7 +13,7 @@ extern "C" JNIEXPORT jint JNICALL
  * 指定された JPEG ファイルに改ざんチェック値を埋め込んだファイルを出力する。
  * sourceFile と destFile には同じファイルを設定できない。
  */
-Java_com_example_androidsample_WriteHashActivity_writeHash(JNIEnv *env, jobject obj, jstring srcFilePath, jstring destFilePath) {
+Java_jp_co_taisei_construction_fieldmanagement_plugin_Camera2Fragment_00024Companion_writeHash(JNIEnv *env, jobject obj, jstring srcFilePath, jstring destFilePath) {
 
     const char *src = env->GetStringUTFChars(srcFilePath, nullptr);
     const char *dst = env->GetStringUTFChars(destFilePath, nullptr);
@@ -30,7 +30,7 @@ extern "C" JNIEXPORT jint JNICALL
  * @param viewModel hashCodeを持っているオブジェクト
  * @return 終了コード（正常終了またはエラーを示すコード）。処理の途中でエラーにより中断された場合、 hashCode には NULL が格納される。
  */
-Java_com_example_androidsample_SVGCalculateHashActivity_svgCalculateHash(JNIEnv *env, jobject obj, jstring imagePath, jstring chalkBoardPath, jobject hashCodeObj) {
+Java_jp_co_taisei_construction_fieldmanagement_plugin_Camera2Fragment_00024Companion_svgCalculateHash(JNIEnv *env, jobject obj, jstring imagePath, jstring chalkBoardPath, jobject hashCodeObj) {
 
     const char *image = env->GetStringUTFChars(imagePath, nullptr);
     const char *chalkBoard = env->GetStringUTFChars(chalkBoardPath, nullptr);

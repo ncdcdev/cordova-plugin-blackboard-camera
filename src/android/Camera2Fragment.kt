@@ -1250,7 +1250,7 @@ class Camera2Fragment : Fragment(), View.OnClickListener, View.OnTouchListener {
                     if (photoInfo != null) {
                         ElectronicBlackBoardManager.createImageEmbeddedMetaData(file.absolutePath, photoInfo, "DCP PHOTO", "Android", version ?: "TPR2 3.1.1")
                     }
-                    val checkedFilePath = "$file.parent/_$file.name"
+                    val checkedFilePath = "${file.parent}/_${file.name}"
                     writeHash(file.absolutePath, checkedFilePath)
 
                     Log.i(TAG, "exifOrientation=$exifOrientation, rotation=$rotation")
