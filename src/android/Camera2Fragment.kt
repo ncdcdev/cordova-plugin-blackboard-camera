@@ -1250,15 +1250,17 @@ class Camera2Fragment : Fragment(), View.OnClickListener, View.OnTouchListener {
                     if (photoInfo != null) {
                         ElectronicBlackBoardManager.createImageEmbeddedMetaData(file.absolutePath, photoInfo, "DCP PHOTO", "Android", version ?: "TPR2 3.1.1")
                     }
+                    val checkedFilePath = "$file.parent/_$file.name"
+                    writeHash(file.absolutePath, checkedFilePath)
 
                     Log.i(TAG, "exifOrientation=$exifOrientation, rotation=$rotation")
 //                    activity.runOnUiThread {
 //                        Toast.makeText(activity, "exifOrientation=$exifOrientation, rotation=$rotation", Toast.LENGTH_LONG).show()
 //                    }
 
-                    addImageToGallery(file.absolutePath)
+                    addImageToGallery(checkedFilePath)
                     val intent = Intent()
-                    intent.putExtra("filePath", file.absolutePath)
+                    intent.putExtra("filePath", checkedFilePath)
                     intent.putExtra("mode", activity.blackboardViewPriority)
                     activity.setResult(1, intent)
                     activity.finish()
@@ -1348,11 +1350,14 @@ class Camera2Fragment : Fragment(), View.OnClickListener, View.OnTouchListener {
         private val ORIENTATIONS = SparseIntArray()
 
         init {
+            System.loadLibrary("native-lib")
             ORIENTATIONS.append(Surface.ROTATION_0, 90)
             ORIENTATIONS.append(Surface.ROTATION_90, 0)
             ORIENTATIONS.append(Surface.ROTATION_180, 270)
             ORIENTATIONS.append(Surface.ROTATION_270, 180)
         }
+        // 改ざん検知情報埋め込みメソッド
+        external fun writeHash(srcFilePath: String, outputFilePath: String): Int
 
         /**
          * Tag for the [Log].
