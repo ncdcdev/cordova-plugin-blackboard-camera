@@ -41,8 +41,8 @@ class CameraActivity : CordovaActivity(), SensorEventListener, ActivityCompat.On
 
     var boardPath: String? = null
     var isNeedBlackBoard: Boolean = false
+    var photoInfo: PhotoInfo? = null
     lateinit var blackboardViewPriority: String
-    lateinit var photoInfo: PhotoInfo
     lateinit var version: String
 
     private var mPreOrientation = -1
@@ -66,7 +66,7 @@ class CameraActivity : CordovaActivity(), SensorEventListener, ActivityCompat.On
         this.boardPath = intent.extras?.get("boardPath") as String?
         this.isNeedBlackBoard = intent.extras?.get("isNeedBlackBoard") as Boolean
         this.blackboardViewPriority = intent.extras!!["blackboardViewPriority"] as String
-        this.photoInfo = intent.extras?.get("photoInfo") as PhotoInfo
+        this.photoInfo = intent.extras?.get("photoInfo") as PhotoInfo?
         this.version = intent.extras?.get("version") as String
 
         checkPermission()

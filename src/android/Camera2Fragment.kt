@@ -161,7 +161,7 @@ class Camera2Fragment : Fragment(), View.OnClickListener, View.OnTouchListener {
      */
     private lateinit var mFile: File
 
-    private lateinit var mPhotoInfo: PhotoInfo
+    var mPhotoInfo: PhotoInfo? = null
 
     private lateinit var mVersion: String
 
@@ -1185,7 +1185,7 @@ class Camera2Fragment : Fragment(), View.OnClickListener, View.OnTouchListener {
 
             private val activity: CameraActivity?,
 
-            private val photoInfo: PhotoInfo,
+            private val photoInfo: PhotoInfo?,
 
             private val version: String?
 
@@ -1246,8 +1246,10 @@ class Camera2Fragment : Fragment(), View.OnClickListener, View.OnTouchListener {
                     }
                     val scaled: Bitmap = Bitmap.createScaledBitmap(rotated, sWidth, sHeight, true)
                     scaled.compress(Bitmap.CompressFormat.JPEG, 100, output)
-
-                    ElectronicBlackBoardManager.createImageEmbeddedMetaData(file.absolutePath, photoInfo, "DCP PHOTO", "Android", version ?: "TPR2 3.1.1")
+                    // XMPのMeta情報がある場合
+                    if (photoInfo != null) {
+                        ElectronicBlackBoardManager.createImageEmbeddedMetaData(file.absolutePath, photoInfo, "DCP PHOTO", "Android", version ?: "TPR2 3.1.1")
+                    }
 
                     Log.i(TAG, "exifOrientation=$exifOrientation, rotation=$rotation")
 //                    activity.runOnUiThread {
