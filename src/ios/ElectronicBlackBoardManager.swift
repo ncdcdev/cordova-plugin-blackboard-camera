@@ -16,12 +16,12 @@ import UniformTypeIdentifiers
 
 protocol ElectronicBlackBoardManagerProtocol {
     // PhotoInfoと画像を受け取り、XMPを生成して、メタ情報に埋め込み新しい画像を作成する
-    static func createImageEmbeddedMetaData(from image: Data, photoInfo: PhotoInfo , imageDescription: String,model:String,software:String) -> Data?
+    static func createImageEmbeddedMetaData(from image: Data, photoInfo: PhotoInfo?, imageDescription: String,model:String,software:String) -> Data?
 }
 
 final class ElectronicBlackBoardManager: ElectronicBlackBoardManagerProtocol {
 
-    static func createImageEmbeddedMetaData(from image:Data , photoInfo: PhotoInfo,imageDescription: String,model:String,software:String) -> Data? {
+    static func createImageEmbeddedMetaData(from image:Data , photoInfo: PhotoInfo?, imageDescription: String,model:String,software:String) -> Data? {
         var path = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
         path = path + "/sample.jpg"
         let url = URL(fileURLWithPath: path)
@@ -93,10 +93,10 @@ final class ElectronicBlackBoardManager: ElectronicBlackBoardManagerProtocol {
         CGImageDestinationFinalize(dest!)
 
         // xmpの書き込み
-        let xmp = photoInfo.toXMP()
+        let xmp = photoInfo?.toXMP()
         let swiftXmp = SwiftXMP()
 
-        switch swiftXmp.embedXmp(contens: url, xml: xmp) {
+        switch swiftXmp.embedXmp(contens: url, xml: xmp ?? "") {
         case .success(let data):
             print("add xmp successfully")
             return  data

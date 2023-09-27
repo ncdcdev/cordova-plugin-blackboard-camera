@@ -605,23 +605,19 @@ extension CameraViewController: AVCapturePhotoCaptureDelegate {
             let timestamp = NSDate().timeIntervalSince1970
             let checkedFilename = getDocumentsDirectory().appendingPathComponent("_\(timestamp).jpeg")
             let filename = getDocumentsDirectory().appendingPathComponent("_\(timestamp)_before.jpeg")
-            if let photoInfo = photoInfo {
-                guard let imageDataEmbedMetaData = ElectronicBlackBoardManager.createImageEmbeddedMetaData(from: jpegData, photoInfo: photoInfo, imageDescription: "DCP PHOTO", model: model(), software: version ?? "TPR2 3.1.1") else {
-                    return
-                }
-                // XMP情報追加のファイル作成
-                try? imageDataEmbedMetaData.write(to: filename)
-            } else {
-                try? jpegData.write(to: filename)
+            guard let imageDataEmbedMetaData = ElectronicBlackBoardManager.createImageEmbeddedMetaData(from: jpegData, photoInfo: photoInfo, imageDescription: "DCP PHOTO", model: model(), software: version ?? "TPR2 3.1.1") else {
+                return
             }
+            // XMP情報追加のファイル作成
+            try? imageDataEmbedMetaData.write(to: filename)
             // 信ぴょう性対応
             let result = JCOMSIA.writeHashValue(from: filename.path, to: checkedFilename.path)
             if result == 0 {
                 // 信ぴょう性チェック情報作成前のデータは削除する
                 try? FileManager.default.removeItem(atPath: filename.path)
-                print("[success]checkedFilename=\(checkedFilename.absoluteString)")
+                print("🔵[success]checkedFilename=\(checkedFilename.absoluteString)")
             } else {
-                print("[fail★★]checkedFilename=\(checkedFilename.absoluteString), result=\(result)")
+                print("🔴[fail★★]checkedFilename=\(checkedFilename.absoluteString), filename=\(filename.absoluteString) result=\(result)")
             }
             let back = BlackboardCamera()
             back.invoke(callbackId: self.callbackId, commandDelegate: self.commandDelegate, data: checkedFilename.absoluteString, mode: self.blackboardViewPriority!)
