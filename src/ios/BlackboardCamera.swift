@@ -10,12 +10,12 @@ import Foundation
             vc.callbackId = command.callbackId
             vc.commandDelegate = self.commandDelegate
             let base64 = command.argument(at: 0) as! String
-            let isNeedBlackBoard = command.argument(at: 1) as! Bool
-            let blackboardViewPriority = command.argument(at: 2) as! String
+            let isNeedBlackBoard = command.argument(at: 1) as? Bool
+            let blackboardViewPriority = command.argument(at: 2) as? String
             let jcomsiaPhoto = command.argument(at: 3) as? String
             vc.boardImage = String2Image(base64String: base64)
-            vc.isNeedBlackBoard = isNeedBlackBoard
-            vc.blackboardViewPriority = blackboardViewPriority
+            vc.isNeedBlackBoard = isNeedBlackBoard ?? false
+            vc.blackboardViewPriority = blackboardViewPriority ?? "Web"
             if let version = command.argument(at: 4) as? String {
                 vc.version = version
             }
