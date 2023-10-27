@@ -7,8 +7,8 @@
 
   <engines>
     <engine name="cordova" version=">=11.0.0"/>
-    <!-- <engine name="cordova-android" version=">=7.0.0"/>
-    <engine name="cordova-ios" version=">=7.0.0"/> -->
+    <engine name="cordova-android" version=">=11.0.0"/>
+    <!-- <engine name="cordova-ios" version=">=6.2.0"/> -->
   </engines>
 
   <asset src="www/blackboard_camera.js" target="js/blackboard_camera.js"/>
@@ -27,6 +27,8 @@
     </config-file>
     <source-file src="src/ios/BlackboardCamera.swift" />
     <source-file src="src/ios/CameraViewController.swift" />
+    <source-file src="src/ios/PhotoInfo.swift" />
+    <source-file src="src/ios/ElectronicBlackBoardManager.swift" />
     <resource-file src="src/ios/Main.storyboard" />
 
     // Image Files
@@ -46,14 +48,13 @@
     <resource-file src="src/ios/img/icn_blackboard@3x.png" target-dir="Resources" />
 
     <framework src="AVFoundation.framework" />
+    <framework src="src/ios/framework/JCOMSIAHashLib.framework" custom="true" embed="true"/>
 
     <dependency id="cordova-plugin-add-swift-support" version="2.0.2"/>
   </platform>
 
   <platform name="android" kotlin="1.5.21">
     <!-- Add Kotlin support -->
-    <hook type="after_plugin_add" src="hooks/support-kotlin.js" />
-    <hook type="after_platform_add" src="hooks/support-kotlin.js" />
     <plugin name="cordova-plugin-androidx-adapter" />
     <!-- <framework src="org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.2.31" /> -->
     <!-- <framework src="com.android.support:appcompat-v7:27.1.1" /> -->
@@ -64,7 +65,11 @@
     <hook type="before_plugin_rm" src="hooks/on-uninstall.js" />
     <hook type="before_plugin_uninstall" src="hooks/on-uninstall.js" />
 
+    <hook type="after_platform_add" src="hooks/modify-root-build-gradle.js" />
+    <hook type="after_platform_add" src="hooks/copy_native_files.js" />
+
     <config-file target="config.xml" parent="/*">
+      <preference name="GradlePluginKotlinEnabled" value="true" />
       <feature name="BlackboardCamera">
         <param name="android-package" value="jp.co.taisei.construction.fieldmanagement.plugin.BlackboardCamera"/>
         <param name="onload" value="true" />
@@ -90,7 +95,7 @@
     </config-file>
     <!-- <edit-config file="AndroidManifest.xml" target="/manifest/application" mode="merge">
         <application android:largeHeap="true"></application>
-    </edit-config> -->
+    </edit-config> -->et
     <!-- <edit-config file="AndroidManifest.xml" target="/manifest/application" mode="overwrite">
         <application android:theme="@style/Theme.AppCompat.NoActionBar"></application>
     </edit-config> -->
@@ -102,6 +107,8 @@
     <source-file src="src/android/AutoFitTextureView.kt" target-dir="app/src/main/java/jp/co/taisei/construction/fieldmanagement/plugin"/>
     <source-file src="src/android/Camera2Fragment.kt" target-dir="app/src/main/java/jp/co/taisei/construction/fieldmanagement/plugin"/>
     <source-file src="src/android/SensorOrientation.kt" target-dir="app/src/main/java/jp/co/taisei/construction/fieldmanagement/plugin"/>
+    <source-file src="src/android/ElectronicBlackBoardManager.kt" target-dir="app/src/main/java/jp/co/taisei/construction/fieldmanagement/plugin"/>
+    <source-file src="src/android/PhotoInfo.kt" target-dir="app/src/main/java/jp/co/taisei/construction/fieldmanagement/plugin"/>
 
     <source-file src="src/android/layout/activity_main.xml" target-dir="app/src/main/res/layout"/>
     <source-file src="src/android/layout-land/fragment_camera2.xml" target-dir="app/src/main/res/layout-land"/>

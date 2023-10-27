@@ -10,7 +10,6 @@ import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.os.Build
 import android.os.Bundle
-import android.os.Environment
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import android.view.KeyEvent
@@ -42,7 +41,9 @@ class CameraActivity : CordovaActivity(), SensorEventListener, ActivityCompat.On
 
     var boardPath: String? = null
     var isNeedBlackBoard: Boolean = false
+    var photoInfo: PhotoInfo? = null
     lateinit var blackboardViewPriority: String
+    lateinit var version: String
 
     private var mPreOrientation = -1
 
@@ -65,6 +66,8 @@ class CameraActivity : CordovaActivity(), SensorEventListener, ActivityCompat.On
         this.boardPath = intent.extras?.get("boardPath") as String?
         this.isNeedBlackBoard = intent.extras?.get("isNeedBlackBoard") as Boolean
         this.blackboardViewPriority = intent.extras!!["blackboardViewPriority"] as String
+        this.photoInfo = intent.extras?.get("photoInfo") as PhotoInfo?
+        this.version = intent.extras?.get("version") as String
 
         checkPermission()
     }
@@ -178,6 +181,7 @@ class CameraActivity : CordovaActivity(), SensorEventListener, ActivityCompat.On
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         when (requestCode) {
             PERMISSIONS_REQUEST_CODE -> {
                 if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {

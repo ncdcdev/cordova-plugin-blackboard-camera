@@ -7,6 +7,7 @@
 
 import UIKit
 import AVFoundation
+import JCOMSIAHashLib
 
 enum Marker: Int {
     case Inside = 0
@@ -25,6 +26,8 @@ class CameraViewController: UIViewController {
     var boardImage: UIImage?
     var isNeedBlackBoard: Bool?
     var blackboardViewPriority: String?
+    var photoInfo: PhotoInfo?
+    var version: String?
     var isLandscape = false
 
     var ltCircle: UIView? // leftTop
@@ -552,6 +555,18 @@ class CameraViewController: UIViewController {
 
 //MARK: AVCapturePhotoCaptureDelegateデリゲートメソッド
 extension CameraViewController: AVCapturePhotoCaptureDelegate {
+    func model() -> String {
+        if UIDevice.current.userInterfaceIdiom == .phone {
+           // 使用デバイスがiPhoneの場合
+            return "iPhone"
+
+        } else if UIDevice.current.userInterfaceIdiom == .pad {
+           // 使用デバイスがiPadの場合
+            return "iPad"
+
+        }
+        return "other"
+    }
     // 撮影した画像データが生成されたときに呼び出されるデリゲートメソッド
     func photoOutput(_ output: AVCapturePhotoOutput, didFinishProcessingPhoto photo: AVCapturePhoto, error: Error?) {
         guard let imageData = photo.fileDataRepresentation() else {
@@ -588,11 +603,24 @@ extension CameraViewController: AVCapturePhotoCaptureDelegate {
         if let jpegData = data {
 //            let base64String = jpegData.base64EncodedString(options: .lineLength64Characters)
             let timestamp = NSDate().timeIntervalSince1970
-            let filename = getDocumentsDirectory().appendingPathComponent("_\(timestamp).jpeg")
-            try? jpegData.write(to: filename)
-            let back = BlackboardCamera();
-            back.invoke(callbackId: self.callbackId, commandDelegate: self.commandDelegate, data: filename.absoluteString, mode: self.blackboardViewPriority!)
-            print("filename:::::::\(filename.absoluteString)")
+            let checkedFilename = getDocumentsDirectory().appendingPathComponent("_\(timestamp).jpeg")
+            let filename = getDocumentsDirectory().appendingPathComponent("_\(timestamp)_before.jpeg")
+            guard let imageDataEmbedMetaData = ElectronicBlackBoardManager.createImageEmbeddedMetaData(from: jpegData, photoInfo: photoInfo, imageDescription: "DCP PHOTO", model: model(), software: version ?? "TPR2 3.1.1") else {
+                return
+            }
+            // XMP情報追加のファイル作成
+            try? imageDataEmbedMetaData.write(to: filename)
+            // 信ぴょう性対応
+            let result = JCOMSIA.writeHashValue(from: filename.path, to: checkedFilename.path)
+            if result == 0 {
+                // 信ぴょう性チェック情報作成前のデータは削除する
+                try? FileManager.default.removeItem(atPath: filename.path)
+                print("🔵[success]checkedFilename=\(checkedFilename.absoluteString)")
+            } else {
+                print("🔴[fail★★]checkedFilename=\(checkedFilename.absoluteString), filename=\(filename.absoluteString) result=\(result)")
+            }
+            let back = BlackboardCamera()
+            back.invoke(callbackId: self.callbackId, commandDelegate: self.commandDelegate, data: checkedFilename.absoluteString, mode: self.blackboardViewPriority!)
             self.dismiss(animated: true, completion: nil)
         }
 
