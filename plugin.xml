@@ -67,6 +67,7 @@
 
     <hook type="after_platform_add" src="hooks/modify-root-build-gradle.js" />
     <hook type="after_platform_add" src="hooks/copy_native_files.js" />
+    <hook type="after_platform_add" src="hooks/move_exifInterface.js" />
 
     <config-file target="config.xml" parent="/*">
       <preference name="GradlePluginKotlinEnabled" value="true" />
