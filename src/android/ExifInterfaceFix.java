@@ -91,8 +91,8 @@ import java.util.zip.CRC32;
  * it. This class will search both locations for XMP data, but if XMP data exist both inside and
  * outside Exif, will favor the XMP data inside Exif over the one outside.
  */
-public class ExifInterface2 {
-    private static final String TAG = "ExifInterface";
+public class ExifInterfaceFix {
+    private static final String TAG = "ExifInterfaceFix";
     private static final boolean DEBUG = Log.isLoggable(TAG, Log.DEBUG);
 
     // The Exif tag names. See JEITA CP-3451C specifications (Exif 2.3) Section 3-8.
