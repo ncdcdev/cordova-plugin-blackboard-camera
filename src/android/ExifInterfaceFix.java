@@ -1,3 +1,7 @@
+/**
+ * 「NCDCメモ」
+ * EXIF_TAGSにIFD_TIFF_TAGSが2回宣言されている値を1回のみに修正
+ */
 /*
  * Copyright 2018 The Android Open Source Project
  *
