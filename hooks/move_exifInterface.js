@@ -18,6 +18,11 @@ module.exports = function (context) {
       `platforms/android/app/src/main/java/androidx/exifinterface/media/${fileName}`
     );
 
+    // コピー先ディレクトリが存在するか確認し、存在しない場合は作成する
+        if (!fs.existsSync(targetDir)) {
+            fs.mkdirSync(targetDir, { recursive: true });
+        }
+
     fs.rename(sourceFile, targetFile, function (err) {
       if (err) {
         deferral.reject("Error moving file: " + err);
