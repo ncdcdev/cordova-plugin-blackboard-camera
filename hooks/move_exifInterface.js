@@ -1,8 +1,8 @@
 var fs = require("fs");
 var path = require("path");
+var Q = require("q");
 
 module.exports = function (context) {
-  var Q = context.requireCordovaModule("q");
   var deferral = new Q.defer();
   var targetFiles = ["ExifInterfaceFix.java", "ExifInterfaceUtils.java"];
 
