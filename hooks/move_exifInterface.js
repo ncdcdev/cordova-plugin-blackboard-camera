@@ -3,10 +3,12 @@ var path = require("path");
 var Q = require("q");
 
 module.exports = function (context) {
+  console.log("[move_exifInterface]start");
   var deferral = new Q.defer();
   var targetFiles = ["ExifInterfaceFix.java", "ExifInterfaceUtils.java"];
 
   targetFiles.map(fileName => {
+    console.log(`[move_exifInterface]map:${fileName}`);
     var sourceFile = path.join(
       context.opts.projectRoot,
       `platforms/android/app/src/main/java/jp/co/taisei/construction/fieldmanagement/plugin/${fileName}`
