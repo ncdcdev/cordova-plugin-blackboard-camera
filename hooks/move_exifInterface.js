@@ -20,7 +20,7 @@ module.exports = function (context) {
 
     // コピー先ディレクトリが存在するか確認し、存在しない場合は作成する
     if (!fs.existsSync(targetFile)) {
-      fs.mkdirSync(targetFile, { recursive: true });
+      fs.mkdir(targetFile, { recursive: true });
     }
 
     fs.rename(sourceFile, targetFile, function (err) {
