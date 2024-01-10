@@ -1,16 +1,18 @@
 package jp.co.taisei.construction.fieldmanagement.plugin
 
-import android.content.Context
-import java.io.File
 import java.util.*
-import android.graphics.BitmapFactory
-import android.graphics.Bitmap
 import androidx.exifinterface.media.ExifInterfaceFix
+import com.adobe.xmp.XMPConst
 import java.text.SimpleDateFormat
 
 object ElectronicBlackBoardManager {
 
     fun createImageEmbeddedMetaData(path: String, photoInfo: PhotoInfo?, imageDescription: String, model: String, software: String) {
+
+        // http://ns.adobe.com/xap/1.0/情報を先にセットする
+        val xmpMeta = XmpUtil.extractOrCreateXMPMeta(path)
+        xmpMeta.setProperty(XMPConst.NS_XMP, "Label", "TPR2");
+        XmpUtil.writeXMPMeta(path, xmpMeta)
 
         val formatter = SimpleDateFormat("yyyy:MM:dd HH:mm:ss", Locale.US)
         val now = Date()

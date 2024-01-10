@@ -3937,7 +3937,7 @@ public class ExifInterfaceFix {
      * @throws IOException if an I/O error occurs while retrieving file descriptor via
      *         {@link FileInputStream#getFD()}.
      */
-    public ExifInterface2(@NonNull File file) throws IOException {
+    public ExifInterfaceFix(@NonNull File file) throws IOException {
         if (file == null) {
             throw new NullPointerException("file cannot be null");
         }
@@ -3952,7 +3952,7 @@ public class ExifInterfaceFix {
      * @throws IOException if an I/O error occurs while retrieving file descriptor via
      *         {@link FileInputStream#getFD()}.
      */
-    public ExifInterface2(@NonNull String filename) throws IOException {
+    public ExifInterfaceFix(@NonNull String filename) throws IOException {
         if (filename == null) {
             throw new NullPointerException("filename cannot be null");
         }
@@ -3968,7 +3968,7 @@ public class ExifInterfaceFix {
      * @throws NullPointerException if file descriptor is null
      * @throws IOException if an error occurs while duplicating the file descriptor.
      */
-    public ExifInterface2(@NonNull FileDescriptor fileDescriptor) throws IOException {
+    public ExifInterfaceFix(@NonNull FileDescriptor fileDescriptor) throws IOException {
         if (fileDescriptor == null) {
             throw new NullPointerException("fileDescriptor cannot be null");
         }
@@ -4011,7 +4011,7 @@ public class ExifInterfaceFix {
      * @param inputStream the input stream that contains the image data
      * @throws NullPointerException if the input stream is null
      */
-    public ExifInterface2(@NonNull InputStream inputStream) throws IOException {
+    public ExifInterfaceFix(@NonNull InputStream inputStream) throws IOException {
         this(inputStream, STREAM_TYPE_FULL_IMAGE_DATA);
     }
 
@@ -4027,7 +4027,7 @@ public class ExifInterfaceFix {
      * @throws IOException if an I/O error occurs while retrieving file descriptor via
      *         {@link FileInputStream#getFD()}.
      */
-    public ExifInterface2(@NonNull InputStream inputStream, @ExifStreamType int streamType)
+    public ExifInterfaceFix(@NonNull InputStream inputStream, @ExifStreamType int streamType)
             throws IOException {
         if (inputStream == null) {
             throw new NullPointerException("inputStream cannot be null");
@@ -5067,7 +5067,7 @@ public class ExifInterfaceFix {
         if (location == null) {
             return;
         }
-        setAttribute(ExifInterface2.TAG_GPS_PROCESSING_METHOD, location.getProvider());
+        setAttribute(ExifInterfaceFix.TAG_GPS_PROCESSING_METHOD, location.getProvider());
         setLatLong(location.getLatitude(), location.getLongitude());
         setAltitude(location.getAltitude());
         // Location objects store speeds in m/sec. Translates it to km/hr here.
@@ -5076,8 +5076,8 @@ public class ExifInterfaceFix {
                 * TimeUnit.HOURS.toSeconds(1) / 1000).toString());
         String[] dateTime = sFormatterPrimary.format(
                 new Date(location.getTime())).split("\\s+", -1);
-        setAttribute(ExifInterface2.TAG_GPS_DATESTAMP, dateTime[0]);
-        setAttribute(ExifInterface2.TAG_GPS_TIMESTAMP, dateTime[1]);
+        setAttribute(ExifInterfaceFix.TAG_GPS_DATESTAMP, dateTime[0]);
+        setAttribute(ExifInterfaceFix.TAG_GPS_TIMESTAMP, dateTime[1]);
     }
 
     /**
@@ -5155,11 +5155,11 @@ public class ExifInterfaceFix {
     }
 
     /**
-     * Returns parsed {@link ExifInterface2#TAG_DATETIME} value as number of milliseconds since
+     * Returns parsed {@link ExifInterfaceFix#TAG_DATETIME} value as number of milliseconds since
      * Jan. 1, 1970, midnight local time.
      *
      * <p>Note: The return value includes the first three digits (or less depending on the length
-     * of the string) of {@link ExifInterface2#TAG_SUBSEC_TIME}.
+     * of the string) of {@link ExifInterfaceFix#TAG_SUBSEC_TIME}.
      *
      * @return null if date time information is unavailable or invalid.
      *
@@ -5174,11 +5174,11 @@ public class ExifInterfaceFix {
     }
 
     /**
-     * Returns parsed {@link ExifInterface2#TAG_DATETIME_DIGITIZED} value as number of
+     * Returns parsed {@link ExifInterfaceFix#TAG_DATETIME_DIGITIZED} value as number of
      * milliseconds since Jan. 1, 1970, midnight local time.
      *
      * <p>Note: The return value includes the first three digits (or less depending on the length
-     * of the string) of {@link ExifInterface2#TAG_SUBSEC_TIME_DIGITIZED}.
+     * of the string) of {@link ExifInterfaceFix#TAG_SUBSEC_TIME_DIGITIZED}.
      *
      * @return null if digitized date time information is unavailable or invalid.
      *
@@ -5193,11 +5193,11 @@ public class ExifInterfaceFix {
     }
 
     /**
-     * Returns parsed {@link ExifInterface2#TAG_DATETIME_ORIGINAL} value as number of
+     * Returns parsed {@link ExifInterfaceFix#TAG_DATETIME_ORIGINAL} value as number of
      * milliseconds since Jan. 1, 1970, midnight local time.
      *
      * <p>Note: The return value includes the first three digits (or less depending on the length
-     * of the string) of {@link ExifInterface2#TAG_SUBSEC_TIME_ORIGINAL}.
+     * of the string) of {@link ExifInterfaceFix#TAG_SUBSEC_TIME_ORIGINAL}.
      *
      * @return null if original date time information is unavailable or invalid.
      *
@@ -5920,18 +5920,18 @@ public class ExifInterfaceFix {
                 }
 
                 if (rotation != null) {
-                    int orientation = ExifInterface2.ORIENTATION_NORMAL;
+                    int orientation = ExifInterfaceFix.ORIENTATION_NORMAL;
 
                     // all rotation angles in CW
                     switch (Integer.parseInt(rotation)) {
                         case 90:
-                            orientation = ExifInterface2.ORIENTATION_ROTATE_90;
+                            orientation = ExifInterfaceFix.ORIENTATION_ROTATE_90;
                             break;
                         case 180:
-                            orientation = ExifInterface2.ORIENTATION_ROTATE_180;
+                            orientation = ExifInterfaceFix.ORIENTATION_ROTATE_180;
                             break;
                         case 270:
-                            orientation = ExifInterface2.ORIENTATION_ROTATE_270;
+                            orientation = ExifInterfaceFix.ORIENTATION_ROTATE_270;
                             break;
                     }
 
