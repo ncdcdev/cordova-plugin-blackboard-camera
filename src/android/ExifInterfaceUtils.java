@@ -14,7 +14,13 @@
  * limitations under the License.
  */
 
-package androidx.exifinterface.media;
+package jp.co.taisei.construction.fieldmanagement.plugin;
+
+import java.io.Closeable;
+import java.io.FileDescriptor;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 import android.media.MediaDataSource;
 import android.media.MediaMetadataRetriever;
@@ -22,15 +28,8 @@ import android.os.Build;
 import android.system.ErrnoException;
 import android.system.Os;
 import android.util.Log;
-
 import androidx.annotation.DoNotInline;
 import androidx.annotation.RequiresApi;
-
-import java.io.Closeable;
-import java.io.FileDescriptor;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 
 class ExifInterfaceUtils {
     private static final String TAG = "ExifInterfaceUtils";

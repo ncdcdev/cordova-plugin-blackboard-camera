@@ -18,15 +18,16 @@
  * limitations under the License.
  */
 
-package androidx.exifinterface.media;
+package jp.co.taisei.construction.fieldmanagement.plugin;
 
-import static androidx.exifinterface.media.ExifInterfaceUtils.byteArrayToHexString;
-import static androidx.exifinterface.media.ExifInterfaceUtils.closeFileDescriptor;
-import static androidx.exifinterface.media.ExifInterfaceUtils.closeQuietly;
-import static androidx.exifinterface.media.ExifInterfaceUtils.convertToLongArray;
-import static androidx.exifinterface.media.ExifInterfaceUtils.copy;
-import static androidx.exifinterface.media.ExifInterfaceUtils.parseSubSeconds;
-import static androidx.exifinterface.media.ExifInterfaceUtils.startsWith;
+import static jp.co.taisei.construction.fieldmanagement.plugin.ExifInterfaceUtils.byteArrayToHexString;
+import static jp.co.taisei.construction.fieldmanagement.plugin.ExifInterfaceUtils.closeFileDescriptor;
+import static jp.co.taisei.construction.fieldmanagement.plugin.ExifInterfaceUtils.closeQuietly;
+import static jp.co.taisei.construction.fieldmanagement.plugin.ExifInterfaceUtils.convertToLongArray;
+import static jp.co.taisei.construction.fieldmanagement.plugin.ExifInterfaceUtils.copy;
+import static jp.co.taisei.construction.fieldmanagement.plugin.ExifInterfaceUtils.parseSubSeconds;
+import static jp.co.taisei.construction.fieldmanagement.plugin.ExifInterfaceUtils.startsWith;
+import static jp.co.taisei.construction.fieldmanagement.plugin.ExifInterfaceUtils.Api23Impl;
 
 import android.annotation.SuppressLint;
 import android.content.res.AssetManager;
@@ -44,8 +45,8 @@ import androidx.annotation.IntDef;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
-import androidx.exifinterface.media.ExifInterfaceUtils.Api21Impl;
-import androidx.exifinterface.media.ExifInterfaceUtils.Api23Impl;
+import androidx.appcompat.resources.Compatibility;
+import static jp.co.taisei.construction.fieldmanagement.plugin.ExifInterfaceUtils.Api21Impl;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
