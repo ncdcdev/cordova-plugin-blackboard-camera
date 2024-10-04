@@ -1,7 +1,6 @@
 package jp.co.taisei.construction.fieldmanagement.plugin
 
 import java.util.*
-import androidx.exifinterface.media.ExifInterfaceFix
 import com.adobe.xmp.XMPConst
 import java.text.SimpleDateFormat
 
