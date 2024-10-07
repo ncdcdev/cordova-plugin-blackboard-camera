@@ -23,8 +23,7 @@ module.exports = function (context) {
   if (!fs.existsSync(destDir)) {
     fs.mkdirSync(destDir, { recursive: true });
     console.log(`✨️Created directory: ${destDir}`);
-  } else {
-    fs.copySync(srcDir, destDir);
-    console.log(`✨️Copyed directory: ${destDir}`);
   }
+  fs.copySync(srcDir, destDir);
+  console.log(`✨️Copyed directory: ${destDir}`);
 };
