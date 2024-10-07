@@ -131,44 +131,6 @@
     <source-file src="src/android/drawable-xxhdpi/icn_blackboard_edit.png" target-dir="app/src/main/res/drawable-xxhdpi"/>
     <source-file src="src/android/drawable-xxhdpi/icn_blackboard.png" target-dir="app/src/main/res/drawable-xxhdpi"/>
     <framework src="src/android/build-extras.gradle" custom="true" type="gradleReference" />
-    <source-file src="src/android/cpp/CMakeLists.txt" target-dir="app/src/main/cpp"/>
-    <source-file src="src/android/cpp/native-lib.cpp" target-dir="app/src/main/cpp"/>
-    <source-file src="src/android/cpp/JCOMSIA_HashLib/app1.c" target-dir="app/src/main/cpp/JCOMSIA_HashLib"/>
-    <source-file src="src/android/cpp/JCOMSIA_HashLib/app1.h" target-dir="app/src/main/cpp/JCOMSIA_HashLib"/>
-    <source-file src="src/android/cpp/JCOMSIA_HashLib/app5.c" target-dir="app/src/main/cpp/JCOMSIA_HashLib"/>
-    <source-file src="src/android/cpp/JCOMSIA_HashLib/app5.h" target-dir="app/src/main/cpp/JCOMSIA_HashLib"/>
-    <source-file src="src/android/cpp/JCOMSIA_HashLib/base64.c" target-dir="app/src/main/cpp/JCOMSIA_HashLib"/>
-    <source-file src="src/android/cpp/JCOMSIA_HashLib/base64.h" target-dir="app/src/main/cpp/JCOMSIA_HashLib"/>
-    <source-file src="src/android/cpp/JCOMSIA_HashLib/common.c" target-dir="app/src/main/cpp/JCOMSIA_HashLib"/>
-    <source-file src="src/android/cpp/JCOMSIA_HashLib/common.h" target-dir="app/src/main/cpp/JCOMSIA_HashLib"/>
-    <source-file src="src/android/cpp/JCOMSIA_HashLib/exif.c" target-dir="app/src/main/cpp/JCOMSIA_HashLib"/>
-    <source-file src="src/android/cpp/JCOMSIA_HashLib/exif.h" target-dir="app/src/main/cpp/JCOMSIA_HashLib"/>
-    <source-file src="src/android/cpp/JCOMSIA_HashLib/sha256.c" target-dir="app/src/main/cpp/JCOMSIA_HashLib"/>
-    <source-file src="src/android/cpp/JCOMSIA_HashLib/sha256.h" target-dir="app/src/main/cpp/JCOMSIA_HashLib"/>
-    <source-file src="src/android/cpp/JCOMSIA_HashLib/svg.c" target-dir="app/src/main/cpp/JCOMSIA_HashLib"/>
-    <source-file src="src/android/cpp/JCOMSIA_HashLib/svg.h" target-dir="app/src/main/cpp/JCOMSIA_HashLib"/>
-    <source-file src="src/android/cpp/JCOMSIA_HashLib/writeHashLib.c" target-dir="app/src/main/cpp/JCOMSIA_HashLib"/>
-    <source-file src="src/android/cpp/JCOMSIA_HashLib/writeHashLib.h" target-dir="app/src/main/cpp/JCOMSIA_HashLib"/>
-    <source-file src="src/android/cpp/JCOMSIA_HashLib/libexpat/ascii.h" target-dir="app/src/main/cpp/JCOMSIA_HashLib/libexpat"/>
-    <source-file src="src/android/cpp/JCOMSIA_HashLib/libexpat/asciitab.h" target-dir="app/src/main/cpp/JCOMSIA_HashLib/libexpat"/>
-    <source-file src="src/android/cpp/JCOMSIA_HashLib/libexpat/expat.h" target-dir="app/src/main/cpp/JCOMSIA_HashLib/libexpat"/>
-    <source-file src="src/android/cpp/JCOMSIA_HashLib/libexpat/expat_config.h" target-dir="app/src/main/cpp/JCOMSIA_HashLib/libexpat"/>
-    <source-file src="src/android/cpp/JCOMSIA_HashLib/libexpat/expat_external.h" target-dir="app/src/main/cpp/JCOMSIA_HashLib/libexpat"/>
-    <source-file src="src/android/cpp/JCOMSIA_HashLib/libexpat/iasciitab.h" target-dir="app/src/main/cpp/JCOMSIA_HashLib/libexpat"/>
-    <source-file src="src/android/cpp/JCOMSIA_HashLib/libexpat/internal.h" target-dir="app/src/main/cpp/JCOMSIA_HashLib/libexpat"/>
-    <source-file src="src/android/cpp/JCOMSIA_HashLib/libexpat/latin1tab.h" target-dir="app/src/main/cpp/JCOMSIA_HashLib/libexpat"/>
-    <source-file src="src/android/cpp/JCOMSIA_HashLib/libexpat/nametab.h" target-dir="app/src/main/cpp/JCOMSIA_HashLib/libexpat"/>
-    <source-file src="src/android/cpp/JCOMSIA_HashLib/libexpat/siphash.h" target-dir="app/src/main/cpp/JCOMSIA_HashLib/libexpat"/>
-    <source-file src="src/android/cpp/JCOMSIA_HashLib/libexpat/utf8tab.h" target-dir="app/src/main/cpp/JCOMSIA_HashLib/libexpat"/>
-    <source-file src="src/android/cpp/JCOMSIA_HashLib/libexpat/winconfig.h" target-dir="app/src/main/cpp/JCOMSIA_HashLib/libexpat"/>
-    <source-file src="src/android/cpp/JCOMSIA_HashLib/libexpat/xmlparse.c" target-dir="app/src/main/cpp/JCOMSIA_HashLib/libexpat"/>
-    <source-file src="src/android/cpp/JCOMSIA_HashLib/libexpat/xmlrole.c" target-dir="app/src/main/cpp/JCOMSIA_HashLib/libexpat"/>
-    <source-file src="src/android/cpp/JCOMSIA_HashLib/libexpat/xmlrole.h" target-dir="app/src/main/cpp/JCOMSIA_HashLib/libexpat"/>
-    <source-file src="src/android/cpp/JCOMSIA_HashLib/libexpat/xmltok.c" target-dir="app/src/main/cpp/JCOMSIA_HashLib/libexpat"/>
-    <source-file src="src/android/cpp/JCOMSIA_HashLib/libexpat/xmltok.h" target-dir="app/src/main/cpp/JCOMSIA_HashLib/libexpat"/>
-    <source-file src="src/android/cpp/JCOMSIA_HashLib/libexpat/xmltok_impl.c" target-dir="app/src/main/cpp/JCOMSIA_HashLib/libexpat"/>
-    <source-file src="src/android/cpp/JCOMSIA_HashLib/libexpat/xmltok_impl.h" target-dir="app/src/main/cpp/JCOMSIA_HashLib/libexpat"/>
-    <source-file src="src/android/cpp/JCOMSIA_HashLib/libexpat/xmltok_ns.c" target-dir="app/src/main/cpp/JCOMSIA_HashLib/libexpat"/>
 
   </platform>
 </plugin>

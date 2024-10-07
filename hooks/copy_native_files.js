@@ -20,5 +20,11 @@ module.exports = function (context) {
     "cpp"
   );
 
-  fs.copySync(srcDir, destDir);
+  if (!fs.existsSync(destDir)) {
+    fs.mkdirSync(destDir, { recursive: true });
+    console.log(`✨️Created directory: ${destDir}`);
+  } else {
+    fs.copySync(srcDir, destDir);
+    console.log(`✨️Copyed directory: ${destDir}`);
+  }
 };
