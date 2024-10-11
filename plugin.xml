@@ -67,7 +67,6 @@
 
     <hook type="after_platform_add" src="hooks/modify-root-build-gradle.js" />
     <hook type="after_platform_add" src="hooks/copy_native_files.js" />
-    <hook type="after_platform_add" src="hooks/move_exifInterface.js" />
 
     <config-file target="config.xml" parent="/*">
       <preference name="GradlePluginKotlinEnabled" value="true" />
@@ -111,8 +110,6 @@
     <source-file src="src/android/SensorOrientation.kt" target-dir="app/src/main/java/jp/co/taisei/construction/fieldmanagement/plugin"/>
     <source-file src="src/android/ElectronicBlackBoardManager.kt" target-dir="app/src/main/java/jp/co/taisei/construction/fieldmanagement/plugin"/>
     <source-file src="src/android/PhotoInfo.kt" target-dir="app/src/main/java/jp/co/taisei/construction/fieldmanagement/plugin"/>
-    <source-file src="src/android/ExifInterfaceFix.java" target-dir="app/src/main/java/jp/co/taisei/construction/fieldmanagement/plugin"/>
-    <source-file src="src/android/ExifInterfaceUtils.java" target-dir="app/src/main/java/jp/co/taisei/construction/fieldmanagement/plugin"/>
     <source-file src="src/android/XmpUtil.java" target-dir="app/src/main/java/jp/co/taisei/construction/fieldmanagement/plugin"/>
 
     <source-file src="src/android/layout/activity_main.xml" target-dir="app/src/main/res/layout"/>
