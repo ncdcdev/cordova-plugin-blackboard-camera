@@ -110,6 +110,7 @@
     <source-file src="src/android/SensorOrientation.kt" target-dir="app/src/main/java/jp/co/taisei/construction/fieldmanagement/plugin"/>
     <source-file src="src/android/ElectronicBlackBoardManager.kt" target-dir="app/src/main/java/jp/co/taisei/construction/fieldmanagement/plugin"/>
     <source-file src="src/android/PhotoInfo.kt" target-dir="app/src/main/java/jp/co/taisei/construction/fieldmanagement/plugin"/>
+    <source-file src="src/android/KotlinXMP.kt" target-dir="app/src/main/java/jp/co/taisei/construction/fieldmanagement/plugin"/>
     <source-file src="src/android/XmpUtil.java" target-dir="app/src/main/java/jp/co/taisei/construction/fieldmanagement/plugin"/>
 
     <source-file src="src/android/layout/activity_main.xml" target-dir="app/src/main/res/layout"/>
