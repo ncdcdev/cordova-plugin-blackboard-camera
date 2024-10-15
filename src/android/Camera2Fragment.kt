@@ -822,7 +822,7 @@ class Camera2Fragment : Fragment(), View.OnClickListener, View.OnTouchListener {
             mCaptureSession?.apply {
                 stopRepeating()
                 abortCaptures()
-                capture(captureBuilder?.build(), CaptureCallback, null)
+                captureBuilder?.build()?.let { capture(it, CaptureCallback, null) }
             }
         } catch (e: CameraAccessException) {
             Log.e(TAG, e.toString())
