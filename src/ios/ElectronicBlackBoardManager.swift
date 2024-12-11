@@ -22,9 +22,13 @@ protocol ElectronicBlackBoardManagerProtocol {
 final class ElectronicBlackBoardManager: ElectronicBlackBoardManagerProtocol {
 
     static func createImageEmbeddedMetaData(from image:Data , photoInfo: PhotoInfo?, imageDescription: String,model:String,software:String) -> Data? {
-        var path = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
-        path = path + "/sample.jpg"
-        let url = URL(fileURLWithPath: path)
+        guard let libraryPath = NSSearchPathForDirectoriesInDomains(.libraryDirectory, .userDomainMask, true).first else {
+            print("🔺libraryDirectoryが取得できない")
+            return nil
+        }
+//        var temp = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
+        let temp = libraryPath.appending("/sample.jpg")
+        let url = URL(fileURLWithPath: temp)
         try? image.write(to: url)
         let cgImg = CGImageSourceCreateWithURL(url as CFURL, nil)
         let orgMeta = CGImageSourceCopyPropertiesAtIndex(cgImg!, 0, nil) as! [String: Any]
@@ -85,8 +89,6 @@ final class ElectronicBlackBoardManager: ElectronicBlackBoardManagerProtocol {
         //     ]
         // ] as CFDictionary
 
-        // 埋め込むメタデータを表示
-        print("metaData: \(metaData)")
 
         let dest: CGImageDestination? = CGImageDestinationCreateWithURL(url as CFURL, kUTTypeJPEG, 1, nil)
         CGImageDestinationAddImageFromSource(dest!, cgImg!, 0, metaData)
