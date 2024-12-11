@@ -597,13 +597,13 @@ extension CameraViewController: AVCapturePhotoCaptureDelegate {
 
         let resizedImage = compositeImage!.resize()
         // 写真ライブラリに画像を保存 Debug用
-        UIImageWriteToSavedPhotosAlbum(resizedImage!, nil,nil,nil)
+//        UIImageWriteToSavedPhotosAlbum(resizedImage!, nil,nil,nil)
 
         let data = resizedImage!.jpegData(compressionQuality: 1.0)
         if let jpegData = data {
 //            let base64String = jpegData.base64EncodedString(options: .lineLength64Characters)
             let timestamp = NSDate().timeIntervalSince1970
-            let checkedFilename = getDocumentsDirectory().appendingPathComponent("_\(timestamp).jpeg")
+            let checkedFilename = getDocumentsDirectory().appendingPathComponent("\(timestamp).jpeg")
             let filename = getDocumentsDirectory().appendingPathComponent("_\(timestamp)_before.jpeg")
             guard let imageDataEmbedMetaData = ElectronicBlackBoardManager.createImageEmbeddedMetaData(from: jpegData, photoInfo: photoInfo, imageDescription: "DCP PHOTO", model: model(), software: version ?? "TPR2 3.1.1") else {
                 return
@@ -615,9 +615,9 @@ extension CameraViewController: AVCapturePhotoCaptureDelegate {
             if result == 0 {
                 // 信ぴょう性チェック情報作成前のデータは削除する
                 try? FileManager.default.removeItem(atPath: filename.path)
-                print("🔵[success]checkedFilename=\(checkedFilename.absoluteString)")
+                print("[success]checkedFilename=\(checkedFilename.absoluteString)")
             } else {
-                print("🔴[fail★★]checkedFilename=\(checkedFilename.absoluteString), filename=\(filename.absoluteString) result=\(result)")
+                print("[fail★★]checkedFilename=\(checkedFilename.absoluteString), filename=\(filename.absoluteString) result=\(result)")
             }
             let back = BlackboardCamera()
             back.invoke(callbackId: self.callbackId, commandDelegate: self.commandDelegate, data: checkedFilename.absoluteString, mode: self.blackboardViewPriority!)
