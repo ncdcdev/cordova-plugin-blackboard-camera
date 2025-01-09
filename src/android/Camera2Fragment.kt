@@ -1,5 +1,6 @@
 package jp.co.taisei.construction.fieldmanagement.plugin
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.annotation.TargetApi
 import android.app.Fragment
@@ -8,6 +9,7 @@ import android.content.Context
 import android.content.Context.CAMERA_SERVICE
 import android.content.Intent
 import android.content.SharedPreferences
+import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.graphics.*
 import android.graphics.drawable.BitmapDrawable
@@ -26,6 +28,8 @@ import android.widget.Button
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 //import jp.co.taisei.construction.fieldmanagement.R
 // import jp.co.taisei.construction.fieldmanagement.prod2.R
 import jp.co.taisei.construction.fieldmanagement.develop.R
@@ -383,26 +387,26 @@ class Camera2Fragment : Fragment(), View.OnClickListener, View.OnTouchListener {
         // available, and "onSurfaceTextureAvailable" will not be called. In that case, we can open
         // a camera and start preview from here (otherwise, we wait until the surface is ready in
         // the SurfaceTextureListener).
-        if (mTextureView!!.isAvailable) {
-            openCamera(mTextureView!!.width, mTextureView!!.height)
-        } else {
-            mTextureView!!.surfaceTextureListener = mSurfaceTextureListener
-        }
+        // すぐに開こうとせず、数百ms遅らせる
+        Handler(Looper.getMainLooper()).postDelayed({
+            mTextureView?.let {
+                if (it.isAvailable) {
+                    openCamera(it.width, it.height)
+                } else {
+                    it.surfaceTextureListener = mSurfaceTextureListener
+                }
+            } ?: run {
+                // Handle the case where textureView is null, log an error or throw an exception
+                Log.e("CameraSetup", "🔴TextureView is null")
+            }
+        }, 300)
     }
 
     override fun onPause() {
+        super.onPause()
         closeCamera()
         stopBackgroundThread()
-        super.onPause()
     }
-
-//    private fun requestCameraPermission() {
-//        if (this.shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-//            ConfirmationDialog().show(childFragmentManager, FRAGMENT_DIALOG)
-//        } else {
-//            requestPermissions(arrayOf(Manifest.permission.CAMERA), REQUEST_CAMERA_PERMISSION)
-//        }
-//    }
 
     private fun initBoardSize(bitmap: Bitmap) {
         val w1 = bitmap.width
@@ -542,16 +546,22 @@ class Camera2Fragment : Fragment(), View.OnClickListener, View.OnTouchListener {
         return swappedDimensions
     }
 
+    val REQUEST_CAMERA_PERMISSION = 1
     /**
      * Opens the camera specified by [Camera2Fragment.mCameraId].
      */
     @SuppressLint("MissingPermission")
     private fun openCamera(width: Int, height: Int) {
         // JS側で対応するため、ここではSkip
-//        if (ContextCompat.checkSelfPermission(activity!!, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-//            requestCameraPermission()
-//            return
-//        }
+        if (ContextCompat.checkSelfPermission(activity!!, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            // 未許可 → リクエスト
+            ActivityCompat.requestPermissions(
+                activity,
+                arrayOf(Manifest.permission.CAMERA),
+                REQUEST_CAMERA_PERMISSION
+            )
+            return
+        }
         mediaActionSound = MediaActionSound()
         mediaActionSound.load(MediaActionSound.SHUTTER_CLICK)
 
@@ -573,24 +583,31 @@ class Camera2Fragment : Fragment(), View.OnClickListener, View.OnTouchListener {
 
     }
 
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == REQUEST_CAMERA_PERMISSION) {
+            if ((grantResults.isNotEmpty()) && (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                // 許可されたので開く
+                openCamera(mTextureView!!.width, mTextureView!!.height)
+            } else {
+                // 拒否
+                Toast.makeText(activity, "Camera permission denied.", Toast.LENGTH_LONG).show()
+            }
+        }
+    }
+
     /**
      * Closes the current [CameraDevice].
      */
     private fun closeCamera() {
         try {
             mCameraOpenCloseLock.acquire()
-            if (null != mCaptureSession) {
-                mCaptureSession!!.close()
-                mCaptureSession = null
-            }
-            if (null != mCameraDevice) {
-                mCameraDevice!!.close()
-                mCameraDevice = null
-            }
-            if (null != mImageReader) {
-                mImageReader!!.close()
-                mImageReader = null
-            }
+            mCaptureSession?.close()
+            mCaptureSession = null
+            mCameraDevice?.close()
+            mCameraDevice = null
+            mImageReader?.close()
+            mImageReader = null
         } catch (e: InterruptedException) {
             throw RuntimeException("Interrupted while trying to lock camera closing.", e)
         } finally {
