@@ -871,22 +871,38 @@ class Camera2Fragment : Fragment(), View.OnClickListener, View.OnTouchListener {
             mPreviewRequestBuilder!!.set(CaptureRequest.CONTROL_AF_TRIGGER,
                 CameraMetadata.CONTROL_AF_TRIGGER_CANCEL)
             setAutoFlash(mPreviewRequestBuilder!!)
-            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.N) {
-                mCaptureSession!!.stopRepeating()
-                mCaptureSession!!.abortCaptures()
-            }
-            mCaptureSession!!.capture(mPreviewRequestBuilder!!.build(), mCaptureCallback,
-                mBackgroundHandler)
-            // After this, the camera will go back to the normal state of preview.
-            mState = STATE_PREVIEW
-            mCaptureSession!!.setRepeatingRequest(mPreviewRequest!!, mCaptureCallback,
-                mBackgroundHandler)
-        } catch (e: CameraAccessException) {
-            e.printStackTrace()
-        } catch (e: java.lang.NullPointerException) {
-            e.printStackTrace()
-        }
 
+            // セッションがnullでないことを確認
+            val captureSession = mCaptureSession ?: return
+
+            try {
+                if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.N) {
+                    captureSession.stopRepeating()
+                    captureSession.abortCaptures()
+                }
+
+                captureSession.capture(mPreviewRequestBuilder!!.build(), mCaptureCallback,
+                    mBackgroundHandler)
+
+                // After this, the camera will go back to the normal state of preview.
+                mState = STATE_PREVIEW
+                captureSession.setRepeatingRequest(mPreviewRequest!!, mCaptureCallback,
+                    mBackgroundHandler)
+            } catch (e: IllegalStateException) {
+                // セッションがすでに閉じられている場合
+                Log.e(TAG, "Session already closed: ${e.message}")
+                mCameraStartFlag = false
+            }
+        } catch (e: CameraAccessException) {
+            Log.e(TAG, "Error during unlockFocus: ${e.message}")
+            mCameraStartFlag = false
+        } catch (e: NullPointerException) {
+            Log.e(TAG, "Error during unlockFocus (NPE): ${e.message}")
+            mCameraStartFlag = false
+        } catch (e: Exception) {
+            Log.e(TAG, "Unexpected error during unlockFocus: ${e.message}")
+            mCameraStartFlag = false
+        }
     }
 
     /**
