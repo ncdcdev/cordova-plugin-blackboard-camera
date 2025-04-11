@@ -27,6 +27,8 @@ class CameraActivity : CordovaActivity(), SensorEventListener, ActivityCompat.On
     private val ORIENTATION_VERTICAL = 0     //縦向きを表す定数
     private val ORIENTATION_HORIZONTAL = 1   //横向きを表す定
     private val PERMISSIONS_REQUEST_CODE = 100
+    private val CAMERA_PERMISSION_REQUEST_CODE = 101
+    private val STORAGE_PERMISSION_REQUEST_CODE = 102
 
     val RAD2DEG = 180 / Math.PI  //ラジアンを度に変換する際の定数
     val MATRIX_SIZE = 16         //回転行列の要素数
@@ -69,7 +71,7 @@ class CameraActivity : CordovaActivity(), SensorEventListener, ActivityCompat.On
         this.photoInfo = intent.extras?.get("photoInfo") as PhotoInfo?
         this.version = intent.extras?.get("version") as String
 
-        checkPermission()
+        checkPermissions()
     }
 
 
@@ -79,10 +81,15 @@ class CameraActivity : CordovaActivity(), SensorEventListener, ActivityCompat.On
         if( sensorManager == null ) return
     }
 
-    private fun checkPermission() {
+    private fun checkPermissions() {
         if (Build.VERSION.SDK_INT >= 23) {
-            if (ContextCompat.checkSelfPermission(this!!, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                requestPermissions(arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), PERMISSIONS_REQUEST_CODE)
+            val cameraPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+            val storagePermission = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_MEDIA_IMAGES)
+
+            if (cameraPermission != PackageManager.PERMISSION_GRANTED) {
+                requestCameraPermission()
+            } else if (storagePermission != PackageManager.PERMISSION_GRANTED) {
+                requestStoragePermission()
             } else {
                 initSensor()
             }
@@ -91,18 +98,94 @@ class CameraActivity : CordovaActivity(), SensorEventListener, ActivityCompat.On
         }
     }
 
+    private fun requestCameraPermission() {
+        if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CAMERA)) {
+            // カメラ権限が必要な理由を説明するダイアログを表示
+            showRationaleDialog("カメラ", CAMERA_PERMISSION_REQUEST_CODE)
+        } else {
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA), CAMERA_PERMISSION_REQUEST_CODE)
+        }
+    }
+
+    private fun showRationaleDialog(permissionName: String, requestCode: Int) {
+        val builder = androidx.appcompat.app.AlertDialog.Builder(this)
+        builder.setTitle("$permissionName パーミッションが必要です")
+        builder.setMessage("$permissionName パーミッションを許可してください。")
+        builder.setPositiveButton("OK") { _, _ ->
+            ActivityCompat.requestPermissions(this, arrayOf(
+                if (requestCode == CAMERA_PERMISSION_REQUEST_CODE) Manifest.permission.CAMERA else Manifest.permission.READ_EXTERNAL_STORAGE
+            ), requestCode)
+        }
+        builder.setNegativeButton("キャンセル") { dialog, _ ->
+            dialog.dismiss()
+            showPermissionDeniedDialog(permissionName)
+        }
+        builder.show()
+    }
+
+
+    private fun requestStoragePermission() {
+        if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
+            // ストレージ権限が必要な理由を説明するダイアログを表示
+            showRationaleDialog("ストレージ", STORAGE_PERMISSION_REQUEST_CODE)
+        } else {
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), STORAGE_PERMISSION_REQUEST_CODE)
+        }
+    }
+
+    private fun showPermissionDeniedDialog(permissionName: String) {
+        val builder = androidx.appcompat.app.AlertDialog.Builder(this)
+        builder.setTitle("$permissionName パーミッションが必要です")
+        builder.setMessage("$permissionName パーミッションを許可してください。設定画面で許可できます。")
+        builder.setPositiveButton("設定") { _, _ ->
+            val intent = Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+            val uri = android.net.Uri.fromParts("package", packageName, null)
+            intent.data = uri
+            startActivity(intent)
+        }
+        builder.setNegativeButton("キャンセル") { dialog, _ ->
+            dialog.dismiss()
+            val intent = Intent()
+            intent.putExtra("mode", blackboardViewPriority)
+            setResult(0, intent)
+            finish()
+        }
+        builder.show()
+    }
+
+
     override fun onResume() {
         super.onResume()
-
-        sensorManager!!.registerListener(
-                this,
-                sensorManager!!.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
-                SensorManager.SENSOR_DELAY_UI)
-        sensorManager!!.registerListener(
-                this,
-                sensorManager!!.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD),
-                SensorManager.SENSOR_DELAY_UI)
+        registerSensorListeners()
     }
+
+    private fun registerSensorListeners() {
+        sensorManager?.registerListener(
+            this,
+            sensorManager?.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
+            SensorManager.SENSOR_DELAY_UI
+        )
+        sensorManager?.registerListener(
+            this,
+            sensorManager?.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD),
+            SensorManager.SENSOR_DELAY_UI
+        )
+    }
+
+    override fun onPause() {
+        super.onPause()
+        unregisterSensorListeners()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        sensorManager = null
+    }
+
+    private fun unregisterSensorListeners() {
+        sensorManager?.unregisterListener(this)
+    }
+
 
     override fun onAccuracyChanged(sensor: Sensor, accuracy: Int) {}
 
@@ -184,18 +267,63 @@ class CameraActivity : CordovaActivity(), SensorEventListener, ActivityCompat.On
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         when (requestCode) {
             PERMISSIONS_REQUEST_CODE -> {
-                if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
-                    // 継続
+                if (grantResults.isNotEmpty() && grantResults.all { it == PackageManager.PERMISSION_GRANTED }) {
+                    // すべてのパーミッションが許可された
                     initSensor()
                 } else {
-                    val intent = Intent()
-                    intent.putExtra("mode", blackboardViewPriority)
-                    setResult(0, intent)
-                    finish()
+                    // パーミッションが拒否された
+                    showPermissionDeniedDialog()
                 }
-                return
+            }
+            CAMERA_PERMISSION_REQUEST_CODE -> {
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // カメラ権限が許可された
+                    val storagePermission = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
+                    if (storagePermission != PackageManager.PERMISSION_GRANTED) {
+                        requestStoragePermission()
+                    } else {
+                        initSensor()
+                    }
+                } else {
+                    // カメラ権限が拒否された
+                    showPermissionDeniedDialog("カメラ")
+                }
+            }
+            STORAGE_PERMISSION_REQUEST_CODE -> {
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // ストレージ権限が許可された
+                    val cameraPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+                    if (cameraPermission != PackageManager.PERMISSION_GRANTED) {
+                        requestCameraPermission()
+                    } else {
+                        initSensor()
+                    }
+                } else {
+                    // ストレージ権限が拒否された
+                    showPermissionDeniedDialog("ストレージ")
+                }
             }
         }
+    }
+
+    private fun showPermissionDeniedDialog() {
+        val builder = androidx.appcompat.app.AlertDialog.Builder(this)
+        builder.setTitle("パーミッションが必要です")
+        builder.setMessage("カメラ機能を使用するには、カメラとストレージのパーミッションが必要です。設定画面でパーミッションを許可してください。")
+        builder.setPositiveButton("設定") { _, _ ->
+            val intent = Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+            val uri = android.net.Uri.fromParts("package", packageName, null)
+            intent.data = uri
+            startActivity(intent)
+        }
+        builder.setNegativeButton("キャンセル") { dialog, _ ->
+            dialog.dismiss()
+            val intent = Intent()
+            intent.putExtra("mode", blackboardViewPriority)
+            setResult(0, intent)
+            finish()
+        }
+        builder.show()
     }
 
     private fun setFragmentOrientation(orientation: Int) {
